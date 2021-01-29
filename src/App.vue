@@ -1,13 +1,16 @@
 <template>
   <div class="app-box">
-    <Header />
+    <Header @toggle-side-drawer="show = !show" />
     <div>
       <Sidebar />
       <router-view />
     </div>
   </div>
   <transition name="sideDrawer">
-    <SideDrawer v-if="show" />
+    <SideDrawer @toggle-side-drawer="show = !show" v-if="show" />
+  </transition>
+  <transition name="cloth">
+    <div v-if="show" class="cloth" @click="show = false"></div>
   </transition>
 </template>
 
@@ -25,7 +28,7 @@ import SideDrawer from "@/components/SideDrawer/index.vue";
   },
 })
 export default class App extends Vue {
-  show = true;
+  show = false;
 }
 </script>
 
@@ -35,6 +38,7 @@ export default class App extends Vue {
   --sidebar: 72px;
   --themeBgColor: rgb(249, 249, 249);
   --sideDrawerWidth: 240px;
+  --translateXSideDrawer: -240px;
 }
 .app-box {
   display: flex;
@@ -65,6 +69,47 @@ export default class App extends Vue {
   }
   .app-box > div:last-child > div:last-child {
     width: 100%;
+  }
+}
+.cloth {
+  z-index: 100;
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* 遮布动画 */
+.cloth-enter-active {
+  animation: cloth-in 0.2s;
+}
+.cloth-leave-active {
+  animation: cloth-in 0.2s reverse;
+}
+@keyframes cloth-in {
+  0% {
+    background-color: rgba(0, 0, 0, 0);
+  }
+  100% {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* 抽屉动画 */
+.sideDrawer-enter-active {
+  animation: sideDrawer-in 0.2s;
+}
+.sideDrawer-leave-active {
+  animation: sideDrawer-in 0.2s reverse;
+}
+@keyframes sideDrawer-in {
+  0% {
+    transform: translateX(var(--translateXSideDrawer));
+  }
+  100% {
+    transform: translateX(0);
   }
 }
 

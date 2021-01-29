@@ -1,7 +1,7 @@
 <template>
   <div class="side-drawer">
     <div class="header">
-      <span class="span-icon iconfont icon-caidan"></span>
+      <span @click="$emit('toggle-side-drawer')" class="span-icon iconfont icon-caidan"></span>
       <LouTubeLog />
     </div>
     <div class="box">
@@ -53,6 +53,7 @@ export default class SideDrawer extends Vue {}
 <style scoped>
 .side-drawer {
   position: fixed;
+  z-index: 101;
   top: 0;
   left: 0;
   width: var(--sideDrawerWidth);

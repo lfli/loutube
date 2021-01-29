@@ -1,7 +1,7 @@
 <template>
   <div class="header-box">
     <div class="menu-box">
-      <span class="iconfont icon-caidan"></span>
+      <span @click="$emit('toggle-side-drawer')" class="iconfont icon-caidan"></span>
     </div>
     <LouTubeLog />
     <div style="width: 10vw;"></div>
