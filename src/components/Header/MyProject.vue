@@ -20,6 +20,8 @@ div {
   width: 10vw;
   display: flex;
   justify-content: center;
+  cursor: pointer; /** 鼠标变小手 */
+  user-select: none; /** 文字不可被选中 */
 }
 div span {
   color: white;

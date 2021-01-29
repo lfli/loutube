@@ -71,6 +71,9 @@ export default class App extends Vue {
     width: 100%;
   }
 }
+span[class~="iconfont"] {
+  cursor: pointer; /** 鼠标变小手 */
+}
 .cloth {
   z-index: 100;
   position: fixed;

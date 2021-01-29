@@ -42,6 +42,8 @@ export default class SearchBar extends Vue {}
   border: 1px solid #b3b3b3;
   border-left: none;
   outline: none;
+  cursor: pointer; /** 鼠标变小手 */
+  user-select: none; /** 文字不可被选中 */
 }
 .search button i {
   font-style: normal;

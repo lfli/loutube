@@ -18,6 +18,8 @@ export default class LouTubeLog extends Vue {}
 div {
   display: flex;
   align-items: center;
+  cursor: pointer; /** 鼠标变小手 */
+  user-select: none; /** 文字不可被选中 */
 }
 .span-icon {
   color: red;

@@ -1,14 +1,17 @@
 <template>
   <div class="header-box">
     <div class="menu-box">
-      <span @click="$emit('toggle-side-drawer')" class="iconfont icon-caidan"></span>
+      <span
+        @click="$emit('toggle-side-drawer')"
+        class="iconfont icon-caidan"
+      ></span>
     </div>
     <LouTubeLog />
-    <div style="width: 10vw;"></div>
+    <div style="width: 10vw"></div>
     <SearchBar />
-    <div style="width: 10vw;"></div>
+    <div style="width: 10vw"></div>
     <span class="iconfont icon-menu-dots"></span>
-    <div style="width: 5vw;"></div>
+    <div style="width: 5vw"></div>
     <span class="iconfont icon-menu-"></span>
     <MyProject />
   </div>
@@ -16,7 +19,7 @@
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import LouTubeLog  from "../LouTubeLog.vue";
+import LouTubeLog from "../LouTubeLog.vue";
 import SearchBar from "./SearchBar.vue";
 import MyProject from "./MyProject.vue";
 
@@ -25,8 +28,8 @@ import MyProject from "./MyProject.vue";
   components: {
     LouTubeLog,
     SearchBar,
-    MyProject
-  }
+    MyProject,
+  },
 })
 export default class Header extends Vue {}
 </script>
