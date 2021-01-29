@@ -16,17 +16,16 @@ export default class SearchBar extends Vue {}
 
 <style scoped>
 .search {
-  width: 40%;
+  width: 40vw;
+  height: 30px;
   display: flex;
 }
 .search input {
   float: left;
   flex: 4;
-  height: 30px;
   border: 1px solid #b3b3b3;
   border-top-left-radius: 2px;
   border-bottom-left-radius: 2px;
-  box-sizing: border-box;
   outline-color: rgb(160, 161, 255);
   padding-left: 10px;
   box-shadow: 0px 0px 2px #cecece inset;
@@ -37,19 +36,14 @@ export default class SearchBar extends Vue {}
 .search button {
   float: right;
   flex: 1;
-  height: 30px;
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
   background-color: var(--themeBgColor);
-  border-style: none;
-  outline: none;
   border: 1px solid #b3b3b3;
   border-left: none;
+  outline: none;
 }
 .search button i {
   font-style: normal;
-}
-.search button:hover {
-  font-size: 16px;
 }
 </style>
