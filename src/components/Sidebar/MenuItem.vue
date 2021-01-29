@@ -1,0 +1,37 @@
+<template>
+  <div>
+    <span class="iconfont span-icon" v-bind="$attrs"></span>
+    <span class="span-text"><slot></slot></span>
+  </div>
+</template>
+
+<script lang="ts">
+import { Options, Vue } from "vue-class-component";
+
+@Options({
+  inheritAttrs: false,
+  props: {},
+})
+export default class MenuItem extends Vue {}
+</script>
+
+<style scoped>
+div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 14px 0;
+  cursor: pointer; /** 鼠标变小手 */
+  user-select: none; /** 文字不可被选中 */
+}
+div:hover {
+  background-color: rgba(128, 128, 128, 0.1);
+}
+.span-icon {
+  font-size: 20px;
+  margin-bottom: 6px;
+}
+.span-text {
+  font-size: 12px;
+}
+</style>

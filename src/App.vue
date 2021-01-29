@@ -1,8 +1,8 @@
 <template>
   <div class="app-box">
-    <Header v-once />
+    <Header />
     <div>
-      <Sidebar v-once />
+      <Sidebar />
       <router-view />
     </div>
   </div>
