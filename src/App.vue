@@ -6,20 +6,27 @@
       <router-view />
     </div>
   </div>
+  <transition name="sideDrawer">
+    <SideDrawer v-if="show" />
+  </transition>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import Header from "@/components/Header/index.vue"; // @ is an alias to /src
 import Sidebar from "@/components/Sidebar/index.vue";
+import SideDrawer from "@/components/SideDrawer/index.vue";
 
 @Options({
   components: {
     Header,
     Sidebar,
+    SideDrawer,
   },
 })
-export default class App extends Vue {}
+export default class App extends Vue {
+  show = true;
+}
 </script>
 
 <style>
@@ -27,6 +34,7 @@ export default class App extends Vue {}
   --headerHeight: 56px;
   --sidebar: 72px;
   --themeBgColor: rgb(249, 249, 249);
+  --sideDrawerWidth: 240px;
 }
 .app-box {
   display: flex;

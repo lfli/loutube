@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="side-drawer-menu-item">
     <span class="iconfont span-icon" v-bind="$attrs"></span>
     <span class="span-text"><slot></slot></span>
   </div>
@@ -11,28 +11,29 @@ import { Options, Vue } from "vue-class-component";
 @Options({
   inheritAttrs: false,
   props: {},
+  components: {},
 })
-export default class MenuItem extends Vue {}
+export default class SideDrawerMenuItem extends Vue {}
 </script>
 
 <style scoped>
-div {
+.side-drawer-menu-item {
+  padding: 0 24px;
+  height: 40px;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  padding: 14px 0;
   cursor: pointer; /** 鼠标变小手 */
   user-select: none; /** 文字不可被选中 */
 }
-div:hover {
+.side-drawer-menu-item:hover {
   background-color: rgba(128, 128, 128, 0.1);
 }
 .span-icon {
-  font-size: 20px;
-  margin-bottom: 6px;
+  font-size: 24px;
+  margin-right: 24px;
 }
 .span-text {
-  font-size: 12px;
+  font-size: 14px;
   font-family: Roboto, Arial, sans-serif;
   color: #030303;
 }
