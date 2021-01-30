@@ -7,7 +7,7 @@
     </div>
   </div>
   <transition name="sideDrawer">
-    <SideDrawer @toggle-side-drawer="show = !show" v-if="show" />
+    <SideDrawer @close="show = false" v-if="show" />
   </transition>
   <transition name="cloth">
     <div v-if="show" class="cloth" @click="show = false"></div>

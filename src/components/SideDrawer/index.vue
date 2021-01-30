@@ -2,22 +2,32 @@
   <div class="side-drawer">
     <div class="header">
       <span
-        @click="$emit('toggle-side-drawer')"
+        @click="$emit('close')"
         class="span-icon iconfont icon-caidan"
       ></span>
       <LouTubeLog />
     </div>
     <div class="box">
       <div class="box-one">
-        <SideDrawerMenuItem class="icon-shouye">首页</SideDrawerMenuItem>
-        <SideDrawerMenuItem class="icon-huo">时下流行</SideDrawerMenuItem>
-        <SideDrawerMenuItem class="icon-subscribe">订阅内容</SideDrawerMenuItem>
+        <SideDrawerMenuItem @click="to('/')" class="icon-shouye"
+          >首页</SideDrawerMenuItem
+        >
+        <SideDrawerMenuItem @click="to('/popular-now')" class="icon-huo"
+          >时下流行</SideDrawerMenuItem
+        >
+        <SideDrawerMenuItem @click="to('/subscription')" class="icon-subscribe"
+          >订阅内容</SideDrawerMenuItem
+        >
       </div>
       <div class="box-two">
-        <SideDrawerMenuItem class="icon-shipinbofang"
+        <SideDrawerMenuItem
+          @click="to('/mediaLibrary')"
+          class="icon-shipinbofang"
           >媒体库</SideDrawerMenuItem
         >
-        <SideDrawerMenuItem class="icon-lishijilu">历史记录</SideDrawerMenuItem>
+        <SideDrawerMenuItem @click="to('/history')" class="icon-lishijilu"
+          >历史记录</SideDrawerMenuItem
+        >
       </div>
       <div class="box-three">
         <div class="jx">
@@ -39,6 +49,7 @@
 </template>
 
 <script lang="ts">
+import router from "@/router";
 import { Options, Vue } from "vue-class-component";
 import LouTubeLog from "../LouTubeLog.vue";
 import SideDrawerMenuItem from "./SideDrawerMenuItem.vue";
@@ -49,7 +60,13 @@ import SideDrawerMenuItem from "./SideDrawerMenuItem.vue";
     LouTubeLog,
     SideDrawerMenuItem,
   },
-  emits: ["toggle-side-drawer"],
+  emits: ["close"],
+  methods: {
+    to(address: string) {
+      router.push({ path: address });
+      this.$emit("close");
+    },
+  },
 })
 export default class SideDrawer extends Vue {}
 </script>
