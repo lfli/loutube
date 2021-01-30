@@ -30,6 +30,7 @@ import MyProject from "./MyProject.vue";
     SearchBar,
     MyProject,
   },
+  emits: ["toggle-side-drawer"],
 })
 export default class Header extends Vue {}
 </script>

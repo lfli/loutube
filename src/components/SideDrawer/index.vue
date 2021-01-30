@@ -49,6 +49,7 @@ import SideDrawerMenuItem from "./SideDrawerMenuItem.vue";
     LouTubeLog,
     SideDrawerMenuItem,
   },
+  emits: ["toggle-side-drawer"],
 })
 export default class SideDrawer extends Vue {}
 </script>
