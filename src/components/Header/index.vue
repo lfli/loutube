@@ -37,7 +37,6 @@ export default class Header extends Vue {}
 
 <style scoped>
 .header-box {
-  background-color: white;
   display: flex;
   align-items: center;
   justify-content: space-between;

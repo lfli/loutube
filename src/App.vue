@@ -1,8 +1,8 @@
 <template>
   <div class="app-box">
-    <Header @toggle-side-drawer="show = !show" />
-    <div>
-      <Sidebar />
+    <Header class="header" @toggle-side-drawer="show = !show" />
+    <div class="content">
+      <Sidebar class="sidebar" />
       <router-view />
     </div>
   </div>
@@ -39,36 +39,63 @@ export default class App extends Vue {
   --themeBgColor: rgb(249, 249, 249);
   --sideDrawerWidth: 240px;
   --translateXSideDrawer: -240px;
+  --scrollbarWidth: 12px;
 }
 .app-box {
   display: flex;
   flex-direction: column;
   height: 100vh;
 }
-/* header 的高度 */
-.app-box > div:first-child {
+.header {
   height: var(--headerHeight);
+  width: calc(100vw - var(--scrollbarWidth));
+  z-index: 10;
+  background-color: rgba(255, 255, 255, 0.97);
 }
-/* 内容的高度 */
-.app-box > div:last-child {
+.content {
   display: flex;
-  height: calc(100% - var(--headerHeight));
+  position: fixed;
+  top: 0;
+  left: 0;
 }
-/* sidebar 的宽度 */
-.app-box > div:last-child > div:first-child {
+.sidebar {
+  position: absolute;
+  top: var(--headerHeight);
   width: var(--sidebar);
+  height: calc(100vh - var(--headerHeight));
 }
-/* 内容的宽度 */
-.app-box > div:last-child > div:last-child {
-  width: calc(100% - var(--sidebar));
+
+/* router-view */
+.content > div:last-child {
+  position: absolute;
+  left: var(--sidebar);
+  width: calc(100vw - var(--sidebar));
+  height: 100vh;
+  overflow-y: scroll;
+  padding-top: var(--headerHeight);
   background-color: var(--themeBgColor);
 }
+
+/* 滑动条样式 ↓ */
+.content > div:last-child::-webkit-scrollbar {
+  width: var(--scrollbarWidth);
+}
+.content > div:last-child::-webkit-scrollbar-track-piece {
+  background-color: #f1f1f1;
+}
+.content > div:last-child::-webkit-scrollbar-thumb {
+  background-color: #c1c1c1;
+}
+/* 滑动条样式 ↑ */
+
 @media screen and (max-width: 800px) {
-  .app-box > div:last-child > div:first-child {
+  .sidebar {
     width: 0;
   }
-  .app-box > div:last-child > div:last-child {
-    width: 100%;
+  /* router-view */
+  .content > div:last-child {
+    width: 100vw;
+    left: 0;
   }
 }
 span[class~="iconfont"] {
@@ -201,9 +228,6 @@ button {
 }
 table {
   border-collapse: collapse;
-}
-html {
-  overflow-y: scroll;
 }
 
 .clearfix:after {
