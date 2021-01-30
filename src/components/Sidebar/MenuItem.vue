@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <span class="iconfont span-icon" v-bind="$attrs"></span>
+  <div @click="$attrs.onClick()">
+    <span class="iconfont span-icon" :class="$attrs.class"></span>
     <span class="span-text"><slot></slot></span>
   </div>
 </template>
