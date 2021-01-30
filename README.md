@@ -1,7 +1,7 @@
 # loutube
 
 ### 项目简介
-基于vue3+typescript的个人项目
+基于vue3+typescript的个人项目，不使用任何UI框架，所有组件和样式均自主开发。
 
 #### 技术栈
 - **[vue3](https://github.com/vuejs/vue):**  vue3全家桶 
