@@ -73,7 +73,7 @@ export default class App extends Vue {
   position: absolute;
   left: var(--sidebar);
   width: calc(100vw - var(--sidebar));
-  height: 100vh;
+  height: calc(100vh - var(--headerHeight));
   overflow-y: scroll;
   padding-top: var(--headerHeight);
   background-color: var(--themeBgColor);
