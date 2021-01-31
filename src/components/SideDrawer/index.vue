@@ -5,7 +5,7 @@
         @click="$emit('close')"
         class="span-icon iconfont icon-caidan"
       ></span>
-      <LouTubeLog />
+      <LouTubeLog @click="$emit('close')" />
     </div>
     <div class="box">
       <div

@@ -1,15 +1,21 @@
 <template>
-  <div>
+  <div @click="goHome()">
     <span class="span-icon iconfont icon-youtube"></span>
     <span class="span-text">LouTube</span>
   </div>
 </template>
 
 <script lang="ts">
+import router from "@/router";
 import { Options, Vue } from "vue-class-component";
 
 @Options({
   props: {},
+  methods: {
+    goHome() {
+      router.push("/");
+    },
+  },
 })
 export default class LouTubeLog extends Vue {}
 </script>
