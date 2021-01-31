@@ -2,12 +2,12 @@
   <div class="app-box">
     <Header class="header" @toggle-side-drawer="show = !show" />
     <div class="content">
-      <Sidebar class="sidebar" />
+      <Sidebar :listData="sideNavList" class="sidebar" />
       <router-view />
     </div>
   </div>
   <transition name="sideDrawer">
-    <SideDrawer @close="show = false" v-if="show" />
+    <SideDrawer :listData="sideDrawerList" @close="show = false" v-if="show" />
   </transition>
   <transition name="cloth">
     <div v-if="show" class="cloth" @click="show = false"></div>
@@ -19,6 +19,7 @@ import { Options, Vue } from "vue-class-component";
 import Header from "@/components/Header/index.vue"; // @ is an alias to /src
 import Sidebar from "@/components/Sidebar/index.vue";
 import SideDrawer from "@/components/SideDrawer/index.vue";
+import { sideDrawerList, sideNavList } from "@/apis/data.ts";
 
 @Options({
   components: {
@@ -29,6 +30,8 @@ import SideDrawer from "@/components/SideDrawer/index.vue";
 })
 export default class App extends Vue {
   show = false;
+  sideNavList = sideNavList;
+  sideDrawerList = sideDrawerList;
 }
 </script>
 

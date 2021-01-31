@@ -8,25 +8,17 @@
       <LouTubeLog />
     </div>
     <div class="box">
-      <div class="box-one">
-        <SideDrawerMenuItem @click="to('/')" class="icon-shouye"
-          >首页</SideDrawerMenuItem
-        >
-        <SideDrawerMenuItem @click="to('/popular-now')" class="icon-huo"
-          >时下流行</SideDrawerMenuItem
-        >
-        <SideDrawerMenuItem @click="to('/subscription')" class="icon-subscribe"
-          >订阅内容</SideDrawerMenuItem
-        >
-      </div>
-      <div class="box-two">
+      <div
+        v-for="(items, index) of listData"
+        :key="index"
+        :class="{ 'box-one': index == 0, 'box-two': index == 1 }"
+      >
         <SideDrawerMenuItem
-          @click="to('/mediaLibrary')"
-          class="icon-shipinbofang"
-          >媒体库</SideDrawerMenuItem
-        >
-        <SideDrawerMenuItem @click="to('/history')" class="icon-lishijilu"
-          >历史记录</SideDrawerMenuItem
+          v-for="item of items"
+          :key="item.link"
+          @click="to(item.link)"
+          :class="item.icon"
+          >{{ item.title }}</SideDrawerMenuItem
         >
       </div>
       <div class="box-three">
@@ -55,7 +47,7 @@ import LouTubeLog from "../LouTubeLog.vue";
 import SideDrawerMenuItem from "./SideDrawerMenuItem.vue";
 
 @Options({
-  props: {},
+  props: { listData: Array },
   components: {
     LouTubeLog,
     SideDrawerMenuItem,

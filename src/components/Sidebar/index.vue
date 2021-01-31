@@ -1,10 +1,12 @@
 <template>
   <div class="sidebar-box">
-    <MenuItem @click="to('/')" class="icon-shouye">首页</MenuItem>
-    <MenuItem @click="to('/popular-now')" class="icon-huo">时下流行</MenuItem>
-    <MenuItem @click="to('/subscription')" class="icon-subscribe">订阅内容</MenuItem>
-    <MenuItem @click="to('/mediaLibrary')" class="icon-shipinbofang">媒体库</MenuItem>
-    <MenuItem @click="to('/history')" class="icon-lishijilu">历史记录</MenuItem>
+    <MenuItem
+      v-for="item of listData"
+      :key="item.link"
+      @click="to(item.link)"
+      :class="item.icon"
+      >{{ item.title }}</MenuItem
+    >
   </div>
 </template>
 
@@ -14,7 +16,7 @@ import { Options, Vue } from "vue-class-component";
 import MenuItem from "./MenuItem.vue";
 
 @Options({
-  props: {},
+  props: { listData: Array },
   components: {
     MenuItem,
   },
