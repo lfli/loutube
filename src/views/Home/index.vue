@@ -17,18 +17,6 @@ import { IState } from "./typing";
   components: {
     VideoShowTempOne,
   },
-  methods: {
-    /**
-     * 获取 mv 数据
-     */
-    async getMvList() {
-      const { data } = await getMvListRequest(this.state.queryParams.limit);
-      this.state.mvList = data;
-    },
-  },
-  created() {
-    this.getMvList();
-  },
 })
 export default class Home extends Vue {
   state = reactive<IState>({
@@ -38,6 +26,16 @@ export default class Home extends Vue {
     },
     mvList: [],
   });
+  created() {
+    this.getMvList();
+  }
+  /**
+   * 获取 mv 数据
+   */
+  async getMvList() {
+    const { data } = await getMvListRequest(this.state.queryParams.limit);
+    this.state.mvList = data;
+  }
 }
 </script>
 

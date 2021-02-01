@@ -1,25 +1,32 @@
 <template>
   <div class="temp-box">
     <div class="temp-box-layer">
-      <img class="box-img" :src="mv.cover" alt="">
+      <img class="box-img" :src="mv.cover" alt="" />
       <div style="height: 12px"></div>
       <div class="box-content">
         <img
+          v-if="state.head.length > 0"
           width="36"
           class="head"
-          src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1481892154,4046723754&fm=26&gp=0.jpg"
+          :src="state.head"
+          alt=""
+        />
+        <img
+          v-else
+          width="36"
+          class="head"
+          src="../assets/defaultHead.jpg"
           alt=""
         />
         <div class="content-right">
           <div class="right-top">
-            <span class="text"
-              >{{mv.name}}</span
-            >
+            <span class="text">{{ mv.name }}</span>
             <span class="iconfont icon-menu- item-setting"></span>
           </div>
           <div class="right-bottom">
-            <span>{{mv.artistName}}</span><br />
-            <span>{{mv.playCount}}次观看</span>
+            <span>{{ mv.artistName }}</span
+            ><br />
+            <span>{{ mv.playCount }}次观看</span>
           </div>
         </div>
       </div>
@@ -28,12 +35,32 @@
 </template>
 
 <script lang="ts">
+import { getArtistDetailRequest } from "@/apis/requests/mv";
+import { IMv } from "@/types";
+import { reactive } from "vue";
 import { Options, Vue } from "vue-class-component";
+import { IHeadState } from "./typing";
 
 @Options({
   props: ["mv"],
 })
-export default class VideoShowTempOne extends Vue {}
+export default class VideoShowTempOne extends Vue {
+  mv!: IMv;
+  state = reactive<IHeadState>({
+    curTitle: "艺人头像",
+    queryParams: {
+      id: this.mv.artistId,
+    },
+    head: "",
+  });
+  created() {
+    this.getHead();
+  }
+  async getHead() {
+    const { data } = await getArtistDetailRequest(this.state.queryParams.id);
+    this.state.head = data.artist.cover;
+  }
+}
 </script>
 
 <style scoped>
@@ -63,6 +90,8 @@ export default class VideoShowTempOne extends Vue {}
 .head {
   border-radius: 50%;
   margin-right: 12px;
+  width: 36px;
+  height: 36px;
 }
 .content-right {
   flex: 1;

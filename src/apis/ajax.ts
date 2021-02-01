@@ -4,7 +4,7 @@ import { BASE_URL, TIME_OUT, errorHandle } from './config';
 interface ResponseData {
     code: number;
     count?: number;
-    data: {}[]
+    data: any;
 }
 
 /**
@@ -33,7 +33,7 @@ axiosInstance.interceptors.response.use(
             errorHandle(error.response.status);
             return Promise.reject(error.response);
         }
-        console.log("网络请求失败, 请刷新重试");
+        console.log("网络请求失败");
         return Promise.reject(error);
     }
 );
