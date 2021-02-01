@@ -1,0 +1,1 @@
+export const GET_MV_ALL = "/mv/all"; //获取全部 mv

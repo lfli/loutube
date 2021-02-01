@@ -1,7 +1,7 @@
 <template>
   <div class="temp-box">
     <div class="temp-box-layer">
-      <div class="box-video"></div>
+      <img class="box-img" :src="mv.cover" alt="">
       <div style="height: 12px"></div>
       <div class="box-content">
         <img
@@ -13,13 +13,13 @@
         <div class="content-right">
           <div class="right-top">
             <span class="text"
-              >脱力タイムズ 浜辺美波のマイブーム 現実逃避!？</span
+              >{{mv.name}}</span
             >
             <span class="iconfont icon-menu- item-setting"></span>
           </div>
           <div class="right-bottom">
-            <span>老高与小茉</span><br />
-            <span>123万次观看·一年前</span>
+            <span>{{mv.artistName}}</span><br />
+            <span>{{mv.playCount}}次观看</span>
           </div>
         </div>
       </div>
@@ -31,7 +31,7 @@
 import { Options, Vue } from "vue-class-component";
 
 @Options({
-  props: {},
+  props: ["mv"],
 })
 export default class VideoShowTempOne extends Vue {}
 </script>
@@ -49,7 +49,7 @@ export default class VideoShowTempOne extends Vue {}
   display: flex;
   flex-direction: column;
 }
-.box-video {
+.box-img {
   flex: 1;
   width: 100%;
   background-color: black;
@@ -74,6 +74,7 @@ export default class VideoShowTempOne extends Vue {}
 }
 .right-top {
   display: flex;
+  align-items: center;
   margin-bottom: 10px;
 }
 .text {

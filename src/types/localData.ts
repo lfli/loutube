@@ -4,5 +4,5 @@ export interface ILinkItem {
 }
 
 export interface ISideNav extends ILinkItem {
-    readonly icon: string
+    readonly icon: string;
 }
