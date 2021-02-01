@@ -1,16 +1,28 @@
 <template>
-  <div @click="$attrs.onClick()" class="side-drawer-menu-item">
+  <div
+    :class="selectedClass"
+    @click="$attrs.onClick()"
+    class="side-drawer-menu-item"
+  >
     <span class="iconfont span-icon" :class="$attrs.class"></span>
     <span class="span-text"><slot></slot></span>
   </div>
 </template>
 
 <script lang="ts">
+import router from "@/router";
 import { Options, Vue } from "vue-class-component";
 
 @Options({
   inheritAttrs: false,
-  props: {},
+  props: { url: String },
+  computed: {
+    selectedClass() {
+      return {
+        selected: this.url === router.currentRoute.value.path,
+      };
+    },
+  },
   components: {},
 })
 export default class SideDrawerMenuItem extends Vue {}
@@ -36,5 +48,9 @@ export default class SideDrawerMenuItem extends Vue {}
   font-size: 14px;
   font-family: Roboto, Arial, sans-serif;
   color: #030303;
+}
+.selected {
+  background-color: #e5e5e5;
+  color: red;
 }
 </style>

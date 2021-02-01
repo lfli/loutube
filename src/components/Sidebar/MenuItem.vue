@@ -1,16 +1,24 @@
 <template>
-  <div @click="$attrs.onClick()">
+  <div :class="selectedClass" @click="$attrs.onClick()">
     <span class="iconfont span-icon" :class="$attrs.class"></span>
-    <span class="span-text"><slot></slot></span>
+    <span :class="selectedClass" class="span-text"><slot></slot></span>
   </div>
 </template>
 
 <script lang="ts">
+import router from "@/router";
 import { Options, Vue } from "vue-class-component";
 
 @Options({
   inheritAttrs: false,
-  props: {},
+  props: { url: String },
+  computed: {
+    selectedClass() {
+      return {
+        selected: this.url === router.currentRoute.value.path,
+      };
+    },
+  },
 })
 export default class MenuItem extends Vue {}
 </script>
@@ -35,5 +43,8 @@ div:hover {
   font-size: 12px;
   font-family: Roboto, Arial, sans-serif;
   color: #030303;
+}
+.selected {
+  color: red;
 }
 </style>

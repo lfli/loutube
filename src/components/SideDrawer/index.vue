@@ -16,6 +16,7 @@
         <SideDrawerMenuItem
           v-for="item of items"
           :key="item.link"
+          :url="item.link"
           @click="to(item.link)"
           :class="item.icon"
           >{{ item.title }}</SideDrawerMenuItem

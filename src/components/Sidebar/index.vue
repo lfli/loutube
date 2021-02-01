@@ -3,6 +3,7 @@
     <MenuItem
       v-for="item of listData"
       :key="item.link"
+      :url="item.link"
       @click="to(item.link)"
       :class="item.icon"
       >{{ item.title }}</MenuItem
