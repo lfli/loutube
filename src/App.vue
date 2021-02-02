@@ -5,9 +5,17 @@
       <Sidebar :listData="sideNavList" class="sidebar" />
       <router-view v-slot="{ Component }">
         <keep-alive>
-          <component :is="Component" v-if="$route.meta.keepAlive" />
+          <component
+            class="router-paper"
+            :is="Component"
+            v-if="$route.meta.keepAlive"
+          />
         </keep-alive>
-        <component :is="Component" v-if="!$route.meta.keepAlive" />
+        <component
+          class="router-paper"
+          :is="Component"
+          v-if="!$route.meta.keepAlive"
+        />
       </router-view>
     </div>
   </div>
@@ -74,7 +82,7 @@ export default class App extends Vue {
 }
 
 /* router-view */
-.content > div:last-child {
+.router-paper {
   position: absolute;
   left: var(--sidebar);
   width: calc(100vw - var(--sidebar));
@@ -85,13 +93,13 @@ export default class App extends Vue {
 }
 
 /* 滑动条样式 ↓ */
-.content > div:last-child::-webkit-scrollbar {
+.router-paper::-webkit-scrollbar {
   width: var(--scrollbarWidth);
 }
-.content > div:last-child::-webkit-scrollbar-track-piece {
+.router-paper::-webkit-scrollbar-track-piece {
   background-color: #f1f1f1;
 }
-.content > div:last-child::-webkit-scrollbar-thumb {
+.router-paper::-webkit-scrollbar-thumb {
   background-color: #c1c1c1;
 }
 /* 滑动条样式 ↑ */
@@ -101,7 +109,7 @@ export default class App extends Vue {
     width: 0;
   }
   /* router-view */
-  .content > div:last-child {
+  .router-paper {
     width: 100vw;
     left: 0;
   }
