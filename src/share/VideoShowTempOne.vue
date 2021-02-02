@@ -58,7 +58,9 @@ export default class VideoShowTempOne extends Vue {
   }
   async getHead() {
     const { data } = await getArtistDetailRequest(this.state.queryParams.id);
-    this.state.head = data.artist.cover;
+    if (data.artist.cover) {
+      this.state.head = data.artist.cover;
+    }
   }
 }
 </script>
