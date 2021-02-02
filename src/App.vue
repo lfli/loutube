@@ -3,7 +3,12 @@
     <Header class="header" @toggle-side-drawer="show = !show" />
     <div class="content">
       <Sidebar :listData="sideNavList" class="sidebar" />
-      <router-view />
+      <router-view v-slot="{ Component }">
+        <keep-alive>
+          <component :is="Component" v-if="$route.meta.keepAlive" />
+        </keep-alive>
+        <component :is="Component" v-if="!$route.meta.keepAlive" />
+      </router-view>
     </div>
   </div>
   <transition name="sideDrawer">

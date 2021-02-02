@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="home">
     <div class="videos-box">
       <VideoShowTempOne v-for="mv in state.mvList" :mv="mv" :key="mv.id" />
     </div>
@@ -35,6 +35,22 @@ export default class Home extends Vue {
   async getMvList() {
     const { data } = await getMvListRequest(this.state.queryParams.limit);
     this.state.mvList = data;
+  }
+
+  scrollTop: number | undefined;
+  handleScroll() {
+    this.scrollTop = document.getElementById("home")?.scrollTop;
+  }
+  mounted() {
+    window.addEventListener("scroll", this.handleScroll, true);
+  }
+  activated() {
+    if (this.scrollTop) {
+      const element = document.getElementById("home");
+      if (element) {
+        element.scrollTop = this.scrollTop;
+      }
+    }
   }
 }
 </script>
