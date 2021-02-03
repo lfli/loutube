@@ -7,17 +7,15 @@
     </div>
     <div class="box-content">
       <div class="right-top">
-        <span class="content-title"
-          >{{mv.name}}</span
-        >
+        <span class="content-title">{{ mv.name }}</span>
         <span class="iconfont icon-menu- item-setting"></span>
       </div>
       <div class="right-bottom">
         <div>
-          <span>{{mv.artistName}} · {{mv.playCount}}次观看</span>
+          <span>{{ mv.artistName }} · {{ mv.playCount }}次观看</span>
         </div>
         <div class="content-detail">
-          <span>冬の縁起物「自然薯」で身も心も健康に(^^) ということで本日は自然薯とろろご飯御膳でございます。 今回Amazonにて購入いたしましたが 2/2現在で...</span>
+          <span>{{ state.desc }}</span>
         </div>
       </div>
     </div>
@@ -25,14 +23,31 @@
 </template>
 
 <script lang="ts">
+import { getMvDetailRequest } from "@/apis/requests/mv";
 import { IMv } from "@/types";
+import { reactive } from "vue";
 import { Options, Vue } from "vue-class-component";
+import { IMvDescState } from "./typing";
 
 @Options({
-    props: ["mv"],
+  props: ["mv"],
 })
 export default class VideoShowTempTwo extends Vue {
-    mv!: IMv;
+  mv!: IMv;
+  state = reactive<IMvDescState>({
+    curTitle: "mv 描述",
+    queryParams: {
+      mvid: this.mv.id,
+    },
+    desc: "",
+  });
+  created() {
+    this.getMvDesc();
+  }
+  async getMvDesc() {
+    const { data } = await getMvDetailRequest(this.state.queryParams.mvid);
+    this.state.desc = data.desc;
+  }
 }
 </script>
 
