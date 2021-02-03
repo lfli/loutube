@@ -3,6 +3,9 @@
     <div class="videos-box">
       <VideoShowTempOne v-for="mv in state.mvList" :mv="mv" :key="mv.id" />
     </div>
+    <div v-show="isAllowLoadMore === false" class="loading-box">
+      <RotateLoading class="home-loading" />
+    </div>
   </div>
 </template>
 
@@ -12,10 +15,12 @@ import VideoShowTempOne from "@/share/VideoShowTempOne.vue";
 import { reactive } from "vue";
 import { getMvListRequest } from "@/apis/requests/mv";
 import { IState } from "./typing";
+import RotateLoading from "@/share/RotateLoading.vue";
 
 @Options({
   components: {
     VideoShowTempOne,
+    RotateLoading,
   },
 })
 export default class Home extends Vue {
@@ -104,5 +109,11 @@ export default class Home extends Vue {
   .videos-box {
     grid-template-columns: repeat(6, minmax(320px, 1fr));
   }
+}
+.loading-box {
+  text-align: center;
+}
+.home-loading {
+  margin: 0 auto;
 }
 </style>
