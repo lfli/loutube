@@ -19,10 +19,11 @@ import { IState } from "./typing";
   },
 })
 export default class Home extends Vue {
+  limit = 24;
   state = reactive<IState>({
     curTitle: "mv列表",
     queryParams: {
-      limit: 30,
+      limit: this.limit,
     },
     mvList: [],
   });
@@ -37,9 +38,36 @@ export default class Home extends Vue {
     this.state.mvList = data;
   }
 
+  isAllowLoadMore = true;
+  loadMoreCount = 0;
+  /**
+   * 加载更多 mv
+   */
+  async loadMoreMv() {
+    this.isAllowLoadMore = false;
+    const { data } = await getMvListRequest(
+      this.state.queryParams.limit,
+      this.state.queryParams.limit * ++this.loadMoreCount
+    );
+    this.state.mvList.push(...data);
+    this.isAllowLoadMore = true;
+  }
+
   scrollTop: number | undefined;
   handleScroll() {
-    this.scrollTop = document.getElementById("home")?.scrollTop;
+    const elementHome = document.getElementById("home");
+    if (elementHome) {
+      this.scrollTop = elementHome.scrollTop;
+      if (
+        window.innerHeight + this.scrollTop >=
+        elementHome.scrollHeight - 10
+      ) {
+        // 下滑加载更多 mv
+        if (this.isAllowLoadMore) {
+          this.loadMoreMv();
+        }
+      }
+    }
   }
   mounted() {
     window.addEventListener("scroll", this.handleScroll, true);
