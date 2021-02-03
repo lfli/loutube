@@ -7,8 +7,11 @@
           <div style="width: 80px"></div>
         </template>
       </div>
-      <div>
-        <VideoShowTempTwo v-for="mv of state.mvList" :mv="mv" :key="mv.id" />
+      <div class="videos-box">
+        <template v-for="mv of state.mvList" :key="mv.id">
+          <div style="height: 16px"></div>
+          <VideoShowTempTwo :mv="mv" />
+        </template>
       </div>
     </div>
   </div>
@@ -66,5 +69,8 @@ export default class PopularNow extends Vue {
   display: flex;
   padding: 16px 0;
   border-bottom: 1px solid #d3d3d3;
+}
+.videos-box {
+  padding-top: 10px;
 }
 </style>

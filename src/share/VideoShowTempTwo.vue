@@ -73,6 +73,7 @@ export default class VideoShowTempTwo extends Vue {
 .box-content {
   flex: 1;
   padding-left: 16px;
+  max-width: 600px;
 }
 .right-top {
   display: flex;

@@ -19,6 +19,10 @@ export default class TopMenuItem extends Vue {}
 </script>
 
 <style scoped>
+.top-menu-item {
+  cursor: pointer;
+  user-select: none;
+}
 .menu-item-icon {
   width: 80px;
   height: 80px;
