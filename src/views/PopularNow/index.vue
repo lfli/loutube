@@ -7,6 +7,9 @@
           <div style="width: 80px"></div>
         </template>
       </div>
+      <div>
+        <VideoShowTempTwo v-for="mv of state.mvList" :mv="mv" :key="mv.id" />
+      </div>
     </div>
   </div>
 </template>
@@ -15,14 +18,42 @@
 import { popularNowTopMenuList } from "@/apis/data";
 import { Options, Vue } from "vue-class-component";
 import TopMenuItem from "./TopMenuItem.vue";
+import VideoShowTempTwo from "@/share/VideoShowTempTwo.vue";
+import { reactive } from "vue";
+import { IPopularNowState } from "./typing";
+import { getPopularNowListRequest } from "@/apis/requests/mv";
 
 @Options({
   components: {
     TopMenuItem,
+    VideoShowTempTwo,
   },
 })
 export default class PopularNow extends Vue {
   popularNowTopMenuList = popularNowTopMenuList;
+
+  limit = 24;
+  state = reactive<IPopularNowState>({
+    curTitle: "时下流行列表",
+    queryParams: {
+      limit: this.limit,
+    },
+    mvList: [],
+  });
+
+  created() {
+    this.getPopularNowList();
+  }
+
+  /**
+   * 获取 PopularNow 数据
+   */
+  async getPopularNowList() {
+    const { data } = await getPopularNowListRequest(
+      this.state.queryParams.limit
+    );
+    this.state.mvList = data;
+  }
 }
 </script>
 
