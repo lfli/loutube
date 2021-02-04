@@ -53,6 +53,8 @@ import { IPopularNowTopMenu } from "@/types/LocalData";
       } else {
         this.getPopularNowList(index);
       }
+    } else { // 为 all 时
+      this.getPopularNowList();
     }
     next();
   },
