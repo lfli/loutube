@@ -17,6 +17,9 @@
         </template>
       </div>
     </div>
+    <div v-show="isAllowLoadMore === false" class="loading-box">
+      <RotateLoading class="popular-now-loading" />
+    </div>
   </div>
 </template>
 
@@ -30,11 +33,13 @@ import { IPopularNowState } from "./typing";
 import { getPopularNowListRequest } from "@/apis/requests/mv";
 import router from "@/router";
 import { IPopularNowTopMenu } from "@/types/LocalData";
+import RotateLoading from "@/share/RotateLoading.vue";
 
 @Options({
   components: {
     TopMenuItem,
     VideoShowTempTwo,
+    RotateLoading,
   },
   props: ["link"],
   beforeRouteUpdate(to, from, next) {
@@ -50,6 +55,7 @@ import { IPopularNowTopMenu } from "@/types/LocalData";
       }
     } else {
       // 为 all 时
+      this.areas = ["全部"];
       this.getPopularNowList();
     }
     next();
@@ -60,6 +66,7 @@ export default class PopularNow extends Vue {
   title!: string;
   areas = ["全部"];
   popularNowTopMenuList = popularNowTopMenuList;
+  bindReachTheBottom = true; // 控制 reachTheBottom 指令
 
   limit = 12;
   state = reactive<IPopularNowState>({
@@ -74,6 +81,10 @@ export default class PopularNow extends Vue {
     this.getPopularNowList();
   }
 
+  beforeUnmount() {
+    this.bindReachTheBottom = false;
+  }
+
   /**
    * 获取 PopularNow 数据
    */
@@ -86,7 +97,7 @@ export default class PopularNow extends Vue {
   }
 
   reachTheBottom() {
-    if (this.isAllowLoadMore) {
+    if (this.bindReachTheBottom && this.isAllowLoadMore) {
       this.loadMoreMv();
     }
   }
@@ -96,12 +107,16 @@ export default class PopularNow extends Vue {
   async loadMoreMv() {
     this.isAllowLoadMore = false;
     for (const area of this.areas) {
-      const { data } = await getPopularNowListRequest(
-        this.state.queryParams.limit,
-        area,
-        this.state.queryParams.limit * ++this.loadMoreCount
-      );
-      this.state.mvList.push(...data);
+      try {
+        const { data } = await getPopularNowListRequest(
+          this.state.queryParams.limit,
+          area,
+          this.state.queryParams.limit * ++this.loadMoreCount
+        );
+        this.state.mvList.push(...data);
+      } catch (error) {
+        this.isAllowLoadMore = true;
+      }
     }
     this.isAllowLoadMore = true;
   }
@@ -130,5 +145,11 @@ export default class PopularNow extends Vue {
   font-size: 16px;
   color: #030303;
   margin-top: 24px;
+}
+.loading-box {
+  text-align: center;
+}
+.popular-now-loading {
+  margin: 0 auto;
 }
 </style>
