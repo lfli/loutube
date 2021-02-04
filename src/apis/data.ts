@@ -21,8 +21,8 @@ export const sideDrawerList: Array<Array<ISideNav>> = [
 ]
 
 export const popularNowTopMenuList: Array<IPopularNowTopMenu> = [
-    { title: "中国", link: "China", icon: "#icon-guoqi", index: "内地,港台" },
-    { title: "日本", link: "Japan", icon: "#icon-ribenguoqi", index: "日本" },
-    { title: "韩国", link: "Korea", icon: "#icon-zu", index: "韩国" },
-    { title: "欧美", link: "Occident", icon: "#icon-meiguo", index: "欧美" },
+    { title: "中国", link: "China", icon: "#icon-guoqi", areas: ["内地", "港台"] },
+    { title: "日本", link: "Japan", icon: "#icon-ribenguoqi", areas: ["日本"] },
+    { title: "韩国", link: "Korea", icon: "#icon-zu", areas: ["韩国"] },
+    { title: "欧美", link: "Occident", icon: "#icon-meiguo", areas: ["欧美"] },
 ]

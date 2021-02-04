@@ -9,5 +9,5 @@ export interface ISideNav extends ILinkItem {
 
 export interface IPopularNowTopMenu extends ILinkItem {
     readonly icon: string;
-    readonly index: string;
+    readonly areas: string[];
 }

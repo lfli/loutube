@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-reachTheBottom="reachTheBottom">
     <div class="popular-now">
       <div v-if="link === 'all'" class="top-menu">
         <template v-for="item of popularNowTopMenuList" :key="item.link">
@@ -44,16 +44,12 @@ import { IPopularNowTopMenu } from "@/types/LocalData";
     );
     if (currentSeries.length > 0) {
       this.title = currentSeries[0].title;
-      const index: string = currentSeries[0].index;
-      if (index.includes(",")) {
-        const indexs = index.split(",");
-        for (const i of indexs) {
-          this.getPopularNowList(i);
-        }
-      } else {
-        this.getPopularNowList(index);
+      this.areas = currentSeries[0].areas;
+      for (const area of this.areas) {
+        this.getPopularNowList(area);
       }
-    } else { // 为 all 时
+    } else {
+      // 为 all 时
       this.getPopularNowList();
     }
     next();
@@ -62,9 +58,10 @@ import { IPopularNowTopMenu } from "@/types/LocalData";
 export default class PopularNow extends Vue {
   link!: string;
   title!: string;
+  areas = ["全部"];
   popularNowTopMenuList = popularNowTopMenuList;
 
-  limit = 24;
+  limit = 12;
   state = reactive<IPopularNowState>({
     curTitle: "时下流行列表",
     queryParams: {
@@ -86,6 +83,27 @@ export default class PopularNow extends Vue {
       area
     );
     this.state.mvList.push(...data);
+  }
+
+  reachTheBottom() {
+    if (this.isAllowLoadMore) {
+      this.loadMoreMv();
+    }
+  }
+
+  isAllowLoadMore = true;
+  loadMoreCount = 0;
+  async loadMoreMv() {
+    this.isAllowLoadMore = false;
+    for (const area of this.areas) {
+      const { data } = await getPopularNowListRequest(
+        this.state.queryParams.limit,
+        area,
+        this.state.queryParams.limit * ++this.loadMoreCount
+      );
+      this.state.mvList.push(...data);
+    }
+    this.isAllowLoadMore = true;
   }
 
   to(link: string) {
