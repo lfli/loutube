@@ -50,11 +50,15 @@ export default class Home extends Vue {
    */
   async loadMoreMv() {
     this.isAllowLoadMore = false;
-    const { data } = await getMvListRequest(
-      this.state.queryParams.limit,
-      this.state.queryParams.limit * ++this.loadMoreCount
-    );
-    this.state.mvList.push(...data);
+    try {
+      const { data } = await getMvListRequest(
+        this.state.queryParams.limit,
+        this.state.queryParams.limit * ++this.loadMoreCount
+      );
+      this.state.mvList.push(...data);
+    } catch (error) {
+      this.isAllowLoadMore = true;
+    }
     this.isAllowLoadMore = true;
   }
 
