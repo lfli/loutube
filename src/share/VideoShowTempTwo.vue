@@ -82,6 +82,7 @@ export default class VideoShowTempTwo extends Vue {
   color: #030303;
   font-size: 18px;
   flex: 1;
+  word-break: break-all; /* 文本内容换行 */
 }
 .item-setting {
   font-size: 24px;
@@ -93,5 +94,6 @@ export default class VideoShowTempTwo extends Vue {
 }
 .content-detail {
   margin: 8px 0;
+  word-break: break-all; /* 文本内容换行 */
 }
 </style>

@@ -111,6 +111,7 @@ export default class VideoShowTempOne extends Vue {
 .text {
   color: #030303;
   flex: 1;
+  word-break: break-all; /* 文本内容换行 */
 }
 .item-setting {
   font-size: 24px !important;
