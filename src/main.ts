@@ -11,8 +11,8 @@ createApp(App).directive(
         window.addEventListener(
             "scroll",
             function () {
-                if (window.innerHeight + el.scrollTop >= el.scrollHeight - 10) {
-                    binding.value();
+                if (binding.value.commandReachTheBottom.isCommand && window.innerHeight + el.scrollTop >= el.scrollHeight - 10) {
+                    binding.value.reachTheBottom();
                 }
             },
             true

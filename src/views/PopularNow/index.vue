@@ -1,5 +1,5 @@
 <template>
-  <div v-reachTheBottom="reachTheBottom">
+  <div v-reachTheBottom="{ reachTheBottom, commandReachTheBottom }">
     <div class="popular-now">
       <div v-if="link === 'all'" class="top-menu">
         <template v-for="item of popularNowTopMenuList" :key="item.link">
@@ -66,7 +66,10 @@ export default class PopularNow extends Vue {
   title!: string;
   areas = ["全部"];
   popularNowTopMenuList = popularNowTopMenuList;
-  bindReachTheBottom = true; // 控制 reachTheBottom 指令
+  // 控制 reachTheBottom 指令
+  commandReachTheBottom = {
+    isCommand: true,
+  };
 
   limit = 12;
   state = reactive<IPopularNowState>({
@@ -82,7 +85,7 @@ export default class PopularNow extends Vue {
   }
 
   beforeUnmount() {
-    this.bindReachTheBottom = false;
+    this.commandReachTheBottom.isCommand = false;
   }
 
   /**
@@ -97,7 +100,7 @@ export default class PopularNow extends Vue {
   }
 
   reachTheBottom() {
-    if (this.bindReachTheBottom && this.isAllowLoadMore) {
+    if (this.isAllowLoadMore) {
       this.loadMoreMv();
     }
   }
