@@ -20,7 +20,7 @@
         />
         <div class="content-right">
           <div class="right-top">
-            <span class="text">{{ mv.name }}</span>
+            <span class="text hideText">{{ mv.name }}</span>
             <span class="iconfont icon-menu- item-setting"></span>
           </div>
           <div class="right-bottom">
@@ -111,7 +111,7 @@ export default class VideoShowTempOne extends Vue {
 .text {
   color: #030303;
   flex: 1;
-  word-break: break-all; /* 文本内容换行 */
+  -webkit-line-clamp: 2;
 }
 .item-setting {
   font-size: 24px !important;

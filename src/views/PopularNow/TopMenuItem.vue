@@ -1,5 +1,5 @@
 <template>
-  <div class="top-menu-item">
+  <div class="top-menu-item" @click="$attrs.onClick()">
     <svg class="icon menu-item-icon" aria-hidden="true">
       <use :xlink:href="$attrs.href"></use>
     </svg>

@@ -171,6 +171,15 @@ span {
   fill: currentColor;
   overflow: hidden;
 }
+/* 隐藏多余文字 */
+.hideText {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* 限制在一个块元素显示的文本的行数 */
+  -webkit-box-orient: vertical; /* 垂直排列 */
+  word-break: break-all; /* 内容自动换行 */
+}
 /* css 初始化 */
 body,
 div,

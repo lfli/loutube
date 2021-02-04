@@ -7,14 +7,14 @@
     </div>
     <div class="box-content">
       <div class="right-top">
-        <span class="content-title">{{ mv.name }}</span>
+        <span class="content-title hideText">{{ mv.name }}</span>
         <span class="iconfont icon-menu- item-setting"></span>
       </div>
       <div class="right-bottom">
         <div>
           <span>{{ mv.artistName }} · {{ mv.playCount }}次观看</span>
         </div>
-        <div class="content-detail">
+        <div class="content-detail hideText">
           <span>{{ state.desc }}</span>
         </div>
       </div>
@@ -82,7 +82,7 @@ export default class VideoShowTempTwo extends Vue {
   color: #030303;
   font-size: 18px;
   flex: 1;
-  word-break: break-all; /* 文本内容换行 */
+  -webkit-line-clamp: 2;
 }
 .item-setting {
   font-size: 24px;
@@ -94,6 +94,6 @@ export default class VideoShowTempTwo extends Vue {
 }
 .content-detail {
   margin: 8px 0;
-  word-break: break-all; /* 文本内容换行 */
+  -webkit-line-clamp: 4;
 }
 </style>

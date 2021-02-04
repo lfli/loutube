@@ -11,9 +11,10 @@ const routes: Array<RouteRecordRaw> = [
     }
   },
   {
-    path: '/popular-now',
+    path: '/popular-now/:link',
     name: 'PopularNow',
-    component: () => import(/* webpackChunkName: "about" */ '../views/PopularNow/index.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/PopularNow/index.vue'),
+    props: true
   },
   {
     path: '/subscription',
