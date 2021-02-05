@@ -17,6 +17,7 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import(/* webpackChunkName: "about" */ '../views/PopularNow/index.vue'),
     props: true,
     meta: {
+      keepAlive: true,
       depth: 1
     }
   },

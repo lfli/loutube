@@ -84,6 +84,14 @@ export default class PopularNow extends Vue {
     this.getPopularNowList();
   }
 
+  activated() {
+    this.commandReachTheBottom.isCommand = true;
+  }
+  
+  deactivated() {
+    this.commandReachTheBottom.isCommand = false;
+  }
+
   beforeUnmount() {
     this.commandReachTheBottom.isCommand = false;
   }

@@ -9,6 +9,7 @@
             :class="[{ 'router-paper-full': !isShowSidebar }, 'router-paper']"
             :is="Component"
             v-if="$route.meta.keepAlive"
+            :key="$route.name"
           />
         </keep-alive>
         <component
