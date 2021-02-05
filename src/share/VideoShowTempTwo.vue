@@ -54,6 +54,8 @@ export default class VideoShowTempTwo extends Vue {
 <style scoped>
 .temp-box {
   display: flex;
+  cursor: pointer;
+  user-select: none;
 }
 .box-img {
   width: 22%;

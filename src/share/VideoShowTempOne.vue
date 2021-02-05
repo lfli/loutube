@@ -77,6 +77,8 @@ export default class VideoShowTempOne extends Vue {
   height: 100%;
   display: flex;
   flex-direction: column;
+  cursor: pointer;
+  user-select: none;
 }
 .box-img {
   flex: 1;
