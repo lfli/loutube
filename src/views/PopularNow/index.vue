@@ -13,7 +13,7 @@
       <div class="videos-box">
         <template v-for="mv of state.mvList" :key="mv.id">
           <div style="height: 16px"></div>
-          <VideoShowTempTwo :mv="mv" />
+          <VideoShowTempTwo :mv="mv" @click="goWatch(mv.id)" />
         </template>
       </div>
     </div>
@@ -126,6 +126,10 @@ export default class PopularNow extends Vue {
 
   to(link: string) {
     router.push({ path: `/popular-now/${link}` });
+  }
+
+  goWatch(mvid: number) {
+    router.push({ path: `/watch/${mvid}` });
   }
 }
 </script>

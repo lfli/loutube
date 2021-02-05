@@ -5,6 +5,7 @@ interface ResponseData {
     code: number;
     count?: number;
     data: any;
+    [key: string]: any;
 }
 
 /**

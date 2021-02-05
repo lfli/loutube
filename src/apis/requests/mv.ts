@@ -1,5 +1,5 @@
 import { ajaxGet } from "../ajax"
-import { GET_ARTIST_DETAIL, GET_MV_ALL, GET_MV_DETAIL } from "../url";
+import { GET_ARTIST_DETAIL, GET_MV_ALL, GET_MV_DETAIL, GET_SIMI_MV } from "../url";
 
 const getMvListRequest = (limit: number, offset = 0) => {
     return ajaxGet(GET_MV_ALL, { limit, offset });
@@ -17,9 +17,14 @@ const getMvDetailRequest = (mvid: number) => {
     return ajaxGet(GET_MV_DETAIL, { mvid });
 }
 
+const getSimiMvListRequest = (mvid: number) => {
+    return ajaxGet(GET_SIMI_MV, { mvid });
+}
+
 export {
     getMvListRequest,
     getArtistDetailRequest,
     getPopularNowListRequest,
-    getMvDetailRequest
+    getMvDetailRequest,
+    getSimiMvListRequest
 }

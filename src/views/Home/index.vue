@@ -1,7 +1,12 @@
 <template>
   <div id="home">
     <div class="videos-box">
-      <VideoShowTempOne v-for="mv in state.mvList" :mv="mv" :key="mv.id" />
+      <VideoShowTempOne
+        @click="goWatch(mv.id)"
+        v-for="mv in state.mvList"
+        :mv="mv"
+        :key="mv.id"
+      />
     </div>
     <div v-show="isAllowLoadMore === false" class="loading-box">
       <RotateLoading class="home-loading" />
@@ -16,6 +21,7 @@ import { reactive } from "vue";
 import { getMvListRequest } from "@/apis/requests/mv";
 import { IState } from "./typing";
 import RotateLoading from "@/share/RotateLoading.vue";
+import router from "@/router";
 
 @Options({
   components: {
@@ -40,7 +46,7 @@ export default class Home extends Vue {
    */
   async getMvList() {
     const { data } = await getMvListRequest(this.state.queryParams.limit);
-    this.state.mvList = data;
+    this.state.mvList.push(...data);
   }
 
   isAllowLoadMore = true;
@@ -88,6 +94,10 @@ export default class Home extends Vue {
         element.scrollTop = this.scrollTop;
       }
     }
+  }
+
+  goWatch(mvid: number) {
+    router.push({ path: `/watch/${mvid}` });
   }
 }
 </script>
