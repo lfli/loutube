@@ -2,17 +2,17 @@
   <div class="app-box">
     <Header class="header" @toggle-side-drawer="show = !show" />
     <div class="content">
-      <Sidebar :listData="sideNavList" class="sidebar" />
+      <Sidebar v-show="isShowSidebar" :listData="sideNavList" class="sidebar" />
       <router-view v-slot="{ Component }">
         <keep-alive>
           <component
-            class="router-paper"
+            :class="[{ 'router-paper-full': !isShowSidebar }, 'router-paper']"
             :is="Component"
             v-if="$route.meta.keepAlive"
           />
         </keep-alive>
         <component
-          class="router-paper"
+          :class="[{ 'router-paper-full': !isShowSidebar }, 'router-paper']"
           :is="Component"
           v-if="!$route.meta.keepAlive"
         />
@@ -33,12 +33,18 @@ import Header from "@/components/Header/index.vue"; // @ is an alias to /src
 import Sidebar from "@/components/Sidebar/index.vue";
 import SideDrawer from "@/components/SideDrawer/index.vue";
 import { sideDrawerList, sideNavList } from "@/apis/data.ts";
+import router from "./router";
 
 @Options({
   components: {
     Header,
     Sidebar,
     SideDrawer,
+  },
+  computed: {
+    isShowSidebar() {
+      return router.currentRoute.value.meta.depth === 1;
+    },
   },
 })
 export default class App extends Vue {
@@ -90,6 +96,10 @@ export default class App extends Vue {
   overflow-y: scroll;
   padding-top: var(--headerHeight);
   background-color: var(--themeBgColor);
+}
+.router-paper-full {
+  width: 100vw;
+  left: 0;
 }
 
 /* 滑动条样式 ↓ */
