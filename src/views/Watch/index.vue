@@ -4,7 +4,16 @@
       <div class="watch-box">
         <div class="box-video">
           <div class="video-layer">
-            <div class="my-video"></div>
+            <video
+              v-if="mvUrlState.mvUrl.length > 0"
+              class="my-video"
+              controls
+              autoplay
+            >
+              <source :src="mvUrlState.mvUrl" type="video/mp4" />
+              您的浏览器不支持 video 标签。
+            </video>
+            <div v-else class="my-video"></div>
           </div>
         </div>
         <div class="video-infor">
@@ -31,7 +40,7 @@
         </div>
       </div>
       <div class="mv-list">
-        <template v-for="mv of state.mvList" :key="mv.id">
+        <template v-for="mv of simiMvState.mvList" :key="mv.id">
           <VideoShowTempTwo :mv="mv" @click="goWatch(mv.id)"></VideoShowTempTwo>
           <div style="height: 8px"></div>
         </template>
@@ -46,8 +55,8 @@ import { IMv } from "@/types";
 import { Options, Vue } from "vue-class-component";
 import VideoShowTempTwo from "@/share/VideoShowTempTwo.vue";
 import { reactive } from "vue";
-import { ISimiMvState } from "./typing";
-import { getSimiMvListRequest } from "@/apis/requests/mv";
+import { IMvUrlState, ISimiMvState } from "./typing";
+import { getMvUrlRequest, getSimiMvListRequest } from "@/apis/requests/mv";
 import router from "@/router";
 
 @Options({
@@ -58,7 +67,7 @@ import router from "@/router";
 })
 export default class Watch extends Vue {
   mvid!: number;
-  state = reactive<ISimiMvState>({
+  simiMvState = reactive<ISimiMvState>({
     curTitle: "相似 mv 列表",
     queryParams: {
       mvid: this.mvid,
@@ -66,13 +75,29 @@ export default class Watch extends Vue {
     mvList: [],
   });
 
+  mvUrlState = reactive<IMvUrlState>({
+    curTitle: "mv 地址",
+    queryParams: {
+      mvid: this.mvid,
+    },
+    mvUrl: "",
+  });
+
   created() {
+    this.getMvUrl();
     this.getSimiMvList();
   }
 
   async getSimiMvList() {
-    const { mvs } = await getSimiMvListRequest(this.state.queryParams.mvid);
-    this.state.mvList.push(...mvs);
+    const { mvs } = await getSimiMvListRequest(
+      this.simiMvState.queryParams.mvid
+    );
+    this.simiMvState.mvList.push(...mvs);
+  }
+
+  async getMvUrl() {
+    const { data } = await getMvUrlRequest(this.mvUrlState.queryParams.mvid);
+    this.mvUrlState.mvUrl = data.url;
   }
 
   goWatch(mvid: number) {
@@ -95,7 +120,7 @@ export default class Watch extends Vue {
 .video-layer {
   position: relative;
   height: 0;
-  padding-bottom: 56%;
+  padding-bottom: 56.25%;
 }
 .my-video {
   position: absolute;

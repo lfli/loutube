@@ -9,3 +9,13 @@ export interface ISimiMvState {
     queryParams: ISimiMvQueryParams;
     mvList: IMv[];
 }
+
+export interface IMvUrlQueryParams {
+    mvid: number;
+}
+
+export interface IMvUrlState {
+    curTitle: string;
+    queryParams: IMvUrlQueryParams;
+    mvUrl: string;
+}
