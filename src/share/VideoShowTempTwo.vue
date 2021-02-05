@@ -64,7 +64,7 @@ export default class VideoShowTempTwo extends Vue {
 .img-layer {
   position: relative;
   height: 0;
-  padding-bottom: 56%;
+  padding-bottom: 56.25%;
 }
 .my-img {
   position: absolute;

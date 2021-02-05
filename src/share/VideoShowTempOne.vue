@@ -68,7 +68,7 @@ export default class VideoShowTempOne extends Vue {
 <style scoped>
 .temp-box {
   height: 0;
-  padding-bottom: calc(55.8% + 94px); /** video 高宽比 0.558 */
+  padding-bottom: calc(56.25% + 94px); /** video 高宽比 0.5625 */
   position: relative;
 }
 .temp-box-layer {
