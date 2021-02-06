@@ -24,6 +24,7 @@ import RotateLoading from "@/share/RotateLoading.vue";
 import router from "@/router";
 
 @Options({
+  name: "Home",
   components: {
     VideoShowTempOne,
     RotateLoading,

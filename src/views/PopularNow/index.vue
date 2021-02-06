@@ -36,6 +36,7 @@ import { IPopularNowTopMenu } from "@/types/LocalData";
 import RotateLoading from "@/share/RotateLoading.vue";
 
 @Options({
+  name: "PopularNow",
   components: {
     TopMenuItem,
     VideoShowTempTwo,
@@ -87,7 +88,7 @@ export default class PopularNow extends Vue {
   activated() {
     this.commandReachTheBottom.isCommand = true;
   }
-  
+
   deactivated() {
     this.commandReachTheBottom.isCommand = false;
   }

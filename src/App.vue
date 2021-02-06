@@ -4,7 +4,7 @@
     <div class="content">
       <Sidebar v-show="isShowSidebar" :listData="sideNavList" class="sidebar" />
       <router-view v-slot="{ Component }">
-        <keep-alive>
+        <keep-alive :exclude="excludeNames">
           <component
             :class="[{ 'router-paper-full': !isShowSidebar }, 'router-paper']"
             :is="Component"
@@ -34,7 +34,7 @@ import Header from "@/components/Header/index.vue"; // @ is an alias to /src
 import Sidebar from "@/components/Sidebar/index.vue";
 import SideDrawer from "@/components/SideDrawer/index.vue";
 import { sideDrawerList, sideNavList } from "@/apis/data.ts";
-import router from "./router";
+import router, { keepAliveInclude } from "./router";
 
 @Options({
   components: {
@@ -47,11 +47,23 @@ import router from "./router";
       return router.currentRoute.value.meta.depth === 1;
     },
   },
+  mounted() {
+    router.beforeEach((to, from, next) => {
+      if (to.meta.depth === 1) {
+        const temp = keepAliveInclude.filter((item) => item !== to.name);
+        this.excludeNames.push(...temp);
+      } else {
+        this.excludeNames.splice(0, this.excludeNames.length);
+      }
+      next();
+    });
+  },
 })
 export default class App extends Vue {
   show = false;
   sideNavList = sideNavList;
   sideDrawerList = sideDrawerList;
+  excludeNames = [];
 }
 </script>
 
