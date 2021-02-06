@@ -98,6 +98,7 @@ export default class Home extends Vue {
         element.scrollTop = this.scrollTop;
       }
     }
+    window.addEventListener("scroll", this.handleScroll, true);
   }
   deactivated() {
     window.removeEventListener("scroll", this.handleScroll, true);
