@@ -61,13 +61,4 @@ const router = createRouter({
   routes
 })
 
-// 一级路由缓存策略
-export const keepAliveInclude = [
-  'Home',
-  'PopularNow',
-  'Subscription',
-  'MediaLibrary',
-  'History'
-]
-
 export default router
