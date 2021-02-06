@@ -70,6 +70,7 @@ export default class PopularNow extends Vue {
   // 控制 reachTheBottom 指令
   commandReachTheBottom = {
     isCommand: true,
+    scrollTop: 0,
   };
 
   limit = 12;

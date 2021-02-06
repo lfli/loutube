@@ -14,9 +14,13 @@ createApp(App).directive(
                 if (binding.value.commandReachTheBottom.isCommand && window.innerHeight + el.scrollTop >= el.scrollHeight - 10) {
                     binding.value.reachTheBottom();
                 }
+                binding.value.commandReachTheBottom.scrollTop = el.scrollTop;
             },
             true
         );
     },
+    updated(el, binding) {
+        el.scrollTop = binding.value.commandReachTheBottom.scrollTop;
+    }
 },
 ).use(store).use(router).mount('#app')
