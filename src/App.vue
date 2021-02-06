@@ -51,8 +51,7 @@ import router from "./router";
     router.beforeEach((to, from, next) => {
       if (to.meta.depth === 1) {
         this.includeNames.splice(0, this.includeNames.length);
-      } else {
-        this.includeNames.push(from.name);
+        this.includeNames.push(to.name);
       }
       next();
     });

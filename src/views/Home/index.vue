@@ -99,6 +99,9 @@ export default class Home extends Vue {
       }
     }
   }
+  deactivated() {
+    window.removeEventListener("scroll", this.handleScroll, true);
+  }
 
   goWatch(mvid: number) {
     router.push({ path: `/watch/${mvid}` });
