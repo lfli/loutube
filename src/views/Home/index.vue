@@ -88,6 +88,9 @@ export default class Home extends Vue {
   mounted() {
     window.addEventListener("scroll", this.handleScroll, true);
   }
+  unmounted() {
+    window.removeEventListener("scroll", this.handleScroll, true);
+  }
   activated() {
     if (this.scrollTop) {
       const element = document.getElementById("home");
