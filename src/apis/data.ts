@@ -1,4 +1,4 @@
-import { IPopularNowTopMenu, ISideNav } from "@/types/LocalData";
+import { IPopularNowTopMenu, ISideNav } from "@/typing/LocalData";
 
 export const sideNavList: Array<ISideNav> = [
     { title: "首页", link: "/", icon: "icon-shouye" },

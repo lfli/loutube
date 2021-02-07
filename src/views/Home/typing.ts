@@ -1,4 +1,4 @@
-import { IMv } from "@/types";
+import { IMv } from "@/typing";
 
 export interface IQueryParams {
     area?: string;

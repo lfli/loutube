@@ -51,7 +51,6 @@
 </template>
 
 <script lang="ts">
-import { IMv } from "@/types";
 import { Options, Vue } from "vue-class-component";
 import VideoShowTempTwo from "@/share/VideoShowTempTwo.vue";
 import { reactive } from "vue";

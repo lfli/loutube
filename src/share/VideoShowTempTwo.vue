@@ -24,7 +24,7 @@
 
 <script lang="ts">
 import { getMvDetailRequest } from "@/apis/requests/mv";
-import { IMv } from "@/types";
+import { IMv } from "@/typing";
 import { reactive } from "vue";
 import { Options, Vue } from "vue-class-component";
 import { IMvDescState } from "./typing";

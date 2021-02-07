@@ -1,4 +1,4 @@
-import { IMv } from "@/types";
+import { IMv } from "@/typing";
 
 export interface IPopularNowQueryParams {
     area?: string;

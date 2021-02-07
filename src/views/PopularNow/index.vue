@@ -32,7 +32,7 @@ import { reactive } from "vue";
 import { IPopularNowState } from "./typing";
 import { getPopularNowListRequest } from "@/apis/requests/mv";
 import router from "@/router";
-import { IPopularNowTopMenu } from "@/types/LocalData";
+import { IPopularNowTopMenu } from "@/typing/LocalData";
 import RotateLoading from "@/share/RotateLoading.vue";
 
 @Options({
