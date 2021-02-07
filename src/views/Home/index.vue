@@ -2,7 +2,7 @@
   <div id="home">
     <div class="videos-box">
       <VideoShowTempOne
-        @click="goWatch(mv.id)"
+        @click="goWatch(mv)"
         v-for="mv in state.mvList"
         :mv="mv"
         :key="mv.id"
@@ -22,6 +22,8 @@ import { getMvListRequest } from "@/apis/requests/mv";
 import { IState } from "./typing";
 import RotateLoading from "@/share/RotateLoading.vue";
 import router from "@/router";
+import store from "@/store";
+import { IMv } from "@/typing";
 
 @Options({
   name: "Home",
@@ -104,8 +106,9 @@ export default class Home extends Vue {
     window.removeEventListener("scroll", this.handleScroll, true);
   }
 
-  goWatch(mvid: number) {
-    router.push({ path: `/watch/${mvid}` });
+  goWatch(mv: IMv) {
+    store.dispatch("WatchMv/setWatchMv", mv);
+    router.push({ path: `/watch/${mv.id}` });
   }
 }
 </script>

@@ -18,12 +18,13 @@
         </div>
         <div class="video-infor">
           <div>
-            <span class="video-title"
-              >あいみょん – ハルノヒ【OFFICIAL MUSIC VIDEO】</span
-            >
+            <span class="video-title">{{ watchMvState.name }}</span>
           </div>
           <div>
-            <span class="play-times">134234323次观看 · 2019年4月3日</span>
+            <span class="play-times"
+              >{{ watchMvState.playCount }}次观看 ·
+              {{ watchMvState.publishTime }}</span
+            >
           </div>
         </div>
         <div class="artist-box">
@@ -57,12 +58,19 @@ import { reactive } from "vue";
 import { IMvUrlState, ISimiMvState } from "./typing";
 import { getMvUrlRequest, getSimiMvListRequest } from "@/apis/requests/mv";
 import router from "@/router";
+import { mapState } from "vuex";
+import store from "@/store";
 
 @Options({
   components: {
     VideoShowTempTwo,
   },
   props: ["mvid"],
+  computed: {
+    ...mapState({
+      watchMvState: (state: any) => state.WatchMv,
+    }),
+  },
 })
 export default class Watch extends Vue {
   mvid!: number;
@@ -85,6 +93,10 @@ export default class Watch extends Vue {
   created() {
     this.getMvUrl();
     this.getSimiMvList();
+  }
+
+  unmounted() {
+    store.dispatch("WatchMv/clearWatchMv");
   }
 
   async getSimiMvList() {
