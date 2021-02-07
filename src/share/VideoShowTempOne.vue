@@ -118,5 +118,9 @@ export default class VideoShowTempOne extends Vue {
 .item-setting {
   font-size: 24px !important;
   color: #909090;
+  opacity: 0;
+}
+.temp-box:hover .item-setting {
+  opacity: 1;
 }
 </style>

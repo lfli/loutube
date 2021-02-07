@@ -189,6 +189,19 @@ export default class Watch extends Vue {
   display: flex;
   flex-direction: column;
 }
+.mv-list >>> .box-img {
+  width: 168px;
+  min-width: 168px;
+}
+.mv-list >>> .content-title {
+  -webkit-line-clamp: 1;
+}
+.mv-list >>> .content-detail {
+  -webkit-line-clamp: 2;
+}
+.mv-list >>> .box-content {
+  max-width: none;
+}
 .comment-list {
   width: 100%;
   height: 100px;
