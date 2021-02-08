@@ -83,7 +83,6 @@ import router from "@/router";
 })
 export default class Watch extends Vue {
   mvid!: number;
-  artistDetailState: any;
   simiMvState = reactive<ISimiMvState>({
     curTitle: "相似 mv 列表",
     queryParams: {
@@ -106,6 +105,19 @@ export default class Watch extends Vue {
       mvid: this.mvid,
     },
     mv: null,
+  });
+
+  artistDetailState = reactive<IArtistDetailState>({
+    curTitle: "艺人详情",
+    queryParams: {
+      id: -1,
+    },
+    artistDetail: {
+      id: -1,
+      name: "",
+      cover: "",
+      briefDesc: "",
+    },
   });
 
   created() {
@@ -136,18 +148,8 @@ export default class Watch extends Vue {
   }
 
   async getArtistDetail() {
-    this.artistDetailState = reactive<IArtistDetailState>({
-      curTitle: "艺人详情",
-      queryParams: {
-        id: this.mvDetailState.mv?.artistId || -1,
-      },
-      artistDetail: {
-        id: -1,
-        name: "",
-        cover: "",
-        briefDesc: "",
-      },
-    });
+    this.artistDetailState.queryParams.id =
+      this.mvDetailState.mv?.artistId || -1;
     const { data } = await getArtistDetailRequest(
       this.artistDetailState.queryParams.id
     );
