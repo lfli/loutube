@@ -44,6 +44,14 @@
               <button class="sub-button">订阅</button>
             </div>
           </div>
+          <div class="artist-box-content">
+            <div>
+              <span>{{ mvDetailState.mv?.desc }}</span>
+            </div>
+            <div class="artist-brief-desc">
+              <span>{{ artistDetailState?.artistDetail.briefDesc }}</span>
+            </div>
+          </div>
         </div>
       </div>
       <div class="mv-list">
@@ -206,6 +214,19 @@ export default class Watch extends Vue {
 .artist-box-top {
   display: flex;
 }
+.artist-box-content {
+  font-size: 14px;
+  color: #030303;
+  white-space: pre-wrap;
+  line-height: 1.4rem;
+  margin: 20px 0 0 62px;
+  max-width: 615px;
+}
+.artist-brief-desc {
+  margin-top: 16px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
 .head {
   width: 48px;
   height: 48px;
@@ -255,10 +276,9 @@ export default class Watch extends Vue {
   height: 100px;
   background-color: blueviolet;
 }
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 830px) {
   .box-video {
     width: 100%;
-    max-width: calc(800px * 0.74);
     margin: 0 auto;
   }
   .mv-list {
@@ -266,9 +286,9 @@ export default class Watch extends Vue {
     padding: 0 24px;
   }
 }
-@media screen and (min-width: 800px) and (max-width: 1000px) {
+@media screen and (min-width: 831px) and (max-width: 1023px) {
   .box-video {
-    width: 74%;
+    width: 770px;
     margin: 0 auto;
   }
   .mv-list {
@@ -276,14 +296,14 @@ export default class Watch extends Vue {
     padding: 0 24px;
   }
 }
-@media screen and (min-width: 1000px) {
+@media screen and (min-width: 1024px) {
   .watch-box {
-    width: 50%;
-    min-width: 600px;
+    width: 63%;
+    min-width: 640px;
   }
   .mv-list {
-    width: 32%;
-    min-width: 307px;
+    flex: 1;
+    min-width: 300px;
     padding-right: 24px;
   }
 }
