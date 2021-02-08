@@ -35,7 +35,6 @@ import router from "@/router";
 import { IPopularNowTopMenu } from "@/typing/LocalData";
 import RotateLoading from "@/share/RotateLoading.vue";
 import { IMv } from "@/typing";
-import store from "@/store";
 
 @Options({
   name: "PopularNow",
@@ -141,7 +140,6 @@ export default class PopularNow extends Vue {
   }
 
   goWatch(mv: IMv) {
-    store.dispatch("WatchMv/setWatchMv", mv);
     router.push({ path: `/watch/${mv.id}` });
   }
 }

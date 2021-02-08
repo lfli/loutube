@@ -1,4 +1,4 @@
-import { IMv } from "@/typing";
+import { IArtistDetail, IMv } from "@/typing";
 
 export interface ISimiMvQueryParams {
     mvid: number;
@@ -18,4 +18,24 @@ export interface IMvUrlState {
     curTitle: string;
     queryParams: IMvUrlQueryParams;
     mvUrl: string;
+}
+
+export interface IMvDetailQueryParams {
+    mvid: number;
+}
+
+export interface IMvDetailState {
+    curTitle: string;
+    queryParams: IMvDetailQueryParams;
+    mv: IMv | null;
+}
+
+export interface IArtistDetailQueryParams {
+    id: number;
+}
+
+export interface IArtistDetailState {
+    curTitle: string;
+    queryParams: IArtistDetailQueryParams;
+    artistDetail: IArtistDetail;
 }

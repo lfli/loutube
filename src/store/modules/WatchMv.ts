@@ -8,6 +8,7 @@ interface WatchMvState {
     artistName: string;
     playCount: number;
     publishTime: string;
+    desc: string;
 }
 
 const state: WatchMvState = {
@@ -16,15 +17,20 @@ const state: WatchMvState = {
     artistId: -1,
     artistName: '',
     playCount: -1,
-    publishTime: ''
+    publishTime: '',
+    desc: ''
 }
 
-const getters = {}
+const getters = {
+    getArtistId(state: WatchMvState) {
+        return state.artistId;
+    }
+}
 
 const actions = {
     async setWatchMv(context: any, payload: IMv) {
         const { data } = await getMvDetailRequest(payload.id);
-        context.commit('setWatchMv', { ...payload, publishTime: data.publishTime });
+        context.commit('setWatchMv', { ...payload, publishTime: data.publishTime, desc: data.desc });
     },
     clearWatchMv(context: any) {
         context.commit('clearWatchMv');
@@ -32,13 +38,14 @@ const actions = {
 }
 
 const mutations = {
-    setWatchMv(state: WatchMvState, payload: IMv & { publishTime: string }) {
+    setWatchMv(state: WatchMvState, payload: IMv & { publishTime: string, desc: string }) {
         state.id = payload.id;
         state.name = payload.name;
         state.artistId = payload.artistId;
         state.artistName = payload.artistName;
         state.playCount = payload.playCount;
         state.publishTime = payload.publishTime;
+        state.desc = payload.desc;
     },
     clearWatchMv(state: WatchMvState) {
         state.id = -1;
@@ -47,6 +54,7 @@ const mutations = {
         state.artistName = '';
         state.playCount = -1;
         state.publishTime = '';
+        state.desc = '';
     }
 }
 

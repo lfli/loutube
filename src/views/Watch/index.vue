@@ -18,21 +18,27 @@
         </div>
         <div class="video-infor">
           <div>
-            <span class="video-title">{{ watchMvState.name }}</span>
+            <span class="video-title">{{ mvDetailState.mv?.name }}</span>
           </div>
           <div>
             <span class="play-times"
-              >{{ watchMvState.playCount }}次观看 ·
-              {{ watchMvState.publishTime }}</span
+              >{{ mvDetailState.mv?.playCount }}次观看 ·
+              {{ mvDetailState.mv?.publishTime }}</span
             >
           </div>
         </div>
         <div class="artist-box">
           <div class="artist-box-top">
-            <img class="head" src="" alt="" />
+            <img
+              class="head"
+              :src="artistDetailState?.artistDetail.cover"
+              alt=""
+            />
             <div class="top-right">
               <div class="artist-name-box">
-                <span class="artist-name">あいみょん</span>
+                <span class="artist-name">{{
+                  artistDetailState?.artistDetail.name
+                }}</span>
                 <span class="sub-info">132万位订阅者</span>
               </div>
               <button class="sub-button">订阅</button>
@@ -55,25 +61,29 @@
 import { Options, Vue } from "vue-class-component";
 import VideoShowTempTwo from "@/share/VideoShowTempTwo.vue";
 import { reactive } from "vue";
-import { IMvUrlState, ISimiMvState } from "./typing";
-import { getMvUrlRequest, getSimiMvListRequest } from "@/apis/requests/mv";
+import {
+  IArtistDetailState,
+  IMvDetailState,
+  IMvUrlState,
+  ISimiMvState,
+} from "./typing";
+import {
+  getArtistDetailRequest,
+  getMvDetailRequest,
+  getMvUrlRequest,
+  getSimiMvListRequest,
+} from "@/apis/requests/mv";
 import router from "@/router";
-import { mapState } from "vuex";
-import store from "@/store";
 
 @Options({
   components: {
     VideoShowTempTwo,
   },
   props: ["mvid"],
-  computed: {
-    ...mapState({
-      watchMvState: (state: any) => state.WatchMv,
-    }),
-  },
 })
 export default class Watch extends Vue {
   mvid!: number;
+  artistDetailState: any;
   simiMvState = reactive<ISimiMvState>({
     curTitle: "相似 mv 列表",
     queryParams: {
@@ -90,13 +100,20 @@ export default class Watch extends Vue {
     mvUrl: "",
   });
 
+  mvDetailState = reactive<IMvDetailState>({
+    curTitle: "当前 mv 详情",
+    queryParams: {
+      mvid: this.mvid,
+    },
+    mv: null,
+  });
+
   created() {
     this.getMvUrl();
     this.getSimiMvList();
-  }
-
-  unmounted() {
-    store.dispatch("WatchMv/clearWatchMv");
+    this.getMvDetail().then(() => {
+      this.getArtistDetail();
+    });
   }
 
   async getSimiMvList() {
@@ -109,6 +126,35 @@ export default class Watch extends Vue {
   async getMvUrl() {
     const { data } = await getMvUrlRequest(this.mvUrlState.queryParams.mvid);
     this.mvUrlState.mvUrl = data.url;
+  }
+
+  async getMvDetail() {
+    const { data } = await getMvDetailRequest(
+      this.mvDetailState.queryParams.mvid
+    );
+    this.mvDetailState.mv = data;
+  }
+
+  async getArtistDetail() {
+    this.artistDetailState = reactive<IArtistDetailState>({
+      curTitle: "艺人详情",
+      queryParams: {
+        id: this.mvDetailState.mv?.artistId || -1,
+      },
+      artistDetail: {
+        id: -1,
+        name: "",
+        cover: "",
+        briefDesc: "",
+      },
+    });
+    const { data } = await getArtistDetailRequest(
+      this.artistDetailState.queryParams.id
+    );
+    this.artistDetailState.artistDetail.id = data.artist.id;
+    this.artistDetailState.artistDetail.name = data.artist.name;
+    this.artistDetailState.artistDetail.cover = data.artist.cover;
+    this.artistDetailState.artistDetail.briefDesc = data.artist.briefDesc;
   }
 
   goWatch(mvid: number) {

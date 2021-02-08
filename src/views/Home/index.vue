@@ -22,7 +22,6 @@ import { getMvListRequest } from "@/apis/requests/mv";
 import { IState } from "./typing";
 import RotateLoading from "@/share/RotateLoading.vue";
 import router from "@/router";
-import store from "@/store";
 import { IMv } from "@/typing";
 
 @Options({
@@ -107,7 +106,6 @@ export default class Home extends Vue {
   }
 
   goWatch(mv: IMv) {
-    store.dispatch("WatchMv/setWatchMv", mv);
     router.push({ path: `/watch/${mv.id}` });
   }
 }

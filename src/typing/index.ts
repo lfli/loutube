@@ -18,3 +18,11 @@ export interface IMv {
         transNames: string[];
     }[];
 }
+
+// 艺人
+export interface IArtistDetail {
+    id: number;
+    name: string;
+    cover: string;
+    briefDesc: string;
+}
