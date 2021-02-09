@@ -198,7 +198,7 @@ export default class Watch extends Vue {
 .video-infor {
   width: 100%;
   padding: 20px 0 8px;
-  border-bottom: 1px solid gray;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 .video-title {
   font-size: 18px;
@@ -207,12 +207,15 @@ export default class Watch extends Vue {
 .play-times {
   font-size: 14px;
   color: #606060;
+  line-height: 40px;
 }
 .artist-box {
-  border-bottom: 1px solid gray;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  margin-bottom: 18px;
 }
 .artist-box-top {
   display: flex;
+  margin-top: 18px;
 }
 .artist-box-content {
   font-size: 14px;
@@ -224,6 +227,7 @@ export default class Watch extends Vue {
 }
 .artist-brief-desc {
   margin-top: 16px;
+  margin-bottom: 16px;
   padding-top: 8px;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
