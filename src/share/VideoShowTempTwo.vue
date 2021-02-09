@@ -1,11 +1,11 @@
 <template>
   <div class="temp-box">
-    <div class="box-img">
+    <div class="box-img" @click="$attrs.onClick()">
       <div class="img-layer">
         <img class="my-img" :src="mv.cover" alt="" />
       </div>
     </div>
-    <div class="box-content">
+    <div class="box-content" @click="$attrs.onClick()">
       <div class="right-top">
         <span class="content-title hideText">{{ mv.name }}</span>
         <span class="iconfont icon-menu- item-setting"></span>
@@ -30,6 +30,7 @@ import { Options, Vue } from "vue-class-component";
 import { IMvDescState } from "./typing";
 
 @Options({
+  inheritAttrs: false,
   props: ["mv"],
 })
 export default class VideoShowTempTwo extends Vue {
@@ -54,12 +55,12 @@ export default class VideoShowTempTwo extends Vue {
 <style scoped>
 .temp-box {
   display: flex;
-  cursor: pointer;
-  user-select: none;
 }
 .box-img {
   width: 22%;
   min-width: 246px;
+  cursor: pointer;
+  user-select: none;
 }
 .img-layer {
   position: relative;
@@ -76,6 +77,8 @@ export default class VideoShowTempTwo extends Vue {
   flex: 1;
   padding-left: 16px;
   max-width: 600px;
+  cursor: pointer;
+  user-select: none;
 }
 .right-top {
   display: flex;
