@@ -48,7 +48,10 @@
             <div>
               <span>{{ mvDetailState.mv?.desc }}</span>
             </div>
-            <div class="artist-brief-desc">
+            <div
+              class="artist-brief-desc"
+              v-if="artistDetailState?.artistDetail.briefDesc"
+            >
               <span>{{ artistDetailState?.artistDetail.briefDesc }}</span>
             </div>
           </div>
