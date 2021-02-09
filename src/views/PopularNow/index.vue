@@ -45,21 +45,7 @@ import { IMv } from "@/typing";
   },
   props: ["link"],
   beforeRouteUpdate(to, from, next) {
-    this.state.mvList.splice(0, this.state.mvList.length);
-    const currentSeries = this.popularNowTopMenuList.filter(
-      (item: IPopularNowTopMenu) => item.link === to.params.link
-    );
-    if (currentSeries.length > 0) {
-      this.title = currentSeries[0].title;
-      this.areas = currentSeries[0].areas;
-      for (const area of this.areas) {
-        this.getPopularNowList(area);
-      }
-    } else {
-      // 为 all 时
-      this.areas = ["全部"];
-      this.getPopularNowList();
-    }
+    this.myBeforeRouteUpdate(to);
     next();
   },
 })
@@ -83,8 +69,26 @@ export default class PopularNow extends Vue {
     mvList: [],
   });
 
+  myBeforeRouteUpdate(to: any) {
+    this.state.mvList.splice(0, this.state.mvList.length);
+    const currentSeries = this.popularNowTopMenuList.filter(
+      (item: IPopularNowTopMenu) => item.link === to.params.link
+    );
+    if (currentSeries.length > 0) {
+      this.title = currentSeries[0].title;
+      this.areas = currentSeries[0].areas;
+      for (const area of this.areas) {
+        this.getPopularNowList(area);
+      }
+    } else {
+      // 为 all 时
+      this.areas = ["全部"];
+      this.getPopularNowList();
+    }
+  }
+
   created() {
-    this.getPopularNowList();
+    this.myBeforeRouteUpdate(router.currentRoute.value);
   }
 
   activated() {
