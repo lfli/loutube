@@ -9,8 +9,8 @@
               class="my-video"
               controls
               autoplay
+              :src="mvUrlState.mvUrl"
             >
-              <source :src="mvUrlState.mvUrl" type="video/mp4" />
               您的浏览器不支持 video 标签。
             </video>
             <div v-else class="my-video"></div>
@@ -88,6 +88,10 @@ import router from "@/router";
     VideoShowTempTwo,
   },
   props: ["mvid"],
+  beforeRouteUpdate(to, from, next) {
+    this.myBeforeRouteUpdate(to);
+    next();
+  },
 })
 export default class Watch extends Vue {
   mvid!: number;
@@ -128,6 +132,17 @@ export default class Watch extends Vue {
     },
   });
 
+  myBeforeRouteUpdate(to: any) {
+    this.simiMvState.queryParams.mvid = to.params.mvid;
+    this.mvUrlState.queryParams.mvid = to.params.mvid;
+    this.mvDetailState.queryParams.mvid = to.params.mvid;
+    this.getMvUrl();
+    this.getSimiMvList();
+    this.getMvDetail().then(() => {
+      this.getArtistDetail();
+    });
+  }
+
   created() {
     this.getMvUrl();
     this.getSimiMvList();
@@ -140,6 +155,7 @@ export default class Watch extends Vue {
     const { mvs } = await getSimiMvListRequest(
       this.simiMvState.queryParams.mvid
     );
+    this.simiMvState.mvList.splice(0, this.simiMvState.mvList.length);
     this.simiMvState.mvList.push(...mvs);
   }
 
