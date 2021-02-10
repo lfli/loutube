@@ -58,12 +58,17 @@
         </div>
       </div>
       <div class="mv-list">
-        <template v-for="mv of simiMvState.mvList" :key="mv.id">
-          <VideoShowTempTwo :mv="mv" @click="goWatch(mv.id)"></VideoShowTempTwo>
-          <div style="height: 8px"></div>
+        <template v-for="n of 4" :key="n">
+          <template v-for="mv of simiMvState.mvList" :key="mv.id">
+            <VideoShowTempTwo
+              :mv="mv"
+              @click="goWatch(mv.id)"
+            ></VideoShowTempTwo>
+            <div style="height: 8px"></div>
+          </template>
         </template>
       </div>
-      <!-- <div class="comment-list"></div> -->
+      <div class="comment-list"></div>
     </div>
   </div>
 </template>
@@ -194,14 +199,17 @@ export default class Watch extends Vue {
 
 <style scoped>
 .watch {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: 67% 1fr;
+  grid-template-rows: auto 1fr;
   padding-top: 24px;
 }
 .watch-box {
-  width: 100%;
   padding: 0 24px;
+}
+.comment-list {
+  padding: 0 24px;
+  height: 200px;
 }
 .video-layer {
   position: relative;
@@ -231,6 +239,7 @@ export default class Watch extends Vue {
 .artist-box {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   margin-bottom: 18px;
+  padding-bottom: 18px;
 }
 .artist-box-top {
   display: flex;
@@ -246,7 +255,6 @@ export default class Watch extends Vue {
 }
 .artist-brief-desc {
   margin-top: 16px;
-  margin-bottom: 16px;
   padding-top: 8px;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
@@ -294,40 +302,47 @@ export default class Watch extends Vue {
 .mv-list >>> .box-content {
   max-width: none;
 }
-.comment-list {
-  width: 100%;
-  height: 100px;
-  background-color: blueviolet;
-}
 @media screen and (max-width: 830px) {
+  .watch-box {
+    grid-column: 1 / 3;
+  }
   .box-video {
     width: 100%;
-    margin: 0 auto;
   }
   .mv-list {
-    width: 100%;
+    grid-column: 1 / 3;
     padding: 0 24px;
+  }
+  .comment-list {
+    grid-column: 1 / 3;
+    background-color: blueviolet;
   }
 }
 @media screen and (min-width: 831px) and (max-width: 1023px) {
+  .watch-box {
+    grid-column: 1 / 3;
+  }
   .box-video {
     width: 770px;
     margin: 0 auto;
   }
   .mv-list {
-    width: 100%;
+    grid-column: 1 / 3;
     padding: 0 24px;
+  }
+  .comment-list {
+    grid-column: 1 / 3;
+    background-color: blueviolet;
   }
 }
 @media screen and (min-width: 1024px) {
-  .watch-box {
-    width: 63%;
-    min-width: 640px;
-  }
   .mv-list {
-    flex: 1;
-    min-width: 300px;
+    grid-column: 2 / 3;
+    grid-row: 1 / 3;
     padding-right: 24px;
+  }
+  .comment-list {
+    background-color: blueviolet;
   }
 }
 </style>
