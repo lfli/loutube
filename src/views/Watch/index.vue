@@ -57,7 +57,13 @@
           </div>
         </div>
       </div>
-      <div class="mv-list">
+      <div
+        class="mv-list"
+        v-autoLoading="{
+          commandAutoLoading: mvListAutoLoading,
+          autoLoading: mvListLoading,
+        }"
+      >
         <template v-for="n of 4" :key="n">
           <template v-for="mv of simiMvState.mvList" :key="mv.id">
             <VideoShowTempTwo
@@ -68,7 +74,13 @@
           </template>
         </template>
       </div>
-      <div class="comment-list"></div>
+      <div
+        class="comment-list"
+        v-autoLoading="{
+          commandAutoLoading: commentListAutoLoading,
+          autoLoading: commentListLoading,
+        }"
+      ></div>
     </div>
   </div>
 </template>
@@ -103,6 +115,8 @@ import router from "@/router";
 })
 export default class Watch extends Vue {
   mvid!: number;
+  mvListAutoLoading = { isCommand: true };
+  commentListAutoLoading = { isCommand: true };
   simiMvState = reactive<ISimiMvState>({
     curTitle: "相似 mv 列表",
     queryParams: {
@@ -159,6 +173,11 @@ export default class Watch extends Vue {
     });
   }
 
+  unmounted() {
+    this.mvListAutoLoading.isCommand = false;
+    this.commentListAutoLoading.isCommand = false;
+  }
+
   async getSimiMvList() {
     const { mvs } = await getSimiMvListRequest(
       this.simiMvState.queryParams.mvid
@@ -193,6 +212,14 @@ export default class Watch extends Vue {
 
   goWatch(mvid: number) {
     router.push({ path: `/watch/${mvid}` });
+  }
+
+  mvListLoading() {
+    console.log("mvListLoading");
+  }
+  
+  commentListLoading() {
+    console.log("commentListLoading");
   }
 }
 </script>
