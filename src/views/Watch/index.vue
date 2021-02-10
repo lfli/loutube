@@ -343,7 +343,8 @@ export default class Watch extends Vue {
     grid-column: 2 / 3;
     grid-row: 1 / 3;
     padding-right: 24px;
-    max-width: 400px;
+    max-width: 402px;
+    min-width: 300px;
   }
   .comment-list {
     background-color: blueviolet;

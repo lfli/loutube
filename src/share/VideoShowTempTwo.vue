@@ -11,7 +11,7 @@
         <span class="iconfont icon-menu- item-setting"></span>
       </div>
       <div class="right-bottom">
-        <div>
+        <div class="hideText">
           <span>{{ mv.artistName }} · {{ mv.playCount }}次观看</span>
         </div>
         <div class="content-detail hideText">
