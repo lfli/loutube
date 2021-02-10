@@ -200,7 +200,7 @@ export default class Watch extends Vue {
 <style scoped>
 .watch {
   display: grid;
-  grid-template-columns: 67% 1fr;
+  grid-template-columns: 1fr auto;
   grid-template-rows: auto 1fr;
   padding-top: 24px;
 }
@@ -336,10 +336,14 @@ export default class Watch extends Vue {
   }
 }
 @media screen and (min-width: 1024px) {
+  .watch-box {
+    min-width: 640px;
+  }
   .mv-list {
     grid-column: 2 / 3;
     grid-row: 1 / 3;
     padding-right: 24px;
+    max-width: 400px;
   }
   .comment-list {
     background-color: blueviolet;
