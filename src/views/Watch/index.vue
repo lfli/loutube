@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="watch-outer">
     <div class="watch">
       <div class="watch-box">
         <div class="box-video">
@@ -64,15 +64,17 @@
           autoLoading: mvListLoading,
         }"
       >
-        <template v-for="n of 4" :key="n">
-          <template v-for="mv of simiMvState.mvList" :key="mv.id">
-            <VideoShowTempTwo
-              :mv="mv"
-              @click="goWatch(mv.id)"
-            ></VideoShowTempTwo>
-            <div style="height: 8px"></div>
-          </template>
+        <template v-for="mv of simiMvState.mvList" :key="mv.id">
+          <VideoShowTempTwo :mv="mv" @click="goWatch(mv.id)"></VideoShowTempTwo>
+          <div style="height: 8px"></div>
         </template>
+        <template v-for="mv of artistMvState.mvList" :key="mv.id">
+          <VideoShowTempTwo :mv="mv" @click="goWatch(mv.id)"></VideoShowTempTwo>
+          <div style="height: 8px"></div>
+        </template>
+        <div v-show="mvListAutoLoading.isCommand === false" class="loading-box">
+          <RotateLoading />
+        </div>
       </div>
       <div
         class="comment-list"
@@ -91,21 +93,26 @@ import VideoShowTempTwo from "@/share/VideoShowTempTwo.vue";
 import { reactive } from "vue";
 import {
   IArtistDetailState,
+  IArtistMvState,
   IMvDetailState,
   IMvUrlState,
   ISimiMvState,
 } from "./typing";
 import {
   getArtistDetailRequest,
+  getArtistMvRequest,
   getMvDetailRequest,
   getMvUrlRequest,
   getSimiMvListRequest,
 } from "@/apis/requests/mv";
 import router from "@/router";
+import { IArtistMv } from "@/typing";
+import RotateLoading from "@/share/RotateLoading.vue";
 
 @Options({
   components: {
     VideoShowTempTwo,
+    RotateLoading,
   },
   props: ["mvid"],
   beforeRouteUpdate(to, from, next) {
@@ -154,22 +161,41 @@ export default class Watch extends Vue {
     },
   });
 
+  artistMvLimit = 10;
+  artistMvLoadMoreCount = 0;
+  artistMvState = reactive<IArtistMvState>({
+    curTitle: "歌手 mv",
+    queryParams: {
+      id: -1,
+      limit: this.artistMvLimit,
+    },
+    mvList: [],
+    hasMore: false,
+  });
+
   myBeforeRouteUpdate(to: any) {
     this.simiMvState.queryParams.mvid = to.params.mvid;
     this.mvUrlState.queryParams.mvid = to.params.mvid;
     this.mvDetailState.queryParams.mvid = to.params.mvid;
-    this.getMvUrl();
-    this.getSimiMvList();
-    this.getMvDetail().then(() => {
-      this.getArtistDetail();
-    });
+    this.init();
   }
 
   created() {
+    this.init();
+  }
+
+  init() {
+    // 可能切换 mv
+    this.artistMvLoadMoreCount = 0; // 重置次数
+    const element = document.getElementById("watch-outer");
+    if (element) {
+      element.scrollTop = 0; // 重置窗口位置
+    }
     this.getMvUrl();
-    this.getSimiMvList();
+    // this.getSimiMvList();
     this.getMvDetail().then(() => {
       this.getArtistDetail();
+      this.getArtistMvList();
     });
   }
 
@@ -188,7 +214,11 @@ export default class Watch extends Vue {
 
   async getMvUrl() {
     const { data } = await getMvUrlRequest(this.mvUrlState.queryParams.mvid);
-    this.mvUrlState.mvUrl = data.url;
+    if (data.code == 200) {
+      this.mvUrlState.mvUrl = data.url;
+    } else {
+      console.log(data.msg);
+    }
   }
 
   async getMvDetail() {
@@ -210,14 +240,49 @@ export default class Watch extends Vue {
     this.artistDetailState.artistDetail.briefDesc = data.artist.briefDesc;
   }
 
+  async getArtistMvList() {
+    this.artistMvState.queryParams.id = this.mvDetailState.mv?.artistId || -1;
+    const result = await getArtistMvRequest(this.artistMvState.queryParams.id);
+    this.artistMvState.mvList.splice(0, this.artistMvState.mvList.length);
+    result.mvs = result.mvs.map((mv: IArtistMv) => {
+      mv.cover = mv.imgurl16v9;
+      return mv;
+    });
+    this.artistMvState.mvList.push(...result.mvs);
+    this.artistMvState.hasMore = result.hasMore;
+  }
+
   goWatch(mvid: number) {
     router.push({ path: `/watch/${mvid}` });
   }
 
   mvListLoading() {
-    console.log("mvListLoading");
+    if (this.artistMvState.hasMore) {
+      this.loadMoreArtistMv();
+    } else {
+      console.log("artistMv 没有更多了");
+    }
   }
-  
+
+  async loadMoreArtistMv() {
+    this.mvListAutoLoading.isCommand = false;
+    try {
+      const result = await getArtistMvRequest(
+        this.artistMvState.queryParams.id,
+        this.artistMvState.queryParams.limit * ++this.artistMvLoadMoreCount
+      );
+      result.mvs = result.mvs.map((mv: IArtistMv) => {
+        mv.cover = mv.imgurl16v9;
+        return mv;
+      });
+      this.artistMvState.mvList.push(...result.mvs);
+      this.artistMvState.hasMore = result.hasMore;
+    } catch (error) {
+      this.mvListAutoLoading.isCommand = true;
+    }
+    this.mvListAutoLoading.isCommand = true;
+  }
+
   commentListLoading() {
     console.log("commentListLoading");
   }
@@ -376,5 +441,9 @@ export default class Watch extends Vue {
   .comment-list {
     background-color: blueviolet;
   }
+}
+.loading-box {
+  display: flex;
+  justify-content: center;
 }
 </style>

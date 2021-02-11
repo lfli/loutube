@@ -26,3 +26,15 @@ export interface IArtistDetail {
     cover: string;
     briefDesc: string;
 }
+
+// 获取歌手 mv 返回数据类型
+export interface IArtistMv {
+    id: number;
+    name: string;
+    artistName: string;
+    imgurl16v9: string;
+    cover: string;
+    duration: string;
+    playCount: string;
+    publishTime: string;
+}
