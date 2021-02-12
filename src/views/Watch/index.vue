@@ -103,6 +103,7 @@ import {
   getArtistMvRequest,
   getMvDetailRequest,
   getMvUrlRequest,
+  getPopularNowListRequest,
   getSimiMvListRequest,
 } from "@/apis/requests/mv";
 import router from "@/router";
@@ -187,6 +188,7 @@ export default class Watch extends Vue {
   init() {
     // 可能切换 mv
     this.artistMvLoadMoreCount = 0; // 重置次数
+    this.popularNowLoadMoreCount = 0;
     const element = document.getElementById("watch-outer");
     if (element) {
       element.scrollTop = 0; // 重置窗口位置
@@ -250,6 +252,10 @@ export default class Watch extends Vue {
     });
     this.artistMvState.mvList.push(...result.mvs);
     this.artistMvState.hasMore = result.hasMore;
+    // 如果不足 10 条，加载 PopularNow 数据凑数
+    if (this.artistMvState.mvList.length < 10) {
+      this.getPopularNowList();
+    }
   }
 
   goWatch(mvid: number) {
@@ -261,6 +267,7 @@ export default class Watch extends Vue {
       this.loadMoreArtistMv();
     } else {
       console.log("artistMv 没有更多了");
+      this.getPopularNowList();
     }
   }
 
@@ -277,6 +284,24 @@ export default class Watch extends Vue {
       });
       this.artistMvState.mvList.push(...result.mvs);
       this.artistMvState.hasMore = result.hasMore;
+    } catch (error) {
+      this.mvListAutoLoading.isCommand = true;
+    }
+    this.mvListAutoLoading.isCommand = true;
+  }
+
+  // 当 ArtistMv 没有更多时，使用 PopularNow
+  popularNowLimit = 10;
+  popularNowLoadMoreCount = 0;
+  async getPopularNowList() {
+    this.mvListAutoLoading.isCommand = false;
+    try {
+      const { data } = await getPopularNowListRequest(
+        this.popularNowLimit,
+        "全部",
+        this.popularNowLimit * this.popularNowLoadMoreCount++
+      );
+      this.artistMvState.mvList.push(...data);
     } catch (error) {
       this.mvListAutoLoading.isCommand = true;
     }
