@@ -13,7 +13,9 @@
             >
               您的浏览器不支持 video 标签。
             </video>
-            <div v-else class="my-video"></div>
+            <div v-else class="my-video">
+              <span>{{ mvUrlErrorMsg }}</span>
+            </div>
           </div>
         </div>
         <div class="video-infor">
@@ -65,11 +67,11 @@
         }"
       >
         <template v-for="mv of simiMvState.mvList" :key="mv.id">
-          <VideoShowTempTwo :mv="mv" @click="goWatch(mv.id)"></VideoShowTempTwo>
+          <VideoShowTempTwo :mv="mv" @click="goWatch(mv)"></VideoShowTempTwo>
           <div style="height: 8px"></div>
         </template>
         <template v-for="mv of artistMvState.mvList" :key="mv.id">
-          <VideoShowTempTwo :mv="mv" @click="goWatch(mv.id)"></VideoShowTempTwo>
+          <VideoShowTempTwo :mv="mv" @click="goWatch(mv)"></VideoShowTempTwo>
           <div style="height: 8px"></div>
         </template>
         <div v-show="mvListAutoLoading.isCommand === false" class="loading-box">
@@ -107,7 +109,7 @@ import {
   getSimiMvListRequest,
 } from "@/apis/requests/mv";
 import router from "@/router";
-import { IArtistMv } from "@/typing";
+import { IArtistMv, IMv } from "@/typing";
 import RotateLoading from "@/share/RotateLoading.vue";
 
 @Options({
@@ -125,6 +127,7 @@ export default class Watch extends Vue {
   mvid!: number;
   mvListAutoLoading = { isCommand: true };
   commentListAutoLoading = { isCommand: true };
+  mvUrlErrorMsg = "";
   simiMvState = reactive<ISimiMvState>({
     curTitle: "相似 mv 列表",
     queryParams: {
@@ -219,7 +222,8 @@ export default class Watch extends Vue {
     if (data.code == 200) {
       this.mvUrlState.mvUrl = data.url;
     } else {
-      console.log(data.msg);
+      this.mvUrlState.mvUrl = "";
+      this.mvUrlErrorMsg = data.msg;
     }
   }
 
@@ -258,8 +262,13 @@ export default class Watch extends Vue {
     }
   }
 
-  goWatch(mvid: number) {
-    router.push({ path: `/watch/${mvid}` });
+  goWatch(mv: IMv) {
+    // 用于 mv 没有版权时显示 mv 名字
+    const temp = this.mvDetailState.mv;
+    if (temp) {
+      temp.name = mv.name;
+    }
+    router.push({ path: `/watch/${mv.id}` });
   }
 
   mvListLoading() {
@@ -337,6 +346,10 @@ export default class Watch extends Vue {
   position: absolute;
   width: 100%;
   height: 100%;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: black;
 }
 .video-infor {
