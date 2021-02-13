@@ -9,7 +9,7 @@ import {
 } from "../url";
 
 const getMvListRequest = (limit: number, offset = 0) => {
-    return ajaxGet(GET_MV_ALL, { limit, offset });
+    return ajaxGet(GET_MV_ALL, { limit, offset, order: "最热", area: "内地" });
 }
 
 const getArtistDetailRequest = (id: number) => {
