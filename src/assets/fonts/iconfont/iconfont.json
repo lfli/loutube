@@ -1,0 +1,142 @@
+{
+  "id": "2353953",
+  "name": "loutube",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "15793738",
+      "name": "赞",
+      "font_class": "zan",
+      "unicode": "e632",
+      "unicode_decimal": 58930
+    },
+    {
+      "icon_id": "3861682",
+      "name": "地球",
+      "font_class": "diqiu",
+      "unicode": "e649",
+      "unicode_decimal": 58953
+    },
+    {
+      "icon_id": "4423904",
+      "name": "日本国旗",
+      "font_class": "ribenguoqi",
+      "unicode": "e6a9",
+      "unicode_decimal": 59049
+    },
+    {
+      "icon_id": "7739865",
+      "name": "美国",
+      "font_class": "meiguo",
+      "unicode": "e60f",
+      "unicode_decimal": 58895
+    },
+    {
+      "icon_id": "12249170",
+      "name": "韩国",
+      "font_class": "zu",
+      "unicode": "e68a",
+      "unicode_decimal": 59018
+    },
+    {
+      "icon_id": "17137074",
+      "name": "国旗",
+      "font_class": "guoqi",
+      "unicode": "e61e",
+      "unicode_decimal": 58910
+    },
+    {
+      "icon_id": "258914",
+      "name": "设置",
+      "font_class": "tubiao01",
+      "unicode": "e653",
+      "unicode_decimal": 58963
+    },
+    {
+      "icon_id": "732727",
+      "name": "帮助",
+      "font_class": "bangzhu",
+      "unicode": "e61b",
+      "unicode_decimal": 58907
+    },
+    {
+      "icon_id": "866408",
+      "name": "音乐_music215",
+      "font_class": "yinlemusic215",
+      "unicode": "e9c5",
+      "unicode_decimal": 59845
+    },
+    {
+      "icon_id": "566943",
+      "name": "首页",
+      "font_class": "shouye",
+      "unicode": "e60b",
+      "unicode_decimal": 58891
+    },
+    {
+      "icon_id": "631375",
+      "name": "火",
+      "font_class": "huo",
+      "unicode": "e66c",
+      "unicode_decimal": 58988
+    },
+    {
+      "icon_id": "1099834",
+      "name": "菜单",
+      "font_class": "caidan",
+      "unicode": "e682",
+      "unicode_decimal": 59010
+    },
+    {
+      "icon_id": "2571139",
+      "name": "视频播放",
+      "font_class": "shipinbofang",
+      "unicode": "e60c",
+      "unicode_decimal": 58892
+    },
+    {
+      "icon_id": "7674900",
+      "name": "历史",
+      "font_class": "lishijilu",
+      "unicode": "e718",
+      "unicode_decimal": 59160
+    },
+    {
+      "icon_id": "9745460",
+      "name": "subscribe",
+      "font_class": "subscribe",
+      "unicode": "e65d",
+      "unicode_decimal": 58973
+    },
+    {
+      "icon_id": "10747001",
+      "name": "menu-01",
+      "font_class": "menu-",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "10905612",
+      "name": "头像",
+      "font_class": "touxiang",
+      "unicode": "e62c",
+      "unicode_decimal": 58924
+    },
+    {
+      "icon_id": "14465158",
+      "name": "menu-dots",
+      "font_class": "menu-dots",
+      "unicode": "e695",
+      "unicode_decimal": 59029
+    },
+    {
+      "icon_id": "15188688",
+      "name": "youtube",
+      "font_class": "youtube",
+      "unicode": "e73b",
+      "unicode_decimal": 59195
+    }
+  ]
+}
