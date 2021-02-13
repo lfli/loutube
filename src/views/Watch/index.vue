@@ -60,6 +60,7 @@
         </div>
       </div>
       <div
+        v-show="!isSmallScreen"
         class="mv-list"
         v-autoLoading="{
           commandAutoLoading: mvListAutoLoading,
@@ -78,6 +79,20 @@
           <RotateLoading />
         </div>
       </div>
+      <div v-show="isSmallScreen" class="mv-list">
+        <template v-for="mv of simiMvState.mvList" :key="mv.id">
+          <VideoShowTempTwo :mv="mv" @click="goWatch(mv)"></VideoShowTempTwo>
+          <div style="height: 8px"></div>
+        </template>
+        <template v-for="mv of artistMvState.mvList" :key="mv.id">
+          <VideoShowTempTwo :mv="mv" @click="goWatch(mv)"></VideoShowTempTwo>
+          <div style="height: 8px"></div>
+        </template>
+        <div>
+          <button @click="mvListLoadingForClick()">更多</button>
+        </div>
+      </div>
+
       <div
         class="comment-list"
         v-autoLoading="{
@@ -153,6 +168,8 @@ export default class Watch extends Vue {
   mvListAutoLoading = { isCommand: true };
   commentListAutoLoading = { isCommand: true };
   mvUrlErrorMsg = "";
+  isSmallScreen = false;
+
   simiMvState = reactive<ISimiMvState>({
     curTitle: "相似 mv 列表",
     queryParams: {
@@ -226,6 +243,29 @@ export default class Watch extends Vue {
 
   created() {
     this.init();
+  }
+
+  mounted() {
+    // 监听窗口大小，改变 mv-list 加载更多方式
+    const element = document.getElementById("watch-outer");
+    if (element) {
+      if (element.offsetWidth <= 1023) {
+        this.isSmallScreen = true;
+        this.mvListAutoLoading.isCommand = false;
+      } else {
+        this.isSmallScreen = false;
+        this.mvListAutoLoading.isCommand = true;
+      }
+      window.onresize = () => {
+        if (element.offsetWidth <= 1023) {
+          this.isSmallScreen = true;
+          this.mvListAutoLoading.isCommand = false;
+        } else {
+          this.isSmallScreen = false;
+          this.mvListAutoLoading.isCommand = true;
+        }
+      };
+    }
   }
 
   init() {
@@ -333,7 +373,22 @@ export default class Watch extends Vue {
     router.push({ path: `/watch/${mv.id}` });
   }
 
-  mvListLoading() {
+  async mvListLoading() {
+    this.mvListAutoLoading.isCommand = false;
+    try {
+      if (this.artistMvState.hasMore) {
+        await this.loadMoreArtistMv();
+      } else {
+        console.log("artistMv 没有更多了");
+        await this.getPopularNowList();
+      }
+    } catch (error) {
+      this.mvListAutoLoading.isCommand = true;
+    }
+    this.mvListAutoLoading.isCommand = true;
+  }
+
+  mvListLoadingForClick() {
     if (this.artistMvState.hasMore) {
       this.loadMoreArtistMv();
     } else {
@@ -343,40 +398,28 @@ export default class Watch extends Vue {
   }
 
   async loadMoreArtistMv() {
-    this.mvListAutoLoading.isCommand = false;
-    try {
-      const result = await getArtistMvRequest(
-        this.artistMvState.queryParams.id,
-        this.artistMvState.queryParams.limit * ++this.artistMvLoadMoreCount
-      );
-      result.mvs = result.mvs.map((mv: IArtistMv) => {
-        mv.cover = mv.imgurl16v9;
-        return mv;
-      });
-      this.artistMvState.mvList.push(...result.mvs);
-      this.artistMvState.hasMore = result.hasMore;
-    } catch (error) {
-      this.mvListAutoLoading.isCommand = true;
-    }
-    this.mvListAutoLoading.isCommand = true;
+    const result = await getArtistMvRequest(
+      this.artistMvState.queryParams.id,
+      this.artistMvState.queryParams.limit * ++this.artistMvLoadMoreCount
+    );
+    result.mvs = result.mvs.map((mv: IArtistMv) => {
+      mv.cover = mv.imgurl16v9;
+      return mv;
+    });
+    this.artistMvState.mvList.push(...result.mvs);
+    this.artistMvState.hasMore = result.hasMore;
   }
 
   // 当 ArtistMv 没有更多时，使用 PopularNow
   popularNowLimit = 10;
   popularNowLoadMoreCount = 0;
   async getPopularNowList() {
-    this.mvListAutoLoading.isCommand = false;
-    try {
-      const { data } = await getPopularNowListRequest(
-        this.popularNowLimit,
-        "全部",
-        this.popularNowLimit * this.popularNowLoadMoreCount++
-      );
-      this.artistMvState.mvList.push(...data);
-    } catch (error) {
-      this.mvListAutoLoading.isCommand = true;
-    }
-    this.mvListAutoLoading.isCommand = true;
+    const { data } = await getPopularNowListRequest(
+      this.popularNowLimit,
+      "全部",
+      this.popularNowLimit * this.popularNowLoadMoreCount++
+    );
+    this.artistMvState.mvList.push(...data);
   }
 
   commentListLoading() {
