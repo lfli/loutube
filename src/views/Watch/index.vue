@@ -84,7 +84,28 @@
           commandAutoLoading: commentListAutoLoading,
           autoLoading: commentListLoading,
         }"
-      ></div>
+      >
+        <template
+          v-for="hotComment of commentMvState.hotComments"
+          :key="hotComment.commentId"
+        >
+          <Comment :comment="hotComment"></Comment>
+          <div style="height: 16px"></div>
+        </template>
+        <template
+          v-for="comment of commentMvState.comments"
+          :key="comment.commentId"
+        >
+          <Comment :comment="comment"></Comment>
+          <div style="height: 16px"></div>
+        </template>
+        <div
+          v-show="commentListAutoLoading.isCommand === false"
+          class="loading-box"
+        >
+          <RotateLoading />
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -96,6 +117,7 @@ import { reactive } from "vue";
 import {
   IArtistDetailState,
   IArtistMvState,
+  ICommentMvState,
   IMvDetailState,
   IMvUrlState,
   ISimiMvState,
@@ -103,6 +125,7 @@ import {
 import {
   getArtistDetailRequest,
   getArtistMvRequest,
+  getCommentMvRequest,
   getMvDetailRequest,
   getMvUrlRequest,
   getPopularNowListRequest,
@@ -111,11 +134,13 @@ import {
 import router from "@/router";
 import { IArtistMv, IMv } from "@/typing";
 import RotateLoading from "@/share/RotateLoading.vue";
+import Comment from "@/share/Comment.vue";
 
 @Options({
   components: {
     VideoShowTempTwo,
     RotateLoading,
+    Comment,
   },
   props: ["mvid"],
   beforeRouteUpdate(to, from, next) {
@@ -177,10 +202,25 @@ export default class Watch extends Vue {
     hasMore: false,
   });
 
+  commentMvLimit = 10;
+  commentMvLoadMoreCount = 0;
+  commentMvState = reactive<ICommentMvState>({
+    curTitle: "mv 评论",
+    queryParams: {
+      id: this.mvid,
+      limit: this.commentMvLimit,
+    },
+    hotComments: [],
+    comments: [],
+    total: 0,
+    more: false,
+  });
+
   myBeforeRouteUpdate(to: any) {
     this.simiMvState.queryParams.mvid = to.params.mvid;
     this.mvUrlState.queryParams.mvid = to.params.mvid;
     this.mvDetailState.queryParams.mvid = to.params.mvid;
+    this.commentMvState.queryParams.id = to.params.mvid;
     this.init();
   }
 
@@ -192,6 +232,7 @@ export default class Watch extends Vue {
     // 可能切换 mv
     this.artistMvLoadMoreCount = 0; // 重置次数
     this.popularNowLoadMoreCount = 0;
+    this.commentMvLoadMoreCount = 0;
     const element = document.getElementById("watch-outer");
     if (element) {
       element.scrollTop = 0; // 重置窗口位置
@@ -202,6 +243,7 @@ export default class Watch extends Vue {
       this.getArtistDetail();
       this.getArtistMvList();
     });
+    this.getCommentMvList();
   }
 
   unmounted() {
@@ -262,6 +304,26 @@ export default class Watch extends Vue {
     }
   }
 
+  async getCommentMvList() {
+    const { total, more, comments, hotComments } = await getCommentMvRequest(
+      this.commentMvState.queryParams.id,
+      this.commentMvState.queryParams.limit
+    );
+    this.commentMvState.hotComments.splice(
+      0,
+      this.commentMvState.hotComments.length
+    );
+    this.commentMvState.comments.splice(0, this.commentMvState.comments.length);
+    if (hotComments) {
+      this.commentMvState.hotComments.push(...hotComments);
+    }
+    if (comments) {
+      this.commentMvState.comments.push(...comments);
+    }
+    this.commentMvState.total = total;
+    this.commentMvState.more = more;
+  }
+
   goWatch(mv: IMv) {
     // 用于 mv 没有版权时显示 mv 名字
     const temp = this.mvDetailState.mv;
@@ -318,7 +380,33 @@ export default class Watch extends Vue {
   }
 
   commentListLoading() {
-    console.log("commentListLoading");
+    if (this.commentMvState.more) {
+      this.loadMoreCommentMv();
+    } else {
+      console.log("commentMv 没有更多了");
+    }
+  }
+
+  async loadMoreCommentMv() {
+    this.commentListAutoLoading.isCommand = false;
+    try {
+      const { total, more, comments, hotComments } = await getCommentMvRequest(
+        this.commentMvState.queryParams.id,
+        this.commentMvState.queryParams.limit,
+        this.commentMvState.queryParams.limit * ++this.commentMvLoadMoreCount
+      );
+      if (hotComments) {
+        this.commentMvState.hotComments.push(...hotComments);
+      }
+      if (comments) {
+        this.commentMvState.comments.push(...comments);
+      }
+      this.commentMvState.total = total;
+      this.commentMvState.more = more;
+    } catch (error) {
+      this.commentListAutoLoading.isCommand = true;
+    }
+    this.commentListAutoLoading.isCommand = true;
   }
 }
 </script>
@@ -335,7 +423,6 @@ export default class Watch extends Vue {
 }
 .comment-list {
   padding: 0 24px;
-  height: 200px;
 }
 .video-layer {
   position: relative;
@@ -445,7 +532,6 @@ export default class Watch extends Vue {
   }
   .comment-list {
     grid-column: 1 / 3;
-    background-color: blueviolet;
   }
 }
 @media screen and (min-width: 831px) and (max-width: 1023px) {
@@ -462,7 +548,6 @@ export default class Watch extends Vue {
   }
   .comment-list {
     grid-column: 1 / 3;
-    background-color: blueviolet;
   }
 }
 @media screen and (min-width: 1024px) {
@@ -477,7 +562,6 @@ export default class Watch extends Vue {
     min-width: 300px;
   }
   .comment-list {
-    background-color: blueviolet;
   }
 }
 .loading-box {

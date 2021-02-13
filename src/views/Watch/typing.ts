@@ -1,4 +1,4 @@
-import { IArtistDetail, IArtistMv, IMv } from "@/typing";
+import { IArtistDetail, IArtistMv, IComment, IMv } from "@/typing";
 
 export interface ISimiMvQueryParams {
     mvid: number;
@@ -50,4 +50,18 @@ export interface IArtistMvState {
     queryParams: IArtistMvQueryParams;
     mvList: IArtistMv[];
     hasMore: boolean;
+}
+
+export interface ICommentMvQueryParams {
+    id: number;
+    limit: number;
+}
+
+export interface ICommentMvState {
+    curTitle: string;
+    queryParams: ICommentMvQueryParams;
+    hotComments: IComment[];
+    comments: IComment[];
+    total: number;
+    more: boolean;
 }

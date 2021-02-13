@@ -9,3 +9,5 @@ export const GET_SIMI_MV = "/simi/mv"; // 获取相似 mv
 export const GET_MV_URL = "/mv/url"; // 获取 mv 地址
 
 export const GET_ARTIST_MV = "/artist/mv"; // 获取歌手 mv
+
+export const GET_COMMENT_MV = "/comment/mv"; // mv 评论

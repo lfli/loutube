@@ -38,3 +38,20 @@ export interface IArtistMv {
     playCount: string;
     publishTime: string;
 }
+
+// 用户
+export interface IUser {
+    userId: number;
+    nickname: string;
+    avatarUrl: string;
+}
+
+// mv 评论
+export interface IComment {
+    user: IUser;
+    commentId: number;
+    content: string;
+    time: number;
+    likedCount: number;
+    parentCommentId: number;
+}
