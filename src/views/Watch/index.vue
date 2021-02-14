@@ -579,6 +579,15 @@ export default class Watch extends Vue {
   justify-content: space-between;
 }
 .sub-button {
+  color: white;
+  font-size: 14px;
+  background-color: #cd2827;
+  padding: 10px 22px;
+  border: none;
+  cursor: pointer;
+}
+.sub-button:focus {
+  outline: none;
 }
 .mv-list {
   display: flex;
