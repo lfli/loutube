@@ -2,7 +2,12 @@
   <div class="temp-box">
     <div class="box-img" @click="$attrs.onClick()">
       <div class="img-layer">
-        <img class="my-img" :src="mv.cover" alt="" />
+        <div class="box-img-box">
+          <img class="my-img" :src="mv.cover" alt="" />
+          <div class="box-duration">
+            <span>{{ mv.duration }}</span>
+          </div>
+        </div>
       </div>
     </div>
     <div class="box-content" @click="$attrs.onClick()">
@@ -67,11 +72,24 @@ export default class VideoShowTempTwo extends Vue {
   height: 0;
   padding-bottom: 56.25%;
 }
-.my-img {
+.box-img-box {
   position: absolute;
   height: 100%;
   width: 100%;
+}
+.my-img {
+  height: 100%;
+  width: 100%;
   background-color: black;
+}
+.box-duration {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  border-radius: 2px;
+  padding: 3px 4px;
 }
 .box-content {
   flex: 1;

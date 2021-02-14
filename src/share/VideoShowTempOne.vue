@@ -1,7 +1,12 @@
 <template>
   <div class="temp-box">
     <div class="temp-box-layer">
-      <img class="box-img" :src="mv.cover" alt="" />
+      <div class="box-img-box">
+        <img class="box-img" :src="mv.cover" alt="" />
+        <div class="box-duration">
+          <span>{{ mv.duration }}</span>
+        </div>
+      </div>
       <div style="height: 12px"></div>
       <div class="box-content">
         <img
@@ -80,10 +85,23 @@ export default class VideoShowTempOne extends Vue {
   cursor: pointer;
   user-select: none;
 }
-.box-img {
+.box-img-box {
   flex: 1;
   width: 100%;
+}
+.box-img {
+  width: 100%;
+  height: 100%;
   background-color: black;
+}
+.box-duration {
+  position: absolute;
+  top: calc(100% - 94px - 24px);
+  right: 4px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  border-radius: 2px;
+  padding: 3px 4px;
 }
 .box-content {
   width: 100%;
