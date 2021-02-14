@@ -65,3 +65,13 @@ export interface ICommentMvState {
     total: number;
     more: boolean;
 }
+
+export interface IMvLikedCountQueryParams {
+    mvid: number;
+}
+
+export interface IMvLikedCountState {
+    curTitle: string;
+    queryParams: IMvLikedCountQueryParams;
+    likedCount: number;
+}

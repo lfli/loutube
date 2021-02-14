@@ -5,7 +5,8 @@ import {
     GET_MV_DETAIL,
     GET_MV_URL,
     GET_SIMI_MV,
-    GET_COMMENT_MV
+    GET_COMMENT_MV,
+    GET_MV_DETAIL_INFO
 } from "../url";
 
 const getMvListRequest = (limit: number, offset = 0) => {
@@ -40,6 +41,10 @@ const getCommentMvRequest = (id: number, limit: number, offset = 0) => {
     return ajaxGet(GET_COMMENT_MV, { id, limit, offset });
 }
 
+const getMvDetailInfoRequest = (mvid: number) => {
+    return ajaxGet(GET_MV_DETAIL_INFO, { mvid });
+}
+
 export {
     getMvListRequest,
     getArtistDetailRequest,
@@ -48,5 +53,6 @@ export {
     getSimiMvListRequest,
     getMvUrlRequest,
     getArtistMvRequest,
-    getCommentMvRequest
+    getCommentMvRequest,
+    getMvDetailInfoRequest
 }

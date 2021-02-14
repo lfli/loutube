@@ -18,15 +18,23 @@
             </div>
           </div>
         </div>
-        <div class="video-infor">
+        <div class="video-info">
           <div>
             <span class="video-title">{{ mvDetailState.mv?.name }}</span>
           </div>
-          <div>
+          <div class="base-info-box">
             <span class="play-times"
               >{{ mvDetailState.mv?.playCount }}次观看 ·
               {{ mvDetailState.mv?.publishTime }}</span
             >
+            <div class="comment-zan-box">
+              <span class="iconfont icon-zan comment-zan"></span>
+              <span class="comment-zan-count">{{
+                mvLikedCountState.likedCount
+              }}</span>
+              <span class="iconfont icon-zan comment-cai"></span>
+              <span class="comment-zan-count"></span>
+            </div>
           </div>
         </div>
         <div class="artist-box">
@@ -134,6 +142,7 @@ import {
   IArtistMvState,
   ICommentMvState,
   IMvDetailState,
+  IMvLikedCountState,
   IMvUrlState,
   ISimiMvState,
 } from "./typing";
@@ -141,6 +150,7 @@ import {
   getArtistDetailRequest,
   getArtistMvRequest,
   getCommentMvRequest,
+  getMvDetailInfoRequest,
   getMvDetailRequest,
   getMvUrlRequest,
   getPopularNowListRequest,
@@ -233,11 +243,20 @@ export default class Watch extends Vue {
     more: false,
   });
 
+  mvLikedCountState = reactive<IMvLikedCountState>({
+    curTitle: "mv 点赞数量",
+    queryParams: {
+      mvid: this.mvid,
+    },
+    likedCount: 0,
+  });
+
   myBeforeRouteUpdate(to: any) {
     this.simiMvState.queryParams.mvid = to.params.mvid;
     this.mvUrlState.queryParams.mvid = to.params.mvid;
     this.mvDetailState.queryParams.mvid = to.params.mvid;
     this.commentMvState.queryParams.id = to.params.mvid;
+    this.mvLikedCountState.queryParams.mvid = to.params.mvid;
     this.init();
   }
 
@@ -278,6 +297,7 @@ export default class Watch extends Vue {
       element.scrollTop = 0; // 重置窗口位置
     }
     this.getMvUrl();
+    this.getMvLikedCount();
     // this.getSimiMvList();
     this.getMvDetail().then(() => {
       this.getArtistDetail();
@@ -307,6 +327,13 @@ export default class Watch extends Vue {
       this.mvUrlState.mvUrl = "";
       this.mvUrlErrorMsg = data.msg;
     }
+  }
+
+  async getMvLikedCount() {
+    const { likedCount } = await getMvDetailInfoRequest(
+      this.mvLikedCountState.queryParams.mvid
+    );
+    this.mvLikedCountState.likedCount = likedCount;
   }
 
   async getMvDetail() {
@@ -482,10 +509,15 @@ export default class Watch extends Vue {
   justify-content: center;
   background-color: black;
 }
-.video-infor {
+.video-info {
   width: 100%;
   padding: 20px 0 8px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+.base-info-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .video-title {
   font-size: 18px;
@@ -610,5 +642,27 @@ export default class Watch extends Vue {
 .loading-box {
   display: flex;
   justify-content: center;
+}
+.comment-zan-box {
+  display: flex;
+  align-items: center;
+}
+.comment-zan {
+  font-size: 24px;
+  color: #909090;
+  margin-right: 6px;
+}
+.comment-cai {
+  font-size: 24px;
+  color: #909090;
+}
+.comment-cai:before {
+  display: inline-block;
+  transform: rotate(180deg);
+}
+.comment-zan-count {
+  font-size: 14px;
+  color: #606060;
+  margin-right: 3vw;
 }
 </style>
