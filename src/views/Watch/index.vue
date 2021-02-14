@@ -96,8 +96,8 @@
           <VideoShowTempTwo :mv="mv" @click="goWatch(mv)"></VideoShowTempTwo>
           <div style="height: 8px"></div>
         </template>
-        <div>
-          <button @click="mvListLoadingForClick()">更多</button>
+        <div class="mv-list-load-click" @click="mvListLoadingForClick()">
+          展开
         </div>
       </div>
 
@@ -108,6 +108,9 @@
           autoLoading: commentListLoading,
         }"
       >
+        <div class="comment-count-box">
+          <span>{{ commentMvState.total }} 条评论</span>
+        </div>
         <template
           v-for="hotComment of commentMvState.hotComments"
           :key="hotComment.commentId"
@@ -530,7 +533,7 @@ export default class Watch extends Vue {
 }
 .artist-box {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  margin-bottom: 18px;
+  margin-bottom: 24px;
   padding-bottom: 18px;
 }
 .artist-box-top {
@@ -664,5 +667,20 @@ export default class Watch extends Vue {
   font-size: 14px;
   color: #606060;
   margin-right: 3vw;
+}
+.mv-list-load-click {
+  border: 1px solid #065fd4;
+  padding: 9px 15px;
+  text-align: center;
+  color: #065fd4;
+  font-size: 14px;
+  cursor: pointer;
+  user-select: none;
+  margin-bottom: 24px;
+}
+.comment-count-box {
+  color: #030303;
+  font-size: 16px;
+  margin-bottom: 24px;
 }
 </style>
