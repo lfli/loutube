@@ -163,6 +163,7 @@ import router from "@/router";
 import { IArtistMv, IMv } from "@/typing";
 import RotateLoading from "@/share/RotateLoading.vue";
 import Comment from "@/share/Comment.vue";
+import store from "@/store";
 
 @Options({
   components: {
@@ -305,6 +306,7 @@ export default class Watch extends Vue {
     this.getMvDetail().then(() => {
       this.getArtistDetail();
       this.getArtistMvList();
+      store.dispatch("HistoryMv/addHistoryMv", this.mvDetailState.mv);
     });
     this.getCommentMvList();
   }
