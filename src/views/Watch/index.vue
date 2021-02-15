@@ -397,11 +397,6 @@ export default class Watch extends Vue {
   }
 
   goWatch(mv: IMv) {
-    // 用于 mv 没有版权时显示 mv 名字
-    const temp = this.mvDetailState.mv;
-    if (temp) {
-      temp.name = mv.name;
-    }
     router.push({ path: `/watch/${mv.id}` });
   }
 

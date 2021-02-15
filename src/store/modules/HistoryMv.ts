@@ -19,6 +19,14 @@ const actions = {
 const mutations = {
     addHistoryMv(state: HistoryMvState, payload: IMv) {
         state.historyMvList.unshift(payload);
+        state.historyMvList = state.historyMvList.reduce<IMv[]>((prev, cur) => {
+            for (const item of prev) {
+                if (item.id === cur.id) {
+                    return prev;
+                }
+            }
+            return [...prev, cur];
+        }, [])
     }
 }
 
