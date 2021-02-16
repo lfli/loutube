@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-reachTheBottom="{ commandReachTheBottom, reachTheBottom }">
     <div class="subscription">
       <div class="subscription-title" v-if="artistMvStateList.length === 0">
         <span>订阅内容</span>
@@ -11,7 +11,7 @@
       >
         <div class="videos-box">
           <div class="subscription-title">
-            <span>{{ artistMvState.mvList[0].artistName }}</span>
+            <span>{{ artistMvState.curTitle }}</span>
           </div>
           <template v-for="mv of artistMvState.mvList" :key="mv.id">
             <VideoShowTempOne :mv="mv" @click="goWatch(mv)" />
@@ -23,6 +23,9 @@
         <span>此列表中没有任何视频。</span>
       </div>
     </div>
+    <div v-show="isAllowLoadMore === false" class="loading-box">
+      <RotateLoading class="subscription-loading" />
+    </div>
   </div>
 </template>
 
@@ -32,13 +35,16 @@ import { IArtistDetail, IArtistMv, IMv } from "@/typing";
 import { reactive } from "vue";
 import { Options, Vue } from "vue-class-component";
 import { mapState } from "vuex";
-import { IArtistMvState } from "../Watch/typing";
+import { IArtistMvState } from "./typing";
 import VideoShowTempOne from "@/share/VideoShowTempOne.vue";
 import router from "@/router";
+import RotateLoading from "@/share/RotateLoading.vue";
 
 @Options({
+  name: "Subscription",
   components: {
     VideoShowTempOne,
+    RotateLoading,
   },
   computed: {
     ...mapState({
@@ -50,43 +56,80 @@ export default class Subscription extends Vue {
   artistList!: IArtistDetail[];
   artistMvLimit = 10;
   artistMvLoadMoreCount = 0;
+  isAllowLoadMore = true;
   artistMvStateList: any[] = [];
 
-  created() {
-    this.init();
-    this.getArtistMvList();
-  }
+  commandReachTheBottom = {
+    isCommand: true,
+    scrollTop: 0,
+  };
 
-  init() {
-    for (const artist of this.artistList) {
-      const artistMvState = reactive<IArtistMvState>({
-        curTitle: "歌手 mv",
-        queryParams: {
-          id: artist.id,
-          limit: this.artistMvLimit,
-        },
-        mvList: [],
-        hasMore: false,
-      });
-      this.artistMvStateList.push(artistMvState);
+  isHasMore: { [key: number]: boolean } = {};
+
+  reachTheBottom() {
+    if (this.isAllowLoadMore) {
+      this.isAllowLoadMore = false;
+      this.initStateList()
+        .then(() => {
+          this.isAllowLoadMore = true;
+        })
+        .catch(() => {
+          this.isAllowLoadMore = true;
+        });
     }
   }
 
-  async getArtistMvList() {
-    for (const artistMvState of this.artistMvStateList) {
-      const result = await getArtistMvRequest(artistMvState.queryParams.id);
+  created() {
+    this.initStateList();
+  }
+
+  async initStateList() {
+    for (const artist of this.artistList) {
+      if (
+        this.isHasMore[artist.id] !== undefined &&
+        !this.isHasMore[artist.id]
+      ) {
+        continue;
+      }
+      const artistMvState = reactive<IArtistMvState>({
+        curTitle: artist.name,
+        queryParams: {
+          id: artist.id,
+          offset: this.artistMvLimit * this.artistMvLoadMoreCount,
+        },
+        mvList: [],
+      });
+
+      const result = await getArtistMvRequest(
+        artistMvState.queryParams.id,
+        artistMvState.queryParams.offset
+      );
       result.mvs = result.mvs.map((mv: IArtistMv) => {
         mv.cover = mv.imgurl16v9;
         mv.artistId = mv.artist.id;
         return mv;
       });
       artistMvState.mvList.push(...result.mvs);
-      artistMvState.hasMore = result.hasMore;
+      this.artistMvStateList.push(artistMvState);
+      this.isHasMore[artist.id] = result.hasMore;
     }
+    this.artistMvLoadMoreCount++;
   }
 
   goWatch(mv: IMv) {
     router.push({ path: `/watch/${mv.id}` });
+  }
+
+  activated() {
+    this.commandReachTheBottom.isCommand = true;
+  }
+
+  deactivated() {
+    this.commandReachTheBottom.isCommand = false;
+  }
+
+  beforeUnmount() {
+    this.commandReachTheBottom.isCommand = false;
   }
 }
 </script>
@@ -114,5 +157,11 @@ export default class Subscription extends Vue {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   padding-bottom: 26px;
   margin-bottom: 26px;
+}
+.loading-box {
+  text-align: center;
+}
+.subscription-loading {
+  margin: 0 auto;
 }
 </style>

@@ -26,6 +26,7 @@ const routes: Array<RouteRecordRaw> = [
     name: 'Subscription',
     component: () => import(/* webpackChunkName: "about" */ '../views/Subscription/index.vue'),
     meta: {
+      keepAlive: true,
       depth: 1
     }
   },
