@@ -43,7 +43,7 @@ export default class History extends Vue {
 
 <style scoped>
 .history {
-  padding: 22px 0 22px 5vw;
+  padding: 22px 5vw;
 }
 .history-title {
   font-size: 16px;

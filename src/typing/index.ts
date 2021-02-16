@@ -32,11 +32,13 @@ export interface IArtistMv {
     id: number;
     name: string;
     artistName: string;
+    artistId: number;
     imgurl16v9: string;
     cover: string;
     duration: string;
     playCount: string;
     publishTime: string;
+    artist: IArtistDetail;
 }
 
 // 用户
