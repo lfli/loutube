@@ -41,17 +41,32 @@
           <div class="artist-box-top">
             <img
               class="head"
-              :src="artistDetailState?.artistDetail.cover"
+              :src="artistDetailState.artistDetail?.cover"
               alt=""
             />
             <div class="top-right">
               <div class="artist-name-box">
                 <span class="artist-name">{{
-                  artistDetailState?.artistDetail.name
+                  artistDetailState.artistDetail?.name
                 }}</span>
                 <span class="sub-info">132万位订阅者</span>
               </div>
-              <button class="sub-button">订阅</button>
+              <button
+                v-if="isSubscription(artistDetailState.artistDetail?.id)"
+                class="sub-button"
+                :disabled="!isAllowSubscription"
+                @click="unsubscription(artistDetailState.artistDetail?.id)"
+              >
+                已订阅
+              </button>
+              <button
+                v-else
+                class="sub-button"
+                :disabled="!isAllowSubscription"
+                @click="subscription()"
+              >
+                订阅
+              </button>
             </div>
           </div>
           <div class="artist-box-content">
@@ -60,9 +75,9 @@
             </div>
             <div
               class="artist-brief-desc"
-              v-if="artistDetailState?.artistDetail.briefDesc"
+              v-if="artistDetailState.artistDetail?.briefDesc"
             >
-              <span>{{ artistDetailState?.artistDetail.briefDesc }}</span>
+              <span>{{ artistDetailState.artistDetail?.briefDesc }}</span>
             </div>
           </div>
         </div>
@@ -164,6 +179,7 @@ import { IArtistMv, IMv } from "@/typing";
 import RotateLoading from "@/share/RotateLoading.vue";
 import Comment from "@/share/Comment.vue";
 import store from "@/store";
+import { mapGetters } from "vuex";
 
 @Options({
   components: {
@@ -176,6 +192,9 @@ import store from "@/store";
     this.myBeforeRouteUpdate(to);
     next();
   },
+  computed: {
+    ...mapGetters("Subscription", ["isSubscription"]),
+  },
 })
 export default class Watch extends Vue {
   mvid!: number;
@@ -183,6 +202,7 @@ export default class Watch extends Vue {
   commentListAutoLoading = { isCommand: true };
   mvUrlErrorMsg = "";
   isSmallScreen = false;
+  isAllowSubscription = false;
 
   simiMvState = reactive<ISimiMvState>({
     curTitle: "相似 mv 列表",
@@ -213,12 +233,7 @@ export default class Watch extends Vue {
     queryParams: {
       id: -1,
     },
-    artistDetail: {
-      id: -1,
-      name: "",
-      cover: "",
-      briefDesc: "",
-    },
+    artistDetail: null,
   });
 
   artistMvLimit = 10;
@@ -292,6 +307,7 @@ export default class Watch extends Vue {
   }
 
   init() {
+    this.isAllowSubscription = false;
     // 可能切换 mv
     this.artistMvLoadMoreCount = 0; // 重置次数
     this.popularNowLoadMoreCount = 0;
@@ -304,7 +320,9 @@ export default class Watch extends Vue {
     this.getMvLikedCount();
     // this.getSimiMvList();
     this.getMvDetail().then(() => {
-      this.getArtistDetail();
+      this.getArtistDetail().then(() => {
+        this.isAllowSubscription = true;
+      });
       this.getArtistMvList();
       store.dispatch("HistoryMv/addHistoryMv", this.mvDetailState.mv);
     });
@@ -354,10 +372,7 @@ export default class Watch extends Vue {
     const { data } = await getArtistDetailRequest(
       this.artistDetailState.queryParams.id
     );
-    this.artistDetailState.artistDetail.id = data.artist.id;
-    this.artistDetailState.artistDetail.name = data.artist.name;
-    this.artistDetailState.artistDetail.cover = data.artist.cover;
-    this.artistDetailState.artistDetail.briefDesc = data.artist.briefDesc;
+    this.artistDetailState.artistDetail = data.artist;
   }
 
   async getArtistMvList() {
@@ -477,6 +492,17 @@ export default class Watch extends Vue {
       this.commentListAutoLoading.isCommand = true;
     }
     this.commentListAutoLoading.isCommand = true;
+  }
+
+  subscription() {
+    store.dispatch(
+      "Subscription/subscriptionArtist",
+      this.artistDetailState.artistDetail
+    );
+  }
+
+  unsubscription(id: number) {
+    store.dispatch("Subscription/unsubscriptionArtist", id);
   }
 }
 </script>

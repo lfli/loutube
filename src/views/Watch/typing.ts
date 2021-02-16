@@ -37,7 +37,7 @@ export interface IArtistDetailQueryParams {
 export interface IArtistDetailState {
     curTitle: string;
     queryParams: IArtistDetailQueryParams;
-    artistDetail: IArtistDetail;
+    artistDetail: IArtistDetail | null;
 }
 
 export interface IArtistMvQueryParams {
