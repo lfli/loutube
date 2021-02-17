@@ -30,7 +30,20 @@
               {{ $filters.dateFormat(mvDetailState.mv?.publishTime) }}</span
             >
             <div class="comment-zan-box">
-              <span class="iconfont icon-zan comment-zan"></span>
+              <span
+                v-if="isLikedMv(mvDetailState.mv?.id)"
+                class="iconfont icon-zan comment-zan"
+                style="color: red"
+                :disabled="!isAllowLike"
+                @click="unlike()"
+              ></span>
+              <span
+                v-else
+                class="iconfont icon-zan comment-zan"
+                :disabled="!isAllowLike"
+                @click="like()"
+              ></span>
+
               <span class="comment-zan-count">{{
                 $filters.internationalNumber(mvLikedCountState.likedCount)
               }}</span>
@@ -201,6 +214,7 @@ import { mapGetters } from "vuex";
   },
   computed: {
     ...mapGetters("Subscription", ["isSubscription"]),
+    ...mapGetters("LikedMv", ["isLikedMv"]),
   },
 })
 export default class Watch extends Vue {
@@ -210,6 +224,7 @@ export default class Watch extends Vue {
   mvUrlErrorMsg = "";
   isSmallScreen = false;
   isAllowSubscription = false;
+  isAllowLike = false;
 
   simiMvState = reactive<ISimiMvState>({
     curTitle: "相似 mv 列表",
@@ -315,6 +330,7 @@ export default class Watch extends Vue {
 
   init() {
     this.isAllowSubscription = false;
+    this.isAllowLike = false;
     // 可能切换 mv
     this.artistMvLoadMoreCount = 0; // 重置次数
     this.popularNowLoadMoreCount = 0;
@@ -327,6 +343,7 @@ export default class Watch extends Vue {
     this.getMvLikedCount();
     // this.getSimiMvList();
     this.getMvDetail().then(() => {
+      this.isAllowLike = true;
       this.getArtistDetail().then(() => {
         this.isAllowSubscription = true;
       });
@@ -510,6 +527,14 @@ export default class Watch extends Vue {
 
   unsubscription(id: number) {
     store.dispatch("Subscription/unsubscriptionArtist", id);
+  }
+
+  like() {
+    store.dispatch("LikedMv/addLikedMv", this.mvDetailState.mv);
+  }
+
+  unlike() {
+    store.dispatch("LikedMv/removeLikedMv", this.mvDetailState.mv);
   }
 }
 </script>
