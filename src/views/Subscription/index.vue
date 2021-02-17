@@ -1,7 +1,10 @@
 <template>
   <div v-reachTheBottom="{ commandReachTheBottom, reachTheBottom }">
     <div class="subscription">
-      <div class="subscription-title" v-if="artistMvStateList.length === 0">
+      <div
+        class="subscription-title"
+        v-if="!isLoading && artistMvStateList.length === 0"
+      >
         <span>订阅内容</span>
       </div>
 
@@ -19,7 +22,10 @@
         </div>
       </template>
 
-      <div class="subscription-none" v-if="artistMvStateList.length === 0">
+      <div
+        class="subscription-none"
+        v-if="!isLoading && artistMvStateList.length === 0"
+      >
         <span>此列表中没有任何视频。</span>
       </div>
     </div>
@@ -58,6 +64,7 @@ export default class Subscription extends Vue {
   artistMvLoadMoreCount = 0;
   isAllowLoadMore = true;
   artistMvStateList: any[] = [];
+  isLoading = true;
 
   commandReachTheBottom = {
     isCommand: true,
@@ -69,18 +76,27 @@ export default class Subscription extends Vue {
   reachTheBottom() {
     if (this.isAllowLoadMore) {
       this.isAllowLoadMore = false;
+      this.isLoading = true;
       this.initStateList()
         .then(() => {
           this.isAllowLoadMore = true;
+          this.isLoading = false;
         })
         .catch(() => {
           this.isAllowLoadMore = true;
+          this.isLoading = false;
         });
     }
   }
 
   created() {
-    this.initStateList();
+    this.initStateList()
+      .then(() => {
+        this.isLoading = false;
+      })
+      .catch(() => {
+        this.isLoading = false;
+      });
   }
 
   async initStateList() {
