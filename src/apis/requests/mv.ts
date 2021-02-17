@@ -6,7 +6,8 @@ import {
     GET_MV_URL,
     GET_SIMI_MV,
     GET_COMMENT_MV,
-    GET_MV_DETAIL_INFO
+    GET_MV_DETAIL_INFO,
+    CLOUDSEARCH
 } from "../url";
 
 const getMvListRequest = (limit: number, offset = 0) => {
@@ -45,6 +46,10 @@ const getMvDetailInfoRequest = (mvid: number) => {
     return ajaxGet(GET_MV_DETAIL_INFO, { mvid });
 }
 
+const cloudsearchRequest = (keywords: string, type = 1004) => {
+    return ajaxGet(CLOUDSEARCH, { keywords, type });
+}
+
 export {
     getMvListRequest,
     getArtistDetailRequest,
@@ -54,5 +59,6 @@ export {
     getMvUrlRequest,
     getArtistMvRequest,
     getCommentMvRequest,
-    getMvDetailInfoRequest
+    getMvDetailInfoRequest,
+    cloudsearchRequest
 }

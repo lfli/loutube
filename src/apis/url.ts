@@ -13,3 +13,5 @@ export const GET_ARTIST_MV = "/artist/mv"; // 获取歌手 mv
 export const GET_COMMENT_MV = "/comment/mv"; // mv 评论
 
 export const GET_MV_DETAIL_INFO = "/mv/detail/info"; // 获取 mv 点赞转发评论数数据
+
+export const CLOUDSEARCH = "/cloudsearch"; // 搜索

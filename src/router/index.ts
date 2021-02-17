@@ -1,5 +1,5 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import Home from '../views/Home/index.vue'
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
+import Home from '../views/Home/index.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -42,6 +42,15 @@ const routes: Array<RouteRecordRaw> = [
     path: '/history',
     name: 'History',
     component: () => import(/* webpackChunkName: "about" */ '../views/History/index.vue'),
+    meta: {
+      depth: 1
+    }
+  },
+  {
+    path: '/search/:keywords',
+    name: 'Search',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Search/index.vue'),
+    props: true,
     meta: {
       depth: 1
     }

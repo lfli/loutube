@@ -1,17 +1,21 @@
 <template>
   <div class="search">
-    <input type="text" placeholder="搜索" name="" id="" value="" />
-    <button><i>搜索</i></button>
+    <input v-model="keywords" type="text" placeholder="搜索" />
+    <button @click="search()"><i>搜索</i></button>
   </div>
 </template>
 
 <script lang="ts">
+import router from "@/router";
 import { Options, Vue } from "vue-class-component";
 
-@Options({
-  props: {},
-})
-export default class SearchBar extends Vue {}
+@Options({})
+export default class SearchBar extends Vue {
+  keywords = "";
+  search() {
+    router.push({ path: `/search/${this.keywords}` });
+  }
+}
 </script>
 
 <style scoped>
@@ -31,8 +35,8 @@ export default class SearchBar extends Vue {}
   box-shadow: 0px 0px 2px #cecece inset;
 }
 .search input::-webkit-input-placeholder {
- color: rgb(134, 134, 134);
- }
+  color: rgb(134, 134, 134);
+}
 .search button {
   float: right;
   flex: 1;
