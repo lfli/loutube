@@ -44,7 +44,7 @@
 <script lang="ts">
 import router from "@/router";
 import { Options, Vue } from "vue-class-component";
-import LouTubeLog from "../LouTubeLog.vue";
+import LouTubeLog from "@/share/LouTubeLog.vue";
 import SideDrawerMenuItem from "./SideDrawerMenuItem.vue";
 
 @Options({

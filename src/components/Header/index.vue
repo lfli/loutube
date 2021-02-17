@@ -19,7 +19,7 @@
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import LouTubeLog from "../LouTubeLog.vue";
+import LouTubeLog from "@/share/LouTubeLog.vue";
 import SearchBar from "./SearchBar.vue";
 import MyProject from "./MyProject.vue";
 
