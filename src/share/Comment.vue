@@ -12,7 +12,7 @@
         <div class="zan-box">
           <span class="iconfont icon-zan comment-zan"></span>
           <span class="zan-count">{{
-            comment.likedCount !== 0 ? comment.likedCount : ""
+            $filters.internationalNumber(comment.likedCount)
           }}</span>
           <span class="iconfont icon-zan comment-cai"></span>
         </div>

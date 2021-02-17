@@ -24,13 +24,15 @@
           </div>
           <div class="base-info-box">
             <span class="play-times"
-              >{{ $filters.playCount(mvDetailState.mv?.playCount) }}次观看 ·
-              {{ mvDetailState.mv?.publishTime }}</span
+              >{{
+                $filters.internationalNumber(mvDetailState.mv?.playCount)
+              }}次观看 ·
+              {{ $filters.dateFormat(mvDetailState.mv?.publishTime) }}</span
             >
             <div class="comment-zan-box">
               <span class="iconfont icon-zan comment-zan"></span>
               <span class="comment-zan-count">{{
-                mvLikedCountState.likedCount
+                $filters.internationalNumber(mvLikedCountState.likedCount)
               }}</span>
               <span class="iconfont icon-zan comment-cai"></span>
               <span class="comment-zan-count"></span>
@@ -124,7 +126,12 @@
         }"
       >
         <div class="comment-count-box">
-          <span>{{ commentMvState.total }} 条评论</span>
+          <span
+            >{{
+              $filters.internationalNumber(commentMvState.total)
+            }}
+            条评论</span
+          >
         </div>
         <template
           v-for="hotComment of commentMvState.hotComments"
