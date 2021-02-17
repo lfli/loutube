@@ -26,7 +26,7 @@
         <div class="jx">
           <span>LOUTUBE 精选</span><br />
           <!-- TODO ↓ -->
-          <div style="font-size: 40px; padding: 30px 0; letter-spacing: 8px">
+          <div style="font-size: 40px; padding: 26px 0; letter-spacing: 8px">
             <span style="writing-mode: vertical-rl">敬请期待</span>
           </div>
           <!-- TODO ↑ -->
@@ -97,6 +97,18 @@ span[class~="iconfont"] {
   height: calc(100vh - var(--headerHeight));
   overflow: auto;
 }
+/* 滑动条样式 ↓ */
+.box::-webkit-scrollbar {
+  width: 8px;
+}
+.box::-webkit-scrollbar-track-piece {
+  background-color: #f1f1f1;
+}
+.box::-webkit-scrollbar-thumb {
+  background-color: #c1c1c1;
+}
+/* 滑动条样式 ↑ */
+
 .box-one {
   padding: 12px 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
