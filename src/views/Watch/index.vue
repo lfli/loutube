@@ -51,7 +51,7 @@
                 <span class="artist-name">{{
                   artistDetailState.artistDetail?.name
                 }}</span>
-                <span class="sub-info">132万位订阅者</span>
+                <!-- <span class="sub-info">132万位订阅者</span> -->
               </div>
               <button
                 v-if="isSubscription(artistDetailState.artistDetail?.id)"
