@@ -5,7 +5,7 @@
         <div class="box-img-box">
           <img class="my-img" :src="mv.cover" alt="" />
           <div class="box-duration">
-            <span>{{ mv.duration }}</span>
+            <span>{{ $filters.duration(mv.duration) }}</span>
           </div>
         </div>
       </div>
@@ -17,7 +17,10 @@
       </div>
       <div class="right-bottom">
         <div class="hideText">
-          <span>{{ mv.artistName }} · {{ mv.playCount }}次观看</span>
+          <span
+            >{{ mv.artistName }} ·
+            {{ $filters.playCount(mv.playCount) }}次观看</span
+          >
         </div>
         <div class="content-detail hideText">
           <span>{{ state.desc }}</span>

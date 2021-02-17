@@ -24,7 +24,7 @@
           </div>
           <div class="base-info-box">
             <span class="play-times"
-              >{{ mvDetailState.mv?.playCount }}次观看 ·
+              >{{ $filters.playCount(mvDetailState.mv?.playCount) }}次观看 ·
               {{ mvDetailState.mv?.publishTime }}</span
             >
             <div class="comment-zan-box">

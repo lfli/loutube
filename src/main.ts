@@ -6,5 +6,8 @@ import './assets/fonts/iconfont/iconfont.css';
 import './assets/fonts/iconfont/iconfont.js';
 import { reachTheBottom } from './directive/ReachTheBottom';
 import { autoLoading } from './directive/AutoLoading';
+import { filters } from './share/filters';
 
-createApp(App).directive('reachTheBottom', reachTheBottom).directive('autoLoading', autoLoading).use(store).use(router).mount('#app')
+const app = createApp(App);
+app.config.globalProperties.$filters = filters;
+app.directive('reachTheBottom', reachTheBottom).directive('autoLoading', autoLoading).use(store).use(router).mount('#app');
