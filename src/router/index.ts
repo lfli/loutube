@@ -64,6 +64,14 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       depth: 2
     }
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Notfound/index.vue'),
+    meta: {
+      depth: 2
+    }
   }
 ]
 
