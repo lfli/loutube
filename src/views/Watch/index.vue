@@ -144,7 +144,9 @@
         <div class="comment-count-box">
           <span
             >{{
-              $filters.internationalNumber(commentMvState.total)
+              commentMvState.total === 0
+                ? 0
+                : $filters.internationalNumber(commentMvState.total)
             }}
             条评论</span
           >
