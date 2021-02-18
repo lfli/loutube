@@ -46,8 +46,8 @@ const getMvDetailInfoRequest = (mvid: number) => {
     return ajaxGet(GET_MV_DETAIL_INFO, { mvid });
 }
 
-const cloudsearchRequest = (keywords: string, type = 1004) => {
-    return ajaxGet(CLOUDSEARCH, { keywords, type });
+const cloudsearchRequest = (keywords: string, limit: number, offset = 0, type = 1004) => {
+    return ajaxGet(CLOUDSEARCH, { keywords, limit, offset, type });
 }
 
 export {

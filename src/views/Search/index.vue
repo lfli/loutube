@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-reachTheBottom="{ reachTheBottom, commandReachTheBottom }">
     <div class="search">
       <div class="search-title">
         <span>搜索结果</span>
@@ -19,6 +19,9 @@
         <span>此列表中没有任何视频。</span>
       </div>
     </div>
+    <div v-show="isAllowLoadMore === false" class="loading-box">
+      <RotateLoading class="search-loading" />
+    </div>
   </div>
 </template>
 
@@ -30,11 +33,14 @@ import { ICloudsearchState } from "./typing";
 import VideoShowTempTwo from "@/share/VideoShowTempTwo.vue";
 import { IMv } from "@/typing";
 import router from "@/router";
+import RotateLoading from "@/share/RotateLoading.vue";
 
 @Options({
+  name: "Search",
   props: ["keywords"],
   components: {
     VideoShowTempTwo,
+    RotateLoading,
   },
   beforeRouteUpdate(to, from, next) {
     this.init(to.params.keywords);
@@ -44,14 +50,35 @@ import router from "@/router";
 export default class Search extends Vue {
   keywords!: string;
   isLoading = false;
+  commandReachTheBottom = {
+    isCommand: true,
+    scrollTop: 0,
+  };
+  isAllowLoadMore = true;
+  loadMoreCount = 0;
+  hasMore = true;
 
   cloudsearchState = reactive<ICloudsearchState>({
     curTitle: "搜索",
     queryParams: {
       keywords: this.keywords,
+      limit: 10,
     },
     mvList: [],
   });
+
+  reachTheBottom() {
+    if (this.isAllowLoadMore && this.hasMore) {
+      this.isAllowLoadMore = false;
+      this.loadMoreMv()
+        .then(() => {
+          this.isAllowLoadMore = true;
+        })
+        .catch(() => {
+          this.isAllowLoadMore = true;
+        });
+    }
+  }
 
   created() {
     this.isLoading = true;
@@ -65,16 +92,42 @@ export default class Search extends Vue {
   }
 
   async init(keywords: string) {
+    this.hasMore = true;
     this.cloudsearchState.queryParams.keywords = keywords;
     const { result } = await cloudsearchRequest(
-      this.cloudsearchState.queryParams.keywords
+      this.cloudsearchState.queryParams.keywords,
+      this.cloudsearchState.queryParams.limit
     );
     this.cloudsearchState.mvList.splice(0, this.cloudsearchState.mvList.length);
     this.cloudsearchState.mvList.push(...result.mvs);
   }
 
+  async loadMoreMv() {
+    const { result } = await cloudsearchRequest(
+      this.cloudsearchState.queryParams.keywords,
+      this.cloudsearchState.queryParams.limit,
+      this.cloudsearchState.queryParams.limit * ++this.loadMoreCount
+    );
+    this.cloudsearchState.mvList.push(...result.mvs);
+    if (!result.mvs) {
+      this.hasMore = false;
+    }
+  }
+
   goWatch(mv: IMv) {
     router.push({ path: `/watch/${mv.id}` });
+  }
+
+  activated() {
+    this.commandReachTheBottom.isCommand = true;
+  }
+
+  deactivated() {
+    this.commandReachTheBottom.isCommand = false;
+  }
+
+  beforeUnmount() {
+    this.commandReachTheBottom.isCommand = false;
   }
 }
 </script>
@@ -93,5 +146,11 @@ export default class Search extends Vue {
   color: #030303;
   text-align: center;
   margin-top: 10vh;
+}
+.loading-box {
+  text-align: center;
+}
+.search-loading {
+  margin: 0 auto;
 }
 </style>
