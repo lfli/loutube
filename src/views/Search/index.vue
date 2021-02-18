@@ -108,9 +108,10 @@ export default class Search extends Vue {
       this.cloudsearchState.queryParams.limit,
       this.cloudsearchState.queryParams.limit * ++this.loadMoreCount
     );
-    this.cloudsearchState.mvList.push(...result.mvs);
     if (!result.mvs) {
       this.hasMore = false;
+    } else {
+      this.cloudsearchState.mvList.push(...result.mvs);
     }
   }
 
