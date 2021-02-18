@@ -1,7 +1,14 @@
 <template>
   <div class="search">
-    <input v-model="keywords" type="text" placeholder="搜索" />
-    <button @click="search()"><i>搜索</i></button>
+    <input
+      v-model="keywords"
+      @keyup.enter="search()"
+      type="text"
+      placeholder="搜索"
+    />
+    <button class="search-button" @click="search()">
+      <span class="iconfont icon-sousuo search-icon"></span>
+    </button>
   </div>
 </template>
 
@@ -13,33 +20,39 @@ import { Options, Vue } from "vue-class-component";
 export default class SearchBar extends Vue {
   keywords = "";
   search() {
-    router.push({ path: `/search/${this.keywords}` });
+    if (this.keywords.length > 0) {
+      router.push({ path: `/search/${this.keywords}` });
+    }
   }
 }
 </script>
 
 <style scoped>
 .search {
-  width: 40vw;
-  height: 30px;
+  width: 46vw;
+  height: 32px;
   display: flex;
 }
 .search input {
-  float: left;
-  flex: 4;
+  flex: 1;
   border: 1px solid #b3b3b3;
   border-top-left-radius: 2px;
   border-bottom-left-radius: 2px;
-  outline-color: rgb(160, 161, 255);
   padding-left: 10px;
   box-shadow: 0px 0px 2px #cecece inset;
 }
+.search input:focus {
+  border: 1px solid rgb(0, 0, 216);
+  outline: none;
+  box-shadow: 0px 0px 2px rgb(0, 0, 216) inset;
+}
 .search input::-webkit-input-placeholder {
   color: rgb(134, 134, 134);
+  font-size: 16px;
 }
-.search button {
+.search-button {
   float: right;
-  flex: 1;
+  width: 65px;
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
   background-color: var(--themeBgColor);
@@ -49,7 +62,18 @@ export default class SearchBar extends Vue {
   cursor: pointer; /** 鼠标变小手 */
   user-select: none; /** 文字不可被选中 */
 }
-.search button i {
+.search-button i {
   font-style: normal;
+}
+.search-button:hover {
+  background-color: #f1f1f1;
+}
+.search-button:hover .search-icon {
+  background-color: #f1f1f1;
+  color: #333333;
+}
+.search-icon {
+  font-size: 14px;
+  color: #828282;
 }
 </style>
