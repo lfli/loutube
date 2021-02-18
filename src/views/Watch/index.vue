@@ -113,7 +113,10 @@
           <VideoShowTempTwo :mv="mv" @click="goWatch(mv)"></VideoShowTempTwo>
           <div style="height: 8px"></div>
         </template>
-        <div v-show="mvListAutoLoading.isCommand === false" class="loading-box">
+        <div
+          v-show="!mvListAutoLoading.isCommand || mvListIsLoading"
+          class="loading-box"
+        >
           <RotateLoading />
         </div>
       </div>
@@ -161,7 +164,7 @@
           <div style="height: 16px"></div>
         </template>
         <div
-          v-show="commentListAutoLoading.isCommand === false"
+          v-show="!commentListAutoLoading.isCommand || commentListIsLoading"
           class="loading-box"
         >
           <RotateLoading />
@@ -225,6 +228,8 @@ export default class Watch extends Vue {
   isSmallScreen = false;
   isAllowSubscription = false;
   isAllowLike = false;
+  mvListIsLoading = true;
+  commentListIsLoading = true;
 
   simiMvState = reactive<ISimiMvState>({
     curTitle: "相似 mv 列表",
@@ -347,10 +352,14 @@ export default class Watch extends Vue {
       this.getArtistDetail().then(() => {
         this.isAllowSubscription = true;
       });
-      this.getArtistMvList();
+      this.getArtistMvList().then(() => {
+        this.mvListIsLoading = false;
+      });
       store.dispatch("HistoryMv/addHistoryMv", this.mvDetailState.mv);
     });
-    this.getCommentMvList();
+    this.getCommentMvList().then(() => {
+      this.commentListIsLoading = false;
+    });
   }
 
   unmounted() {

@@ -29,7 +29,7 @@
         <span>此列表中没有任何视频。</span>
       </div>
     </div>
-    <div v-show="isAllowLoadMore === false" class="loading-box">
+    <div v-show="!isAllowLoadMore || isLoading" class="loading-box">
       <RotateLoading class="subscription-loading" />
     </div>
   </div>
@@ -76,27 +76,20 @@ export default class Subscription extends Vue {
   reachTheBottom() {
     if (this.isAllowLoadMore) {
       this.isAllowLoadMore = false;
-      this.isLoading = true;
       this.initStateList()
         .then(() => {
           this.isAllowLoadMore = true;
-          this.isLoading = false;
         })
         .catch(() => {
           this.isAllowLoadMore = true;
-          this.isLoading = false;
         });
     }
   }
 
   created() {
-    this.initStateList()
-      .then(() => {
-        this.isLoading = false;
-      })
-      .catch(() => {
-        this.isLoading = false;
-      });
+    this.initStateList().then(() => {
+      this.isLoading = false;
+    });
   }
 
   async initStateList() {

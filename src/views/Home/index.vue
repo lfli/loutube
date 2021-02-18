@@ -8,7 +8,7 @@
         :key="mv.id"
       />
     </div>
-    <div v-show="isAllowLoadMore === false" class="loading-box">
+    <div v-show="!isAllowLoadMore || isLoading" class="loading-box">
       <RotateLoading class="home-loading" />
     </div>
   </div>
@@ -32,6 +32,8 @@ import { IMv } from "@/typing";
   },
 })
 export default class Home extends Vue {
+  isLoading = true;
+
   limit = 24;
   state = reactive<IState>({
     curTitle: "mv列表",
@@ -41,7 +43,9 @@ export default class Home extends Vue {
     mvList: [],
   });
   created() {
-    this.getMvList();
+    this.getMvList().then(() => {
+      this.isLoading = false;
+    });
   }
   /**
    * 获取 mv 数据

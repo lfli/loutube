@@ -17,7 +17,7 @@
         </template>
       </div>
     </div>
-    <div v-show="isAllowLoadMore === false" class="loading-box">
+    <div v-show="!isAllowLoadMore || isLoading" class="loading-box">
       <RotateLoading class="popular-now-loading" />
     </div>
   </div>
@@ -45,7 +45,10 @@ import { IMv } from "@/typing";
   },
   props: ["link"],
   beforeRouteUpdate(to, from, next) {
-    this.myBeforeRouteUpdate(to);
+    this.isLoading = true;
+    this.myBeforeRouteUpdate(to).then(() => {
+      this.isLoading = false;
+    });
     next();
   },
 })
@@ -60,6 +63,8 @@ export default class PopularNow extends Vue {
     scrollTop: 0,
   };
 
+  isLoading = true;
+
   limit = 12;
   state = reactive<IPopularNowState>({
     curTitle: "时下流行列表",
@@ -69,7 +74,7 @@ export default class PopularNow extends Vue {
     mvList: [],
   });
 
-  myBeforeRouteUpdate(to: any) {
+  async myBeforeRouteUpdate(to: any) {
     this.state.mvList.splice(0, this.state.mvList.length);
     const currentSeries = this.popularNowTopMenuList.filter(
       (item: IPopularNowTopMenu) => item.link === to.params.link
@@ -78,17 +83,19 @@ export default class PopularNow extends Vue {
       this.title = currentSeries[0].title;
       this.areas = currentSeries[0].areas;
       for (const area of this.areas) {
-        this.getPopularNowList(area);
+        await this.getPopularNowList(area);
       }
     } else {
       // 为 all 时
       this.areas = ["全部"];
-      this.getPopularNowList();
+      await this.getPopularNowList();
     }
   }
 
   created() {
-    this.myBeforeRouteUpdate(router.currentRoute.value);
+    this.myBeforeRouteUpdate(router.currentRoute.value).then(() => {
+      this.isLoading = false;
+    });
   }
 
   activated() {

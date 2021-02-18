@@ -19,7 +19,7 @@
         <span>此列表中没有任何视频。</span>
       </div>
     </div>
-    <div v-show="isAllowLoadMore === false" class="loading-box">
+    <div v-show="!isAllowLoadMore || isLoading" class="loading-box">
       <RotateLoading class="search-loading" />
     </div>
   </div>
@@ -49,7 +49,7 @@ import RotateLoading from "@/share/RotateLoading.vue";
 })
 export default class Search extends Vue {
   keywords!: string;
-  isLoading = false;
+  isLoading = true;
   commandReachTheBottom = {
     isCommand: true,
     scrollTop: 0,
@@ -81,14 +81,9 @@ export default class Search extends Vue {
   }
 
   created() {
-    this.isLoading = true;
-    this.init(this.keywords)
-      .then(() => {
-        this.isLoading = false;
-      })
-      .catch(() => {
-        this.isLoading = false;
-      });
+    this.init(this.keywords).then(() => {
+      this.isLoading = false;
+    });
   }
 
   async init(keywords: string) {
