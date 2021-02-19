@@ -33,7 +33,7 @@
               <span
                 v-if="isLikedMv(mvDetailState.mv?.id)"
                 class="iconfont icon-zan comment-zan"
-                style="color: red"
+                style="color: #3260d4"
                 :disabled="!isAllowLike"
                 @click="unlike()"
               ></span>
@@ -69,6 +69,7 @@
               <button
                 v-if="isSubscription(artistDetailState.artistDetail?.id)"
                 class="sub-button"
+                style="background-color: #ececec; color: #606060"
                 :disabled="!isAllowSubscription"
                 @click="unsubscription(artistDetailState.artistDetail?.id)"
               >
@@ -650,9 +651,10 @@ export default class Watch extends Vue {
 .sub-button {
   color: white;
   font-size: 14px;
-  background-color: #cd2827;
+  background-color: #cc0000;
   padding: 10px 22px;
   border: none;
+  border-radius: 2px;
   cursor: pointer;
 }
 .sub-button:focus {
