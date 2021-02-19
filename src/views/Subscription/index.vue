@@ -45,6 +45,7 @@ import { IArtistMvState } from "./typing";
 import VideoShowTempOne from "@/share/VideoShowTempOne.vue";
 import router from "@/router";
 import RotateLoading from "@/share/RotateLoading.vue";
+import store from "@/store";
 
 @Options({
   name: "Subscription",
@@ -87,8 +88,10 @@ export default class Subscription extends Vue {
   }
 
   created() {
+    store.dispatch("TopProgressBar/pleaseStart");
     this.initStateList().then(() => {
       this.isLoading = false;
+      store.dispatch("TopProgressBar/pleaseEnd");
     });
   }
 

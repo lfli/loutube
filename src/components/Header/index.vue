@@ -1,5 +1,6 @@
 <template>
   <div class="header-box">
+    <TopProgressBar />
     <div class="menu-box">
       <span
         @click="$emit('toggle-side-drawer')"
@@ -21,6 +22,7 @@ import { Options, Vue } from "vue-class-component";
 import LouTubeLog from "@/share/LouTubeLog.vue";
 import SearchBar from "./SearchBar.vue";
 import MyProject from "./MyProject.vue";
+import TopProgressBar from "./TopProgressBar.vue";
 
 @Options({
   props: {},
@@ -28,6 +30,7 @@ import MyProject from "./MyProject.vue";
     LouTubeLog,
     SearchBar,
     MyProject,
+    TopProgressBar,
   },
   emits: ["toggle-side-drawer"],
 })

@@ -35,6 +35,7 @@ import router from "@/router";
 import { IPopularNowTopMenu } from "@/typing/LocalData";
 import RotateLoading from "@/share/RotateLoading.vue";
 import { IMv } from "@/typing";
+import store from "@/store";
 
 @Options({
   name: "PopularNow",
@@ -46,8 +47,10 @@ import { IMv } from "@/typing";
   props: ["link"],
   beforeRouteUpdate(to, from, next) {
     this.isLoading = true;
+    store.dispatch("TopProgressBar/pleaseStart");
     this.myBeforeRouteUpdate(to).then(() => {
       this.isLoading = false;
+      store.dispatch("TopProgressBar/pleaseEnd");
     });
     next();
   },
@@ -93,8 +96,10 @@ export default class PopularNow extends Vue {
   }
 
   created() {
+    store.dispatch("TopProgressBar/pleaseStart");
     this.myBeforeRouteUpdate(router.currentRoute.value).then(() => {
       this.isLoading = false;
+      store.dispatch("TopProgressBar/pleaseEnd");
     });
   }
 

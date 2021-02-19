@@ -336,6 +336,7 @@ export default class Watch extends Vue {
   }
 
   init() {
+    store.dispatch("TopProgressBar/pleaseStart");
     this.isAllowSubscription = false;
     this.isAllowLike = false;
     // 可能切换 mv
@@ -346,7 +347,9 @@ export default class Watch extends Vue {
     if (element) {
       element.scrollTop = 0; // 重置窗口位置
     }
-    this.getMvUrl();
+    this.getMvUrl().then(() => {
+      store.dispatch("TopProgressBar/pleaseEnd");
+    });
     this.getMvLikedCount();
     // this.getSimiMvList();
     this.getMvDetail().then(() => {

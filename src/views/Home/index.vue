@@ -23,6 +23,7 @@ import { IState } from "./typing";
 import RotateLoading from "@/share/RotateLoading.vue";
 import router from "@/router";
 import { IMv } from "@/typing";
+import store from "@/store";
 
 @Options({
   name: "Home",
@@ -43,8 +44,10 @@ export default class Home extends Vue {
     mvList: [],
   });
   created() {
+    store.dispatch("TopProgressBar/pleaseStart");
     this.getMvList().then(() => {
       this.isLoading = false;
+      store.dispatch("TopProgressBar/pleaseEnd");
     });
   }
   /**

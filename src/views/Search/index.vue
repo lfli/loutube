@@ -34,6 +34,7 @@ import VideoShowTempTwo from "@/share/VideoShowTempTwo.vue";
 import { IMv } from "@/typing";
 import router from "@/router";
 import RotateLoading from "@/share/RotateLoading.vue";
+import store from "@/store";
 
 @Options({
   name: "Search",
@@ -81,8 +82,10 @@ export default class Search extends Vue {
   }
 
   created() {
+    store.dispatch("TopProgressBar/pleaseStart");
     this.init(this.keywords).then(() => {
       this.isLoading = false;
+      store.dispatch("TopProgressBar/pleaseEnd");
     });
   }
 
