@@ -11,7 +11,7 @@
     <div style="width: 10vw"></div>
     <SearchBar />
     <div style="width: 5vw"></div>
-    <span class="iconfont icon-menu-dots"></span>
+    <!-- <span class="iconfont icon-menu-dots"></span> -->
     <div style="width: 5vw"></div>
     <MyProject />
   </div>
