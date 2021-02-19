@@ -662,17 +662,17 @@ export default class Watch extends Vue {
   display: flex;
   flex-direction: column;
 }
-.mv-list >>> .box-img {
+.mv-list ::v-deep() .box-img {
   width: 168px;
   min-width: 168px;
 }
-.mv-list >>> .content-title {
+.mv-list ::v-deep() .content-title {
   -webkit-line-clamp: 1;
 }
-.mv-list >>> .content-detail {
+.mv-list ::v-deep() .content-detail {
   -webkit-line-clamp: 2;
 }
-.mv-list >>> .box-content {
+.mv-list ::v-deep() .box-content {
   max-width: none;
 }
 @media screen and (max-width: 830px) {
