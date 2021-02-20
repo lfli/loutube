@@ -12,7 +12,7 @@ export const autoLoading = {
                     const b = document.documentElement.clientHeight +
                         (el.parentElement?.parentElement?.scrollTop || 0); // 可视区窗口高度 + 滚动距离
 
-                    if (binding.value.commandAutoLoading.isCommand && a <= b) {
+                    if (binding.value.commandAutoLoading.isCommand && (a - 100) <= b) {
                         binding.value.autoLoading();
                     }
                 }

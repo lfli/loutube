@@ -84,7 +84,7 @@ export default class Home extends Vue {
       this.scrollTop = elementHome.scrollTop;
       if (
         window.innerHeight + this.scrollTop >=
-        elementHome.scrollHeight - 10
+        elementHome.scrollHeight - 100
       ) {
         // 下滑加载更多 mv
         if (this.isAllowLoadMore) {

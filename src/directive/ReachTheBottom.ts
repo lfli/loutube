@@ -5,7 +5,7 @@ export const reachTheBottom = {
         window.addEventListener(
             "scroll",
             function () {
-                if (binding.value.commandReachTheBottom.isCommand && window.innerHeight + el.scrollTop >= el.scrollHeight - 10) {
+                if (binding.value.commandReachTheBottom.isCommand && window.innerHeight + el.scrollTop >= el.scrollHeight - 100) {
                     binding.value.reachTheBottom();
                 }
                 binding.value.commandReachTheBottom.scrollTop = el.scrollTop;
