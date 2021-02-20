@@ -1,5 +1,8 @@
 # loutube
 
+### 项目演示地址
+[http://www.lilinfeng.net/loutube](http://www.lilinfeng.net/loutube)
+
 ### 项目简介
 基于vue3+typescript的个人项目，不使用任何UI框架，所有组件和样式均自主开发。
 
