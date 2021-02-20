@@ -6,6 +6,8 @@
 #### 技术栈
 - **[vue3](https://github.com/vuejs/vue):**  vue3全家桶 
 - **[typescript](https://github.com/microsoft/TypeScript):**  javascript的超集 
+- **[axios](https://github.com/axios/axios):**  基于promise的HTTP库 
+- **[NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi):**  开源的NodeJS版api接口 
     
 ### 项目运行
 #### clone项目
