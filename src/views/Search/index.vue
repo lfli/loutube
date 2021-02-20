@@ -44,7 +44,10 @@ import store from "@/store";
     RotateLoading,
   },
   beforeRouteUpdate(to, from, next) {
-    this.init(to.params.keywords);
+    store.dispatch("TopProgressBar/pleaseStart");
+    this.init(to.params.keywords).then(() => {
+      store.dispatch("TopProgressBar/pleaseEnd");
+    });
     next();
   },
 })
@@ -97,7 +100,9 @@ export default class Search extends Vue {
       this.cloudsearchState.queryParams.limit
     );
     this.cloudsearchState.mvList.splice(0, this.cloudsearchState.mvList.length);
-    this.cloudsearchState.mvList.push(...result.mvs);
+    if (result.mvs) {
+      this.cloudsearchState.mvList.push(...result.mvs);
+    }
   }
 
   async loadMoreMv() {
