@@ -45,7 +45,7 @@ import store from "@/store";
   },
   beforeRouteUpdate(to, from, next) {
     store.dispatch("TopProgressBar/pleaseStart");
-    this.init(to.params.keywords).then(() => {
+    this.init(to.query.q).then(() => {
       store.dispatch("TopProgressBar/pleaseEnd");
     });
     next();

@@ -21,7 +21,7 @@ export default class SearchBar extends Vue {
   keywords = "";
   search() {
     if (this.keywords.length > 0) {
-      router.push({ path: `/search/${this.keywords}` });
+      router.push({ path: "/search", query: { q: this.keywords } });
     }
   }
 }

@@ -47,10 +47,10 @@ const routes: Array<RouteRecordRaw> = [
     }
   },
   {
-    path: '/search/:keywords',
+    path: '/search',
     name: 'Search',
     component: () => import(/* webpackChunkName: "about" */ '../views/Search/index.vue'),
-    props: true,
+    props: route => ({ keywords: route.query.q }),
     meta: {
       keepAlive: true,
       depth: 1
