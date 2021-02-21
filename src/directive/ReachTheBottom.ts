@@ -8,7 +8,10 @@ export const reachTheBottom = {
                 if (binding.value.commandReachTheBottom.isCommand && window.innerHeight + el.scrollTop >= el.scrollHeight - 100) {
                     binding.value.reachTheBottom();
                 }
-                binding.value.commandReachTheBottom.scrollTop = el.scrollTop;
+                // 进入 Watch 页面时，Watch 页面的页面滑动对此有影响，一直触发 scroll 事件且 el.scrollTop 为 0
+                if (el.scrollTop !== 0) {
+                    binding.value.commandReachTheBottom.scrollTop = el.scrollTop;
+                }
             },
             true
         );
