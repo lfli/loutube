@@ -9,8 +9,11 @@
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
+import { titleMixin } from "@/mixins/titleMixin";
 
-@Options({})
+@Options({
+  mixins: [titleMixin],
+})
 export default class NotFound extends Vue {}
 </script>
 

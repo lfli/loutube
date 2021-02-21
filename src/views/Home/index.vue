@@ -24,9 +24,11 @@ import RotateLoading from "@/share/RotateLoading.vue";
 import router from "@/router";
 import { IMv } from "@/typing";
 import store from "@/store";
+import { titleMixin } from "@/mixins/titleMixin";
 
 @Options({
   name: "Home",
+  mixins: [titleMixin],
   components: {
     VideoShowTempOne,
     RotateLoading,

@@ -28,11 +28,13 @@ import { mapState } from "vuex";
 import VideoShowTempOne from "@/share/VideoShowTempOne.vue";
 import router from "@/router";
 import { IMv } from "@/typing";
+import { titleMixin } from "@/mixins/titleMixin";
 
 @Options({
   components: {
     VideoShowTempOne,
   },
+  mixins: [titleMixin],
   computed: {
     ...mapState({
       likedMvList: (state: any) => state.LikedMv.likedMvList,

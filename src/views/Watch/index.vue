@@ -206,8 +206,10 @@ import RotateLoading from "@/share/RotateLoading.vue";
 import Comment from "@/share/Comment.vue";
 import store from "@/store";
 import { mapGetters } from "vuex";
+import { titleMixin } from "@/mixins/titleMixin";
 
 @Options({
+  mixins: [titleMixin],
   components: {
     VideoShowTempTwo,
     RotateLoading,

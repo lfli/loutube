@@ -46,9 +46,11 @@ import VideoShowTempOne from "@/share/VideoShowTempOne.vue";
 import router from "@/router";
 import RotateLoading from "@/share/RotateLoading.vue";
 import store from "@/store";
+import { titleMixin } from "@/mixins/titleMixin";
 
 @Options({
   name: "Subscription",
+  mixins: [titleMixin],
   components: {
     VideoShowTempOne,
     RotateLoading,

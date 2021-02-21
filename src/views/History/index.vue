@@ -23,11 +23,13 @@ import { mapState } from "vuex";
 import VideoShowTempTwo from "@/share/VideoShowTempTwo.vue";
 import { IMv } from "@/typing";
 import router from "@/router";
+import { titleMixin } from "@/mixins/titleMixin";
 
 @Options({
   components: {
     VideoShowTempTwo,
   },
+  mixins: [titleMixin],
   computed: {
     ...mapState({
       historyMvList: (state: any) => state.HistoryMv.historyMvList,

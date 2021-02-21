@@ -17,6 +17,7 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import(/* webpackChunkName: "about" */ '../views/PopularNow/index.vue'),
     props: true,
     meta: {
+      title: '时下流行',
       keepAlive: true,
       depth: 1
     }
@@ -26,6 +27,7 @@ const routes: Array<RouteRecordRaw> = [
     name: 'Subscription',
     component: () => import(/* webpackChunkName: "about" */ '../views/Subscription/index.vue'),
     meta: {
+      title: '订阅内容',
       keepAlive: true,
       depth: 1
     }
@@ -35,6 +37,7 @@ const routes: Array<RouteRecordRaw> = [
     name: 'MediaLibrary',
     component: () => import(/* webpackChunkName: "about" */ '../views/MediaLibrary/index.vue'),
     meta: {
+      title: '媒体库',
       depth: 1
     }
   },
@@ -43,6 +46,7 @@ const routes: Array<RouteRecordRaw> = [
     name: 'History',
     component: () => import(/* webpackChunkName: "about" */ '../views/History/index.vue'),
     meta: {
+      title: '历史记录',
       depth: 1
     }
   },
@@ -52,6 +56,7 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import(/* webpackChunkName: "about" */ '../views/Search/index.vue'),
     props: route => ({ keywords: route.query.q }),
     meta: {
+      title: '搜索',
       keepAlive: true,
       depth: 1
     }
@@ -62,6 +67,7 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import(/* webpackChunkName: "about" */ '../views/Watch/index.vue'),
     props: true,
     meta: {
+      title: '观看',
       depth: 2
     }
   },
@@ -70,6 +76,7 @@ const routes: Array<RouteRecordRaw> = [
     name: 'NotFound',
     component: () => import(/* webpackChunkName: "about" */ '../views/Notfound/index.vue'),
     meta: {
+      title: '404',
       depth: 2
     }
   }

@@ -35,9 +35,11 @@ import { IMv } from "@/typing";
 import router from "@/router";
 import RotateLoading from "@/share/RotateLoading.vue";
 import store from "@/store";
+import { titleMixin } from "@/mixins/titleMixin";
 
 @Options({
   name: "Search",
+  mixins: [titleMixin],
   props: ["keywords"],
   components: {
     VideoShowTempTwo,

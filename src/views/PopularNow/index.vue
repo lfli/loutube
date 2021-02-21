@@ -36,9 +36,11 @@ import { IPopularNowTopMenu } from "@/typing/LocalData";
 import RotateLoading from "@/share/RotateLoading.vue";
 import { IMv } from "@/typing";
 import store from "@/store";
+import { titleMixin } from "@/mixins/titleMixin";
 
 @Options({
   name: "PopularNow",
+  mixins: [titleMixin],
   components: {
     TopMenuItem,
     VideoShowTempTwo,
