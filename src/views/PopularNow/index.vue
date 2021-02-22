@@ -56,6 +56,19 @@ import { titleMixin } from "@/mixins/titleMixin";
     });
     next();
   },
+  beforeRouteEnter(to, from, next) {
+    next((vm: any) => {
+      // 从地区 mv 切换到其它页面再回到此页面时，重新加载数据
+      if (from.meta.depth === 1 && vm.title && vm.title.length > 0) {
+        store.dispatch("TopProgressBar/pleaseStart");
+        vm.commandReachTheBottom.scrollTop = 0;
+        vm.myBeforeRouteUpdate(to).then(() => {
+          vm.isLoading = false;
+          store.dispatch("TopProgressBar/pleaseEnd");
+        });
+      }
+    });
+  },
 })
 export default class PopularNow extends Vue {
   link!: string;
@@ -93,6 +106,7 @@ export default class PopularNow extends Vue {
     } else {
       // 为 all 时
       this.areas = ["全部"];
+      this.title = "";
       await this.getPopularNowList();
     }
   }
