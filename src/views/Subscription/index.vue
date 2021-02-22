@@ -63,6 +63,7 @@ import { titleMixin } from "@/mixins/titleMixin";
 })
 export default class Subscription extends Vue {
   artistList!: IArtistDetail[];
+  tempArtistList: IArtistDetail[] = [];
   artistMvLimit = 10;
   artistMvLoadMoreCount = 0;
   isAllowLoadMore = true;
@@ -87,14 +88,6 @@ export default class Subscription extends Vue {
           this.isAllowLoadMore = true;
         });
     }
-  }
-
-  created() {
-    store.dispatch("TopProgressBar/pleaseStart");
-    this.initStateList().then(() => {
-      this.isLoading = false;
-      store.dispatch("TopProgressBar/pleaseEnd");
-    });
   }
 
   async initStateList() {
@@ -136,14 +129,46 @@ export default class Subscription extends Vue {
 
   activated() {
     this.commandReachTheBottom.isCommand = true;
+
+    if (!this.arrayEquar(this.artistList, this.tempArtistList)) {
+      this.commandReachTheBottom.isCommand = false; // 防止触发下滑加载事件
+
+      this.isLoading = true;
+      this.commandReachTheBottom.scrollTop = 0;
+      this.isHasMore = {};
+      this.artistMvLoadMoreCount = 0;
+      this.artistMvStateList.splice(0, this.artistMvStateList.length);
+
+      store.dispatch("TopProgressBar/pleaseStart");
+      this.initStateList().then(() => {
+        this.commandReachTheBottom.isCommand = true; // 防止触发下滑加载事件
+        this.isLoading = false;
+        store.dispatch("TopProgressBar/pleaseEnd");
+      });
+    } else {
+      this.isLoading = false;
+    }
   }
 
   deactivated() {
     this.commandReachTheBottom.isCommand = false;
+    this.tempArtistList = [...this.artistList];
   }
 
   beforeUnmount() {
     this.commandReachTheBottom.isCommand = false;
+  }
+
+  arrayEquar(a: {}[], b: {}[]) {
+    if (a.length !== b.length) {
+      return false;
+    }
+    for (let i = 0; i < a.length; i++) {
+      if (a[i] !== b[i]) {
+        return false;
+      }
+    }
+    return true;
   }
 }
 </script>

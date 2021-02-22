@@ -4,7 +4,7 @@
     <div class="content">
       <Sidebar v-show="isShowSidebar" :listData="sideNavList" class="sidebar" />
       <router-view v-slot="{ Component }">
-        <keep-alive :include="includeNames">
+        <keep-alive>
           <component
             :class="[{ 'router-paper-full': !isShowSidebar }, 'router-paper']"
             :is="Component"
@@ -47,21 +47,11 @@ import router from "./router";
       return router.currentRoute.value.meta.depth === 1;
     },
   },
-  mounted() {
-    router.beforeEach((to, from, next) => {
-      if (to.meta.depth === 1) {
-        this.includeNames.splice(0, this.includeNames.length);
-        this.includeNames.push(to.name);
-      }
-      next();
-    });
-  },
 })
 export default class App extends Vue {
   show = false;
   sideNavList = sideNavList;
   sideDrawerList = sideDrawerList;
-  includeNames = [];
 }
 </script>
 
