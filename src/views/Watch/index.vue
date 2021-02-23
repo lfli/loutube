@@ -672,6 +672,7 @@ export default class Watch extends Vue {
 }
 .mv-list ::v-deep() .content-title {
   -webkit-line-clamp: 1;
+  line-height: 24px;
 }
 .mv-list ::v-deep() .content-detail {
   -webkit-line-clamp: 2;
