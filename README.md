@@ -17,10 +17,9 @@
 ```
 git clone https://github.com/lfli/loutube.git
 ```
-#### 安装依赖（如果没有 yarn 推荐使用 cnpm）
+#### 安装依赖
 ```
-npm install cnpm -g --registry=https://registry.npm.taobao.org
-yarn install or cnpm install
+yarn or npm install
 ```
 
 #### 本地运行
