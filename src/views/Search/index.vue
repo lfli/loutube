@@ -55,6 +55,7 @@ import { titleMixin } from "@/mixins/titleMixin";
 })
 export default class Search extends Vue {
   keywords!: string;
+  tempKeywords = "";
   isLoading = true;
   commandReachTheBottom = {
     isCommand: true,
@@ -84,14 +85,6 @@ export default class Search extends Vue {
           this.isAllowLoadMore = true;
         });
     }
-  }
-
-  created() {
-    store.dispatch("TopProgressBar/pleaseStart");
-    this.init(this.keywords).then(() => {
-      this.isLoading = false;
-      store.dispatch("TopProgressBar/pleaseEnd");
-    });
   }
 
   async init(keywords: string) {
@@ -126,10 +119,18 @@ export default class Search extends Vue {
 
   activated() {
     this.commandReachTheBottom.isCommand = true;
+    if (this.tempKeywords !== this.keywords) {
+      store.dispatch("TopProgressBar/pleaseStart");
+      this.init(this.keywords).then(() => {
+        this.isLoading = false;
+        store.dispatch("TopProgressBar/pleaseEnd");
+      });
+    }
   }
 
   deactivated() {
     this.commandReachTheBottom.isCommand = false;
+    this.tempKeywords = this.keywords;
   }
 
   beforeUnmount() {
