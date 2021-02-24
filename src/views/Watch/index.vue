@@ -235,6 +235,7 @@ export default class Watch extends Vue {
   isAllowLike = false;
   mvListIsLoading = true;
   commentListIsLoading = true;
+  isUnmounted = false;
 
   simiMvState = reactive<ISimiMvState>({
     curTitle: "相似 mv 列表",
@@ -371,6 +372,7 @@ export default class Watch extends Vue {
   }
 
   unmounted() {
+    this.isUnmounted = true;
     this.mvListAutoLoading.isCommand = false;
     this.commentListAutoLoading.isCommand = false;
   }
@@ -466,9 +468,13 @@ export default class Watch extends Vue {
         await this.getPopularNowList();
       }
     } catch (error) {
+      if (!this.isUnmounted) {
+        this.mvListAutoLoading.isCommand = true;
+      }
+    }
+    if (!this.isUnmounted) {
       this.mvListAutoLoading.isCommand = true;
     }
-    this.mvListAutoLoading.isCommand = true;
   }
 
   mvListLoadingForClick() {
@@ -530,9 +536,13 @@ export default class Watch extends Vue {
       this.commentMvState.total = total;
       this.commentMvState.more = more;
     } catch (error) {
+      if (!this.isUnmounted) {
+        this.commentListAutoLoading.isCommand = true;
+      }
+    }
+    if (!this.isUnmounted) {
       this.commentListAutoLoading.isCommand = true;
     }
-    this.commentListAutoLoading.isCommand = true;
   }
 
   subscription() {
