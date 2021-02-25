@@ -13,7 +13,7 @@
     <div style="width: 5vw"></div>
     <!-- <span class="iconfont icon-menu-dots"></span> -->
     <div style="width: 5vw"></div>
-    <MyProject />
+    <MyProject :title="myProjectAddr" @click="goGithub()" />
   </div>
 </template>
 
@@ -34,7 +34,13 @@ import TopProgressBar from "./TopProgressBar.vue";
   },
   emits: ["toggle-side-drawer"],
 })
-export default class Header extends Vue {}
+export default class Header extends Vue {
+  myProjectAddr = "https://github.com/lfli/loutube";
+
+  goGithub() {
+    window.open(this.myProjectAddr, "_blank");
+  }
+}
 </script>
 
 <style scoped>
