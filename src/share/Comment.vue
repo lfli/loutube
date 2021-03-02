@@ -6,9 +6,17 @@
         <span class="nickname">{{ comment.user.nickname }}</span>
       </div>
       <div class="content-box">
-        <span class="hideText comment-content">{{ comment.content }}</span>
+        <span
+          class="hideText comment-content"
+          :class="[isOpen ? 'comment-content-open' : 'comment-content-close']"
+          >{{ comment.content }}</span
+        >
       </div>
       <div>
+        <div class="operation-box">
+          <span v-if="!isOpen" @click="isOpen = true">展开</span>
+          <span v-else @click="isOpen = false">收起</span>
+        </div>
         <div class="zan-box">
           <span class="iconfont icon-zan comment-zan"></span>
           <span class="zan-count">{{
@@ -30,6 +38,7 @@ import { Options, Vue } from "vue-class-component";
 })
 export default class Comment extends Vue {
   comment!: IComment;
+  isOpen = false;
 }
 </script>
 
@@ -78,5 +87,15 @@ export default class Comment extends Vue {
 .comment-cai:before {
   display: inline-block;
   transform: rotate(180deg);
+}
+.comment-content-open {
+  -webkit-line-clamp: inherit;
+}
+.comment-content-close {
+  -webkit-line-clamp: 2;
+}
+.operation-box {
+  cursor: pointer;
+  user-select: none;
 }
 </style>
