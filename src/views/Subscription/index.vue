@@ -159,7 +159,7 @@ export default class Subscription extends Vue {
     this.commandReachTheBottom.isCommand = false;
   }
 
-  arrayEquar(a: {}[], b: {}[]) {
+  arrayEquar(a: any[], b: any[]) {
     if (a.length !== b.length) {
       return false;
     }
