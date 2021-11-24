@@ -42,7 +42,6 @@
 </template>
 
 <script lang="ts">
-import router from "@/router";
 import { Options, Vue } from "vue-class-component";
 import LouTubeLog from "@/share/LouTubeLog.vue";
 import SideDrawerMenuItem from "./SideDrawerMenuItem.vue";
@@ -56,7 +55,7 @@ import SideDrawerMenuItem from "./SideDrawerMenuItem.vue";
   emits: ["close"],
   methods: {
     to(address: string) {
-      router.push({ path: address });
+      this.$router.push({ path: address });
       this.$emit("close");
     },
   },

@@ -64,7 +64,6 @@
                 <span class="artist-name">{{
                   artistDetailState.artistDetail?.name
                 }}</span>
-                <!-- <span class="sub-info">132万位订阅者</span> -->
               </div>
               <button
                 v-if="isSubscription(artistDetailState.artistDetail?.id)"
@@ -98,14 +97,7 @@
           </div>
         </div>
       </div>
-      <div
-        v-show="!isSmallScreen"
-        class="mv-list"
-        v-autoLoading="{
-          commandAutoLoading: mvListAutoLoading,
-          autoLoading: mvListLoading,
-        }"
-      >
+      <div ref="mvList" v-show="!isSmallScreen" class="mv-list">
         <template v-for="mv of simiMvState.mvList" :key="mv.id">
           <VideoShowTempTwo :mv="mv" @click="goWatch(mv)"></VideoShowTempTwo>
           <div style="height: 8px"></div>
@@ -135,13 +127,7 @@
         </div>
       </div>
 
-      <div
-        class="comment-list"
-        v-autoLoading="{
-          commandAutoLoading: commentListAutoLoading,
-          autoLoading: commentListLoading,
-        }"
-      >
+      <div ref="commentList" class="comment-list">
         <div class="comment-count-box">
           <span
             >{{
@@ -200,13 +186,13 @@ import {
   getPopularNowListRequest,
   getSimiMvListRequest,
 } from "@/apis/requests/mv";
-import router from "@/router";
 import { IArtistMv, IMv } from "@/typing";
 import RotateLoading from "@/share/RotateLoading.vue";
 import Comment from "@/share/Comment.vue";
 import store from "@/store";
 import { mapGetters } from "vuex";
 import { titleMixin } from "@/mixins/titleMixin";
+import { loadScrollEvent } from "@/share/util";
 
 @Options({
   mixins: [titleMixin],
@@ -312,11 +298,9 @@ export default class Watch extends Vue {
     this.init();
   }
 
-  created() {
-    this.init();
-  }
-
   mounted() {
+    this.init();
+
     // 监听窗口大小，改变 mv-list 加载更多方式
     const element = document.getElementById("watch-outer");
     if (element) {
@@ -337,6 +321,20 @@ export default class Watch extends Vue {
         }
       };
     }
+
+    loadScrollEvent(this.$refs.mvList as any, {
+      value: {
+        commandAutoLoading: this.mvListAutoLoading,
+        autoLoading: this.mvListLoading,
+      },
+    });
+
+    loadScrollEvent(this.$refs.commentList as any, {
+      value: {
+        commandAutoLoading: this.commentListAutoLoading,
+        autoLoading: this.commentListLoading,
+      },
+    });
   }
 
   init() {
@@ -455,7 +453,7 @@ export default class Watch extends Vue {
   }
 
   goWatch(mv: IMv) {
-    router.push({ path: `/watch/${mv.id}` });
+    this.$router.push({ path: `/watch/${mv.id}` });
   }
 
   async mvListLoading() {

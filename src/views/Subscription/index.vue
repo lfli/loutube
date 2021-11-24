@@ -1,5 +1,6 @@
 <template>
-  <div v-reachTheBottom="{ commandReachTheBottom, reachTheBottom }">
+  <!-- <div v-reachTheBottom="{ commandReachTheBottom, reachTheBottom }"> -->
+  <div ref="subscription">
     <div class="subscription">
       <div
         class="subscription-title"
@@ -43,10 +44,10 @@ import { Options, Vue } from "vue-class-component";
 import { mapState } from "vuex";
 import { IArtistMvState } from "./typing";
 import VideoShowTempOne from "@/share/VideoShowTempOne.vue";
-import router from "@/router";
 import RotateLoading from "@/share/RotateLoading.vue";
 import store from "@/store";
 import { titleMixin } from "@/mixins/titleMixin";
+import { loadScrollEvent } from "@/share/util";
 
 @Options({
   name: "Subscription",
@@ -124,10 +125,10 @@ export default class Subscription extends Vue {
   }
 
   goWatch(mv: IMv) {
-    router.push({ path: `/watch/${mv.id}` });
+    this.$router.push({ path: `/watch/${mv.id}` });
   }
 
-  activated() {
+  mounted() {
     this.commandReachTheBottom.isCommand = true;
 
     if (!this.arrayEquar(this.artistList, this.tempArtistList)) {
@@ -148,9 +149,16 @@ export default class Subscription extends Vue {
     } else {
       this.isLoading = false;
     }
+
+    loadScrollEvent(this.$refs.subscription as any, {
+      value: {
+        commandAutoLoading: this.commandReachTheBottom,
+        autoLoading: this.reachTheBottom,
+      },
+    });
   }
 
-  deactivated() {
+  unmounted() {
     this.commandReachTheBottom.isCommand = false;
     this.tempArtistList = [...this.artistList];
   }

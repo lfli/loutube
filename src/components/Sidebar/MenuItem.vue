@@ -6,7 +6,6 @@
 </template>
 
 <script lang="ts">
-import router from "@/router";
 import { Options, Vue } from "vue-class-component";
 
 @Options({
@@ -15,7 +14,7 @@ import { Options, Vue } from "vue-class-component";
   computed: {
     selectedClass() {
       return {
-        selected: this.url === router.currentRoute.value.path,
+        selected: this.url === this.$router.currentRoute.value.path,
       };
     },
   },

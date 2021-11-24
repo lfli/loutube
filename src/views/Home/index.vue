@@ -21,9 +21,7 @@ import { reactive } from "vue";
 import { getMvListRequest } from "@/apis/requests/mv";
 import { IState } from "./typing";
 import RotateLoading from "@/share/RotateLoading.vue";
-import router from "@/router";
 import { IMv } from "@/typing";
-import store from "@/store";
 import { titleMixin } from "@/mixins/titleMixin";
 
 @Options({
@@ -45,11 +43,14 @@ export default class Home extends Vue {
     },
     mvList: [],
   });
+
+  $store: any;
+
   created() {
-    store.dispatch("TopProgressBar/pleaseStart");
+    this.$store.dispatch("TopProgressBar/pleaseStart");
     this.getMvList().then(() => {
       this.isLoading = false;
-      store.dispatch("TopProgressBar/pleaseEnd");
+      this.$store.dispatch("TopProgressBar/pleaseEnd");
     });
   }
   /**
@@ -58,6 +59,7 @@ export default class Home extends Vue {
   async getMvList() {
     const { data } = await getMvListRequest(this.state.queryParams.limit);
     this.state.mvList.push(...data);
+    console.log("----- this.state.mvList 加载完毕");
   }
 
   isAllowLoadMore = true;
@@ -115,7 +117,7 @@ export default class Home extends Vue {
   }
 
   goWatch(mv: IMv) {
-    router.push({ path: `/watch/${mv.id}` });
+    this.$router.push({ path: `/watch/${mv.id}` });
   }
 }
 </script>

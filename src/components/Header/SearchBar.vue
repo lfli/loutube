@@ -13,7 +13,6 @@
 </template>
 
 <script lang="ts">
-import router from "@/router";
 import { Options, Vue } from "vue-class-component";
 
 @Options({})
@@ -21,7 +20,7 @@ export default class SearchBar extends Vue {
   keywords = "";
   search() {
     if (this.keywords.length > 0) {
-      router.push({ path: "/search", query: { q: this.keywords } });
+      this.$router.push({ path: "/search", query: { q: this.keywords } });
     }
   }
 }

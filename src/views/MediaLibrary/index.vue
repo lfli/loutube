@@ -26,7 +26,6 @@
 import { Options, Vue } from "vue-class-component";
 import { mapState } from "vuex";
 import VideoShowTempOne from "@/share/VideoShowTempOne.vue";
-import router from "@/router";
 import { IMv } from "@/typing";
 import { titleMixin } from "@/mixins/titleMixin";
 
@@ -43,7 +42,7 @@ import { titleMixin } from "@/mixins/titleMixin";
 })
 export default class MediaLibrary extends Vue {
   goWatch(mv: IMv) {
-    router.push({ path: `/watch/${mv.id}` });
+    this.$router.push({ path: `/watch/${mv.id}` });
   }
 }
 </script>

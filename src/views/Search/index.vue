@@ -1,5 +1,6 @@
 <template>
-  <div v-reachTheBottom="{ reachTheBottom, commandReachTheBottom }">
+  <!-- <div v-reachTheBottom="{ reachTheBottom, commandReachTheBottom }"> -->
+    <div>
     <div class="search">
       <div class="search-title">
         <span>搜索结果</span>
@@ -32,7 +33,6 @@ import { Options, Vue } from "vue-class-component";
 import { ICloudsearchState } from "./typing";
 import VideoShowTempTwo from "@/share/VideoShowTempTwo.vue";
 import { IMv } from "@/typing";
-import router from "@/router";
 import RotateLoading from "@/share/RotateLoading.vue";
 import store from "@/store";
 import { titleMixin } from "@/mixins/titleMixin";
@@ -114,7 +114,7 @@ export default class Search extends Vue {
   }
 
   goWatch(mv: IMv) {
-    router.push({ path: `/watch/${mv.id}` });
+    this.$router.push({ path: `/watch/${mv.id}` });
   }
 
   activated() {

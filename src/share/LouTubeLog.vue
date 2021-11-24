@@ -6,14 +6,13 @@
 </template>
 
 <script lang="ts">
-import router from "@/router";
 import { Options, Vue } from "vue-class-component";
 
 @Options({
   props: {},
   methods: {
     goHome() {
-      router.push("/");
+      this.$router.push("/");
     },
   },
 })

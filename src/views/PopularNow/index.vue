@@ -1,5 +1,6 @@
 <template>
-  <div v-reachTheBottom="{ reachTheBottom, commandReachTheBottom }">
+  <!-- <div v-reachTheBottom="{ reachTheBottom, commandReachTheBottom }"> -->
+    <div>
     <div class="popular-now">
       <div v-if="link === 'all'" class="top-menu">
         <template v-for="item of popularNowTopMenuList" :key="item.link">
@@ -31,7 +32,6 @@ import VideoShowTempTwo from "@/share/VideoShowTempTwo.vue";
 import { reactive } from "vue";
 import { IPopularNowState } from "./typing";
 import { getPopularNowListRequest } from "@/apis/requests/mv";
-import router from "@/router";
 import { IPopularNowTopMenu } from "@/typing/LocalData";
 import RotateLoading from "@/share/RotateLoading.vue";
 import { IMv } from "@/typing";
@@ -113,7 +113,7 @@ export default class PopularNow extends Vue {
 
   created() {
     store.dispatch("TopProgressBar/pleaseStart");
-    this.myBeforeRouteUpdate(router.currentRoute.value).then(() => {
+    this.myBeforeRouteUpdate(this.$router.currentRoute.value).then(() => {
       this.isLoading = false;
       store.dispatch("TopProgressBar/pleaseEnd");
     });
@@ -168,11 +168,11 @@ export default class PopularNow extends Vue {
   }
 
   to(link: string) {
-    router.push({ path: `/popular-now/${link}` });
+    this.$router.push({ path: `/popular-now/${link}` });
   }
 
   goWatch(mv: IMv) {
-    router.push({ path: `/watch/${mv.id}` });
+    this.$router.push({ path: `/watch/${mv.id}` });
   }
 }
 </script>

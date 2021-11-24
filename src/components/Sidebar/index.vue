@@ -12,7 +12,6 @@
 </template>
 
 <script lang="ts">
-import router from "@/router";
 import { Options, Vue } from "vue-class-component";
 import MenuItem from "./MenuItem.vue";
 
@@ -23,7 +22,7 @@ import MenuItem from "./MenuItem.vue";
   },
   methods: {
     to(address: string) {
-      router.push({ path: address });
+      this.$router.push({ path: address });
     },
   },
 })

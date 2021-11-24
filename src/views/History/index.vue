@@ -22,7 +22,6 @@ import { Options, Vue } from "vue-class-component";
 import { mapState } from "vuex";
 import VideoShowTempTwo from "@/share/VideoShowTempTwo.vue";
 import { IMv } from "@/typing";
-import router from "@/router";
 import { titleMixin } from "@/mixins/titleMixin";
 
 @Options({
@@ -38,7 +37,7 @@ import { titleMixin } from "@/mixins/titleMixin";
 })
 export default class History extends Vue {
   goWatch(mv: IMv) {
-    router.push({ path: `/watch/${mv.id}` });
+    this.$router.push({ path: `/watch/${mv.id}` });
   }
 }
 </script>

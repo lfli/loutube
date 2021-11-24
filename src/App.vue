@@ -33,8 +33,7 @@ import { Options, Vue } from "vue-class-component";
 import Header from "@/components/Header/index.vue"; // @ is an alias to /src
 import Sidebar from "@/components/Sidebar/index.vue";
 import SideDrawer from "@/components/SideDrawer/index.vue";
-import { sideDrawerList, sideNavList } from "@/apis/data.ts";
-import router from "./router";
+import { sideDrawerList, sideNavList } from "@/apis/data";
 
 @Options({
   components: {
@@ -44,7 +43,7 @@ import router from "./router";
   },
   computed: {
     isShowSidebar() {
-      return router.currentRoute.value.meta.depth === 1;
+      return this.$router.currentRoute.value.meta.depth === 1;
     },
   },
 })
