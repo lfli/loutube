@@ -1,6 +1,6 @@
 <template>
   <!-- <div v-reachTheBottom="{ reachTheBottom, commandReachTheBottom }"> -->
-    <div>
+  <div ref="popularNow">
     <div class="popular-now">
       <div v-if="link === 'all'" class="top-menu">
         <template v-for="item of popularNowTopMenuList" :key="item.link">
@@ -36,6 +36,7 @@ import { IPopularNowTopMenu } from "@/typing/LocalData";
 import RotateLoading from "@/share/RotateLoading.vue";
 import { IMv } from "@/typing";
 import { titleMixin } from "@/mixins/titleMixin";
+import { vReachTheBottom } from "@/share/util";
 
 @Options({
   name: "PopularNow",
@@ -118,6 +119,19 @@ export default class PopularNow extends Vue {
       this.isLoading = false;
       this.$store.dispatch("TopProgressBar/pleaseEnd");
     });
+  }
+
+  mounted() {
+    vReachTheBottom(this.$refs.popularNow as any, {
+      value: {
+        reachTheBottom: this.reachTheBottom,
+        commandReachTheBottom: this.commandReachTheBottom,
+      },
+    });
+  }
+  updated() {
+    (this.$refs.popularNow as any).scrollTop =
+      this.commandReachTheBottom.scrollTop;
   }
 
   activated() {

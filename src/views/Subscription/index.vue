@@ -46,7 +46,7 @@ import { IArtistMvState } from "./typing";
 import VideoShowTempOne from "@/share/VideoShowTempOne.vue";
 import RotateLoading from "@/share/RotateLoading.vue";
 import { titleMixin } from "@/mixins/titleMixin";
-import { loadScrollEvent } from "@/share/util";
+import { vReachTheBottom } from "@/share/util";
 
 @Options({
   name: "Subscription",
@@ -63,7 +63,7 @@ import { loadScrollEvent } from "@/share/util";
 })
 export default class Subscription extends Vue {
   $store: any;
-  
+
   artistList!: IArtistDetail[];
   tempArtistList: IArtistDetail[] = [];
   artistMvLimit = 10;
@@ -151,12 +151,16 @@ export default class Subscription extends Vue {
       this.isLoading = false;
     }
 
-    loadScrollEvent(this.$refs.subscription as any, {
+    vReachTheBottom(this.$refs.subscription as any, {
       value: {
-        commandAutoLoading: this.commandReachTheBottom,
-        autoLoading: this.reachTheBottom,
+        commandReachTheBottom: this.commandReachTheBottom,
+        reachTheBottom: this.reachTheBottom,
       },
     });
+  }
+  updated() {
+    (this.$refs.subscription as any).scrollTop =
+      this.commandReachTheBottom.scrollTop;
   }
 
   unmounted() {

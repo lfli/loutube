@@ -1,6 +1,6 @@
 <template>
   <!-- <div v-reachTheBottom="{ reachTheBottom, commandReachTheBottom }"> -->
-  <div>
+  <div ref="search">
     <div class="search">
       <div class="search-title">
         <span>搜索结果</span>
@@ -35,6 +35,7 @@ import VideoShowTempTwo from "@/share/VideoShowTempTwo.vue";
 import { IMv } from "@/typing";
 import RotateLoading from "@/share/RotateLoading.vue";
 import { titleMixin } from "@/mixins/titleMixin";
+import { vReachTheBottom } from "@/share/util";
 
 @Options({
   name: "Search",
@@ -127,6 +128,16 @@ export default class Search extends Vue {
         this.$store.dispatch("TopProgressBar/pleaseEnd");
       });
     }
+
+    vReachTheBottom(this.$refs.search as any, {
+      value: {
+        reachTheBottom: this.reachTheBottom,
+        commandReachTheBottom: this.commandReachTheBottom,
+      },
+    });
+  }
+  updated() {
+    (this.$refs.search as any).scrollTop = this.commandReachTheBottom.scrollTop;
   }
 
   unmounted() {
