@@ -45,7 +45,7 @@ server.get('*', async (req, res) => {
         .replace('<div id="app">', `<div id="app">${appContent}`)
         .replace(
           '</script>',
-          `</script><script type="application/javascript">window.__IS_FROM_SSR__=true;window.__INITIAL_STATE__=${JSON.stringify(store.state)}</script>`
+          `</script><script type="application/javascript">window.__INITIAL_STATE__=${JSON.stringify(store.state)}</script>`
         )
       res.setHeader('Content-Type', 'text/html')
       res.send(html)
