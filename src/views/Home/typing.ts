@@ -9,6 +9,4 @@ export interface IQueryParams {
 
 export interface IState {
     curTitle: string;
-    queryParams: IQueryParams;
-    mvList: IMv[];
 }

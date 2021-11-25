@@ -6,12 +6,12 @@ const TIME_OUT: number = 10 * 1000;
  * http请求失败后的错误统一处理
  * @param {Number} status 状态码
  */
-const errorHandle = (status: number): void => {
+const errorHandle = (status: number, message: string): void => {
     // HTTP状态码判断
     if (status >= 500) {
-        console.log("系统服务错误")
+        console.log("系统服务错误", message)
     } else {
-        console.log("网络请求失败")
+        console.log("网络请求失败", message)
     }
 }
 

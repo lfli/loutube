@@ -31,10 +31,10 @@ axiosInstance.interceptors.response.use(
     },
     (error: AxiosError) => {
         if (error && error.response) {
-            errorHandle(error.response.status);
+            errorHandle(error.response.status, error.message);
             return Promise.reject(error.response);
         }
-        console.log("网络请求失败");
+        console.log("网络请求失败", error.message);
         return Promise.reject(error);
     }
 );

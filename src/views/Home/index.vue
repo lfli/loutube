@@ -3,7 +3,7 @@
     <div class="videos-box">
       <VideoShowTempOne
         @click="goWatch(mv)"
-        v-for="mv in state.mvList"
+        v-for="mv in mvList"
         :mv="mv"
         :key="mv.id"
       />
@@ -18,11 +18,11 @@
 import { Options, Vue } from "vue-class-component";
 import VideoShowTempOne from "@/share/VideoShowTempOne.vue";
 import { reactive } from "vue";
-import { getMvListRequest } from "@/apis/requests/mv";
 import { IState } from "./typing";
 import RotateLoading from "@/share/RotateLoading.vue";
 import { IMv } from "@/typing";
 import { titleMixin } from "@/mixins/titleMixin";
+import { mapGetters } from "vuex";
 
 @Options({
   name: "Home",
@@ -31,6 +31,9 @@ import { titleMixin } from "@/mixins/titleMixin";
     VideoShowTempOne,
     RotateLoading,
   },
+  computed: {
+    ...mapGetters("HomeMv", ["mvList"]),
+  },
 })
 export default class Home extends Vue {
   isLoading = true;
@@ -38,29 +41,33 @@ export default class Home extends Vue {
   limit = 24;
   state = reactive<IState>({
     curTitle: "mv列表",
-    queryParams: {
-      limit: this.limit,
-    },
-    mvList: [],
   });
 
   $store: any;
 
-  created() {
-    this.$store.dispatch("TopProgressBar/pleaseStart");
-    this.getMvList().then(() => {
-      this.isLoading = false;
-      this.$store.dispatch("TopProgressBar/pleaseEnd");
+  asyncData(store: any, route: any) {
+    return store.dispatch("HomeMv/getMvListRequest", {
+      limit: 24,
+      loadMoreCount: 0,
     });
   }
+
+  // created() {
+  //   this.$store.dispatch("TopProgressBar/pleaseStart");
+  //   this.getMvList().then(() => {
+  //     this.isLoading = false;
+  //     this.$store.dispatch("TopProgressBar/pleaseEnd");
+  //   });
+  // }
   /**
    * 获取 mv 数据
    */
-  async getMvList() {
-    const { data } = await getMvListRequest(this.state.queryParams.limit);
-    this.state.mvList.push(...data);
-    console.log("----- this.state.mvList 加载完毕");
-  }
+  // async getMvList() {
+  //   this.$store.dispatch("HomeMv/getMvListRequest", {
+  //     limit: this.limit,
+  //     loadMoreCount: this.loadMoreCount,
+  //   });
+  // }
 
   isAllowLoadMore = true;
   loadMoreCount = 0;
@@ -70,11 +77,10 @@ export default class Home extends Vue {
   async loadMoreMv() {
     this.isAllowLoadMore = false;
     try {
-      const { data } = await getMvListRequest(
-        this.state.queryParams.limit,
-        this.state.queryParams.limit * ++this.loadMoreCount
-      );
-      this.state.mvList.push(...data);
+      this.$store.dispatch("HomeMv/getMvListRequest", {
+        limit: this.limit,
+        loadMoreCount: ++this.loadMoreCount,
+      });
     } catch (error) {
       this.isAllowLoadMore = true;
     }

@@ -19,28 +19,41 @@ server.use(
 
 server.get('*', async (req, res) => {
   const { app, router, store } = createApp()
-  
+
   await router.push(req.url.replace('/loutube', ''))
   await router.isReady()
 
-  const appContent = await renderToString(app);
+  const matchedComponents = router.currentRoute.value.matched;
 
-
-  fs.readFile(path.join(__dirname, '../dist/client/index.html'), (err, html) => {
-    if (err) {
-      throw err
+  Promise.all(matchedComponents.map(Component => {
+    if (Component.components.default.methods.asyncData) {
+      return Component.components.default.methods.asyncData(
+        store,
+        router.currentRoute
+      );
     }
+  })).then(async () => {
+    const appContent = await renderToString(app);
 
-    html = html
-      .toString()
-      .replace('<div id="app">', `<div id="app">${appContent}`)
-      .replace(
-        '</script>',
-        `</script><script type="application/javascript">window.__IS_FROM_SSR__=true;window.__INITIAL_STATE__=${JSON.stringify(store.state)}</script>`
-      )
-    res.setHeader('Content-Type', 'text/html')
-    res.send(html)
-  })
+    fs.readFile(path.join(__dirname, '../dist/client/index.html'), (err, html) => {
+      if (err) {
+        throw err
+      }
+
+      html = html
+        .toString()
+        .replace('<div id="app">', `<div id="app">${appContent}`)
+        .replace(
+          '</script>',
+          `</script><script type="application/javascript">window.__IS_FROM_SSR__=true;window.__INITIAL_STATE__=${JSON.stringify(store.state)}</script>`
+        )
+      res.setHeader('Content-Type', 'text/html')
+      res.send(html)
+    })
+  }).catch(error => {
+    console.error(error);
+    res.sendStatus(500)
+  });
 })
 
 module.exports = server;

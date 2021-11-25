@@ -62,9 +62,13 @@ export default class VideoShowTempOne extends Vue {
     this.getHead();
   }
   async getHead() {
-    const { data } = await getArtistDetailRequest(this.state.queryParams.id);
-    if (data.artist.cover) {
-      this.state.head = data.artist.cover;
+    try {
+      const { data } = await getArtistDetailRequest(this.state.queryParams.id);
+      if (data.artist.cover) {
+        this.state.head = data.artist.cover;
+      }
+    } catch (error) {
+      console.log(error);
     }
   }
 }
