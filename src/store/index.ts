@@ -4,6 +4,7 @@ import Subscription from './modules/Subscription';
 import LikedMv from './modules/LikedMv';
 import TopProgressBar from './modules/TopProgressBar';
 import HomeMv from './modules/HomeMv';
+import PopularNowMv from './modules/PopularNowMv';
 
 export default createStore({
   modules: {
@@ -11,6 +12,7 @@ export default createStore({
     Subscription,
     LikedMv,
     TopProgressBar,
-    HomeMv
+    HomeMv,
+    PopularNowMv
   }
 })

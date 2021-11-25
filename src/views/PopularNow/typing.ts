@@ -10,5 +10,4 @@ export interface IPopularNowQueryParams {
 export interface IPopularNowState {
     curTitle: string;
     queryParams: IPopularNowQueryParams;
-    mvList: IMv[];
 }

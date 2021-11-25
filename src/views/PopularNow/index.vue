@@ -12,7 +12,7 @@
       </div>
       <span v-else class="series-title">{{ title }}</span>
       <div class="videos-box">
-        <template v-for="mv of state.mvList" :key="mv.id">
+        <template v-for="mv of mvList" :key="mv.id">
           <div style="height: 16px"></div>
           <VideoShowTempTwo :mv="mv" @click="goWatch(mv)" />
         </template>
@@ -31,12 +31,12 @@ import TopMenuItem from "./TopMenuItem.vue";
 import VideoShowTempTwo from "@/share/VideoShowTempTwo.vue";
 import { reactive } from "vue";
 import { IPopularNowState } from "./typing";
-import { getPopularNowListRequest } from "@/apis/requests/mv";
 import { IPopularNowTopMenu } from "@/typing/LocalData";
 import RotateLoading from "@/share/RotateLoading.vue";
 import { IMv } from "@/typing";
 import { titleMixin } from "@/mixins/titleMixin";
 import { vReachTheBottom } from "@/share/util";
+import { mapGetters } from "vuex";
 
 @Options({
   name: "PopularNow",
@@ -69,12 +69,15 @@ import { vReachTheBottom } from "@/share/util";
       }
     });
   },
+  computed: {
+    ...mapGetters("PopularNowMv", ["mvList"]),
+  },
 })
 export default class PopularNow extends Vue {
   $store: any;
 
   link!: string;
-  title!: string;
+  title = "";
   areas = ["全部"];
   popularNowTopMenuList = popularNowTopMenuList;
   // 控制 reachTheBottom 指令
@@ -91,35 +94,92 @@ export default class PopularNow extends Vue {
     queryParams: {
       limit: this.limit,
     },
-    mvList: [],
   });
 
+  asyncData(store: any, route: any) {
+    const popularNowTopMenuList: Array<IPopularNowTopMenu> = [
+      {
+        title: "中国",
+        link: "China",
+        icon: "#icon-guoqi",
+        areas: ["内地", "港台"],
+      },
+      {
+        title: "日本",
+        link: "Japan",
+        icon: "#icon-ribenguoqi",
+        areas: ["日本"],
+      },
+      { title: "韩国", link: "Korea", icon: "#icon-zu", areas: ["韩国"] },
+      {
+        title: "欧美",
+        link: "Occident",
+        icon: "#icon-meiguo",
+        areas: ["欧美"],
+      },
+    ];
+
+    const currentSeries = popularNowTopMenuList.filter(
+      (item: IPopularNowTopMenu) => item.link === route.value.params.link
+    );
+
+    function asyncDataItem(store: any, area: string) {
+      return store.dispatch("PopularNowMv/getPopularNowList", {
+        limit: 12,
+        area,
+        loadMoreCount: 0,
+      });
+    }
+
+    if (currentSeries.length > 0) {
+      const areas = currentSeries[0].areas;
+      return Promise.all(
+        areas.map((area) => asyncDataItem(store, area))
+      ).then();
+    } else {
+      // 为 all 时
+      return asyncDataItem(store, "全部");
+    }
+  }
+
   async myBeforeRouteUpdate(to: any) {
-    this.state.mvList.splice(0, this.state.mvList.length);
+    this.$store.state.PopularNowMv.mvList.splice(
+      0,
+      this.$store.state.PopularNowMv.mvList.length
+    );
     const currentSeries = this.popularNowTopMenuList.filter(
       (item: IPopularNowTopMenu) => item.link === to.params.link
     );
     if (currentSeries.length > 0) {
       this.title = currentSeries[0].title;
       this.areas = currentSeries[0].areas;
+
       for (const area of this.areas) {
-        await this.getPopularNowList(area);
+        this.$store.dispatch("PopularNowMv/getPopularNowList", {
+          limit: this.state.queryParams.limit,
+          area,
+          loadMoreCount: 0,
+        });
       }
     } else {
       // 为 all 时
       this.areas = ["全部"];
       this.title = "";
-      await this.getPopularNowList();
+      this.$store.dispatch("PopularNowMv/getPopularNowList", {
+        limit: this.state.queryParams.limit,
+        area: "全部",
+        loadMoreCount: 0,
+      });
     }
   }
 
-  created() {
-    this.$store.dispatch("TopProgressBar/pleaseStart");
-    this.myBeforeRouteUpdate(this.$router.currentRoute.value).then(() => {
-      this.isLoading = false;
-      this.$store.dispatch("TopProgressBar/pleaseEnd");
-    });
-  }
+  // created() {
+  //   this.$store.dispatch("TopProgressBar/pleaseStart");
+  //   this.myBeforeRouteUpdate(this.$router.currentRoute.value).then(() => {
+  //     this.isLoading = false;
+  //     this.$store.dispatch("TopProgressBar/pleaseEnd");
+  //   });
+  // }
 
   mounted() {
     vReachTheBottom(this.$refs.popularNow as any, {
@@ -149,13 +209,13 @@ export default class PopularNow extends Vue {
   /**
    * 获取 PopularNow 数据
    */
-  async getPopularNowList(area?: string) {
-    const { data } = await getPopularNowListRequest(
-      this.state.queryParams.limit,
-      area
-    );
-    this.state.mvList.push(...data);
-  }
+  // async getPopularNowList(area?: string) {
+  //   const { data } = await getPopularNowListRequest(
+  //     this.state.queryParams.limit,
+  //     area
+  //   );
+  //   this.state.mvList.push(...data);
+  // }
 
   reachTheBottom() {
     if (this.isAllowLoadMore) {
@@ -169,12 +229,11 @@ export default class PopularNow extends Vue {
     this.isAllowLoadMore = false;
     for (const area of this.areas) {
       try {
-        const { data } = await getPopularNowListRequest(
-          this.state.queryParams.limit,
-          area,
-          this.state.queryParams.limit * ++this.loadMoreCount
-        );
-        this.state.mvList.push(...data);
+        this.$store.dispatch("PopularNowMv/getPopularNowList", {
+          limit: this.state.queryParams.limit,
+          area: area,
+          loadMoreCount: ++this.loadMoreCount,
+        });
       } catch (error) {
         this.isAllowLoadMore = true;
       }
