@@ -34,7 +34,6 @@ import { ICloudsearchState } from "./typing";
 import VideoShowTempTwo from "@/share/VideoShowTempTwo.vue";
 import { IMv } from "@/typing";
 import RotateLoading from "@/share/RotateLoading.vue";
-import store from "@/store";
 import { titleMixin } from "@/mixins/titleMixin";
 
 @Options({
@@ -46,14 +45,16 @@ import { titleMixin } from "@/mixins/titleMixin";
     RotateLoading,
   },
   beforeRouteUpdate(to, from, next) {
-    store.dispatch("TopProgressBar/pleaseStart");
+    this.$store.dispatch("TopProgressBar/pleaseStart");
     this.init(to.query.q).then(() => {
-      store.dispatch("TopProgressBar/pleaseEnd");
+      this.$store.dispatch("TopProgressBar/pleaseEnd");
     });
     next();
   },
 })
 export default class Search extends Vue {
+  $store: any;
+
   keywords!: string;
   tempKeywords = "";
   isLoading = true;
@@ -120,10 +121,10 @@ export default class Search extends Vue {
   mounted() {
     this.commandReachTheBottom.isCommand = true;
     if (this.tempKeywords !== this.keywords) {
-      store.dispatch("TopProgressBar/pleaseStart");
+      this.$store.dispatch("TopProgressBar/pleaseStart");
       this.init(this.keywords).then(() => {
         this.isLoading = false;
-        store.dispatch("TopProgressBar/pleaseEnd");
+        this.$store.dispatch("TopProgressBar/pleaseEnd");
       });
     }
   }

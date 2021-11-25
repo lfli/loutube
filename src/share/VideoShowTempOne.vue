@@ -58,7 +58,7 @@ export default class VideoShowTempOne extends Vue {
     },
     head: "",
   });
-  created() {
+  mounted() {
     this.getHead();
   }
   async getHead() {

@@ -36,14 +36,14 @@ import { mapGetters } from "vuex";
   },
 })
 export default class Home extends Vue {
+  $store: any;
+
   isLoading = true;
 
   limit = 24;
   state = reactive<IState>({
     curTitle: "mv列表",
   });
-
-  $store: any;
 
   asyncData(store: any, route: any) {
     return store.dispatch("HomeMv/getMvListRequest", {

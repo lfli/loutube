@@ -45,7 +45,6 @@ import { mapState } from "vuex";
 import { IArtistMvState } from "./typing";
 import VideoShowTempOne from "@/share/VideoShowTempOne.vue";
 import RotateLoading from "@/share/RotateLoading.vue";
-import store from "@/store";
 import { titleMixin } from "@/mixins/titleMixin";
 import { loadScrollEvent } from "@/share/util";
 
@@ -63,6 +62,8 @@ import { loadScrollEvent } from "@/share/util";
   },
 })
 export default class Subscription extends Vue {
+  $store: any;
+  
   artistList!: IArtistDetail[];
   tempArtistList: IArtistDetail[] = [];
   artistMvLimit = 10;
@@ -140,11 +141,11 @@ export default class Subscription extends Vue {
       this.artistMvLoadMoreCount = 0;
       this.artistMvStateList.splice(0, this.artistMvStateList.length);
 
-      store.dispatch("TopProgressBar/pleaseStart");
+      this.$store.dispatch("TopProgressBar/pleaseStart");
       this.initStateList().then(() => {
         this.commandReachTheBottom.isCommand = true; // 防止触发下滑加载事件
         this.isLoading = false;
-        store.dispatch("TopProgressBar/pleaseEnd");
+        this.$store.dispatch("TopProgressBar/pleaseEnd");
       });
     } else {
       this.isLoading = false;

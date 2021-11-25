@@ -7,6 +7,13 @@ import HomeMv from '../store/modules/HomeMv';
 
 export default function () {
 
+  // 必须重置各项数据，否者会共享这些命名空间下的 state
+  HistoryMv.state.historyMvList = [];
+  Subscription.state.artistList = [];
+  LikedMv.state.likedMvList = [];
+  TopProgressBar.state.start = false;
+  HomeMv.state.mvList = [];
+
   const store = createStore({
     modules: {
       HistoryMv,

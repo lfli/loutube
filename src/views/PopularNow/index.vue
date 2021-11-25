@@ -35,7 +35,6 @@ import { getPopularNowListRequest } from "@/apis/requests/mv";
 import { IPopularNowTopMenu } from "@/typing/LocalData";
 import RotateLoading from "@/share/RotateLoading.vue";
 import { IMv } from "@/typing";
-import store from "@/store";
 import { titleMixin } from "@/mixins/titleMixin";
 
 @Options({
@@ -49,10 +48,10 @@ import { titleMixin } from "@/mixins/titleMixin";
   props: ["link"],
   beforeRouteUpdate(to, from, next) {
     this.isLoading = true;
-    store.dispatch("TopProgressBar/pleaseStart");
+    this.$store.dispatch("TopProgressBar/pleaseStart");
     this.myBeforeRouteUpdate(to).then(() => {
       this.isLoading = false;
-      store.dispatch("TopProgressBar/pleaseEnd");
+      this.$store.dispatch("TopProgressBar/pleaseEnd");
     });
     next();
   },
@@ -60,17 +59,19 @@ import { titleMixin } from "@/mixins/titleMixin";
     next((vm: any) => {
       // 从地区 mv 切换到其它页面再回到此页面时，重新加载数据
       if (from.meta.depth === 1 && vm.title && vm.title.length > 0) {
-        store.dispatch("TopProgressBar/pleaseStart");
+        vm.$store.dispatch("TopProgressBar/pleaseStart");
         vm.commandReachTheBottom.scrollTop = 0;
         vm.myBeforeRouteUpdate(to).then(() => {
           vm.isLoading = false;
-          store.dispatch("TopProgressBar/pleaseEnd");
+          vm.$store.dispatch("TopProgressBar/pleaseEnd");
         });
       }
     });
   },
 })
 export default class PopularNow extends Vue {
+  $store: any;
+
   link!: string;
   title!: string;
   areas = ["全部"];
@@ -112,10 +113,10 @@ export default class PopularNow extends Vue {
   }
 
   created() {
-    store.dispatch("TopProgressBar/pleaseStart");
+    this.$store.dispatch("TopProgressBar/pleaseStart");
     this.myBeforeRouteUpdate(this.$router.currentRoute.value).then(() => {
       this.isLoading = false;
-      store.dispatch("TopProgressBar/pleaseEnd");
+      this.$store.dispatch("TopProgressBar/pleaseEnd");
     });
   }
 

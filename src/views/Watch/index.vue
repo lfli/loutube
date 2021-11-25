@@ -189,7 +189,6 @@ import {
 import { IArtistMv, IMv } from "@/typing";
 import RotateLoading from "@/share/RotateLoading.vue";
 import Comment from "@/share/Comment.vue";
-import store from "@/store";
 import { mapGetters } from "vuex";
 import { titleMixin } from "@/mixins/titleMixin";
 import { loadScrollEvent } from "@/share/util";
@@ -212,6 +211,8 @@ import { loadScrollEvent } from "@/share/util";
   },
 })
 export default class Watch extends Vue {
+  $store: any;
+
   mvid!: number;
   mvListAutoLoading = { isCommand: true };
   commentListAutoLoading = { isCommand: true };
@@ -338,7 +339,7 @@ export default class Watch extends Vue {
   }
 
   init() {
-    store.dispatch("TopProgressBar/pleaseStart");
+    this.$store.dispatch("TopProgressBar/pleaseStart");
     this.isAllowSubscription = false;
     this.isAllowLike = false;
     // 可能切换 mv
@@ -350,7 +351,7 @@ export default class Watch extends Vue {
       element.scrollTop = 0; // 重置窗口位置
     }
     this.getMvUrl().then(() => {
-      store.dispatch("TopProgressBar/pleaseEnd");
+      this.$store.dispatch("TopProgressBar/pleaseEnd");
     });
     this.getMvLikedCount();
     // this.getSimiMvList();
@@ -362,7 +363,7 @@ export default class Watch extends Vue {
       this.getArtistMvList().then(() => {
         this.mvListIsLoading = false;
       });
-      store.dispatch("HistoryMv/addHistoryMv", this.mvDetailState.mv);
+      this.$store.dispatch("HistoryMv/addHistoryMv", this.mvDetailState.mv);
     });
     this.getCommentMvList().then(() => {
       this.commentListIsLoading = false;
@@ -544,22 +545,22 @@ export default class Watch extends Vue {
   }
 
   subscription() {
-    store.dispatch(
+    this.$store.dispatch(
       "Subscription/subscriptionArtist",
       this.artistDetailState.artistDetail
     );
   }
 
   unsubscription(id: number) {
-    store.dispatch("Subscription/unsubscriptionArtist", id);
+    this.$store.dispatch("Subscription/unsubscriptionArtist", id);
   }
 
   like() {
-    store.dispatch("LikedMv/addLikedMv", this.mvDetailState.mv);
+    this.$store.dispatch("LikedMv/addLikedMv", this.mvDetailState.mv);
   }
 
   unlike() {
-    store.dispatch("LikedMv/removeLikedMv", this.mvDetailState.mv);
+    this.$store.dispatch("LikedMv/removeLikedMv", this.mvDetailState.mv);
   }
 }
 </script>
