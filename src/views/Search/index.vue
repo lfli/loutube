@@ -1,6 +1,6 @@
 <template>
   <!-- <div v-reachTheBottom="{ reachTheBottom, commandReachTheBottom }"> -->
-    <div>
+  <div>
     <div class="search">
       <div class="search-title">
         <span>搜索结果</span>
@@ -117,7 +117,7 @@ export default class Search extends Vue {
     this.$router.push({ path: `/watch/${mv.id}` });
   }
 
-  activated() {
+  mounted() {
     this.commandReachTheBottom.isCommand = true;
     if (this.tempKeywords !== this.keywords) {
       store.dispatch("TopProgressBar/pleaseStart");
@@ -128,7 +128,7 @@ export default class Search extends Vue {
     }
   }
 
-  deactivated() {
+  unmounted() {
     this.commandReachTheBottom.isCommand = false;
     this.tempKeywords = this.keywords;
   }

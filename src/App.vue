@@ -4,14 +4,14 @@
     <div class="content">
       <Sidebar v-show="isShowSidebar" :listData="sideNavList" class="sidebar" />
       <router-view v-slot="{ Component }">
-        <keep-alive>
+        <!-- <keep-alive>
           <component
             :class="[{ 'router-paper-full': !isShowSidebar }, 'router-paper']"
             :is="Component"
             v-if="$route.meta.keepAlive"
             :key="$route.name"
           />
-        </keep-alive>
+        </keep-alive> -->
         <component
           :class="[{ 'router-paper-full': !isShowSidebar }, 'router-paper']"
           :is="Component"

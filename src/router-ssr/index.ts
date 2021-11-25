@@ -7,7 +7,7 @@ export const routes: Array<RouteRecordRaw> = [
     name: 'Home',
     component: Home,
     meta: {
-      keepAlive: true,
+      // keepAlive: true,
       depth: 1
     }
   },
@@ -18,7 +18,7 @@ export const routes: Array<RouteRecordRaw> = [
     props: true,
     meta: {
       title: '时下流行',
-      keepAlive: true,
+      // keepAlive: true,
       depth: 1
     }
   },
@@ -28,7 +28,7 @@ export const routes: Array<RouteRecordRaw> = [
     component: () => import(/* webpackChunkName: "about" */ '../views/Subscription/index.vue'),
     meta: {
       title: '订阅内容',
-      keepAlive: true,
+      // keepAlive: true,
       depth: 1
     }
   },
@@ -57,7 +57,7 @@ export const routes: Array<RouteRecordRaw> = [
     props: route => ({ keywords: route.query.q }),
     meta: {
       title: '搜索',
-      keepAlive: true,
+      // keepAlive: true,
       depth: 1
     }
   },
