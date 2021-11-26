@@ -5,6 +5,7 @@ import LikedMv from '../store/modules/LikedMv';
 import TopProgressBar from '../store/modules/TopProgressBar';
 import HomeMv from '../store/modules/HomeMv';
 import PopularNowMv from '../store/modules/PopularNowMv';
+import CloudSearchMv from '../store/modules/CloudSearchMv';
 
 export default function () {
 
@@ -15,6 +16,7 @@ export default function () {
   TopProgressBar.state.start = false;
   HomeMv.state.mvList = [];
   PopularNowMv.state.mvList = [];
+  CloudSearchMv.state.mvList = [];
 
   const store = createStore({
     modules: {
@@ -23,7 +25,8 @@ export default function () {
       LikedMv,
       TopProgressBar,
       HomeMv,
-      PopularNowMv
+      PopularNowMv,
+      CloudSearchMv
     }
   })
 

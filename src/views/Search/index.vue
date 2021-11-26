@@ -6,17 +6,14 @@
         <span>搜索结果</span>
       </div>
 
-      <template v-if="cloudsearchState.mvList.length > 0">
-        <template v-for="mv of cloudsearchState.mvList" :key="mv.id">
+      <template v-if="mvList.length > 0">
+        <template v-for="mv of mvList" :key="mv.id">
           <div style="height: 16px"></div>
           <VideoShowTempTwo :mv="mv" @click="goWatch(mv)" />
         </template>
       </template>
 
-      <div
-        class="search-none"
-        v-if="!isLoading && cloudsearchState.mvList.length === 0"
-      >
+      <div class="search-none" v-if="!isLoading && mvList.length === 0">
         <span>此列表中没有任何视频。</span>
       </div>
     </div>
@@ -27,7 +24,6 @@
 </template>
 
 <script lang="ts">
-import { cloudsearchRequest } from "@/apis/requests/mv";
 import { reactive } from "vue";
 import { Options, Vue } from "vue-class-component";
 import { ICloudsearchState } from "./typing";
@@ -36,6 +32,7 @@ import { IMv } from "@/typing";
 import RotateLoading from "@/share/RotateLoading.vue";
 import { titleMixin } from "@/mixins/titleMixin";
 import { vReachTheBottom } from "@/share/util";
+import { mapGetters } from "vuex";
 
 @Options({
   name: "Search",
@@ -51,6 +48,9 @@ import { vReachTheBottom } from "@/share/util";
       this.$store.dispatch("TopProgressBar/pleaseEnd");
     });
     next();
+  },
+  computed: {
+    ...mapGetters("CloudSearchMv", ["mvList"]),
   },
 })
 export default class Search extends Vue {
@@ -73,8 +73,15 @@ export default class Search extends Vue {
       keywords: this.keywords,
       limit: 10,
     },
-    mvList: [],
   });
+
+  asyncData(store: any, route: any) {  
+    return store.dispatch("CloudSearchMv/cloudsearchRequest", {
+      keywords: route.value.query.q,
+      limit: 10,
+      loadMoreCount: 0,
+    });
+  }
 
   reachTheBottom() {
     if (this.isAllowLoadMore && this.hasMore) {
@@ -92,27 +99,28 @@ export default class Search extends Vue {
   async init(keywords: string) {
     this.hasMore = true;
     this.cloudsearchState.queryParams.keywords = keywords;
-    const { result } = await cloudsearchRequest(
-      this.cloudsearchState.queryParams.keywords,
-      this.cloudsearchState.queryParams.limit
+
+    this.$store.state.CloudSearchMv.mvList.splice(
+      0,
+      this.$store.state.CloudSearchMv.mvList.length
     );
-    this.cloudsearchState.mvList.splice(0, this.cloudsearchState.mvList.length);
-    if (result.mvs) {
-      this.cloudsearchState.mvList.push(...result.mvs);
-    }
+
+    await this.$store.dispatch("CloudSearchMv/cloudsearchRequest", {
+      keywords: this.cloudsearchState.queryParams.keywords,
+      limit: this.cloudsearchState.queryParams.limit,
+      loadMoreCount: 0,
+    });
   }
 
   async loadMoreMv() {
-    const { result } = await cloudsearchRequest(
-      this.cloudsearchState.queryParams.keywords,
-      this.cloudsearchState.queryParams.limit,
-      this.cloudsearchState.queryParams.limit * ++this.loadMoreCount
+    this.hasMore = await this.$store.dispatch(
+      "CloudSearchMv/cloudsearchRequest",
+      {
+        keywords: this.cloudsearchState.queryParams.keywords,
+        limit: this.cloudsearchState.queryParams.limit,
+        loadMoreCount: ++this.loadMoreCount,
+      }
     );
-    if (!result.mvs) {
-      this.hasMore = false;
-    } else {
-      this.cloudsearchState.mvList.push(...result.mvs);
-    }
   }
 
   goWatch(mv: IMv) {
@@ -122,11 +130,13 @@ export default class Search extends Vue {
   mounted() {
     this.commandReachTheBottom.isCommand = true;
     if (this.tempKeywords !== this.keywords) {
-      this.$store.dispatch("TopProgressBar/pleaseStart");
-      this.init(this.keywords).then(() => {
-        this.isLoading = false;
-        this.$store.dispatch("TopProgressBar/pleaseEnd");
-      });
+      if (this.$store.state.CloudSearchMv.mvList.length === 0) {
+        this.$store.dispatch("TopProgressBar/pleaseStart");
+        this.init(this.keywords).then(() => {
+          this.isLoading = false;
+          this.$store.dispatch("TopProgressBar/pleaseEnd");
+        });
+      }
     }
 
     vReachTheBottom(this.$refs.search as any, {

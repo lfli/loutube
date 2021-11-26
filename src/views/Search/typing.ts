@@ -8,5 +8,4 @@ export interface ICloudsearchQueryParams {
 export interface ICloudsearchState {
     curTitle: string;
     queryParams: ICloudsearchQueryParams;
-    mvList: IMv[];
 }

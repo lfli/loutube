@@ -5,6 +5,7 @@ import LikedMv from './modules/LikedMv';
 import TopProgressBar from './modules/TopProgressBar';
 import HomeMv from './modules/HomeMv';
 import PopularNowMv from './modules/PopularNowMv';
+import CloudSearchMv from './modules/CloudSearchMv';
 
 export default createStore({
   modules: {
@@ -13,6 +14,7 @@ export default createStore({
     LikedMv,
     TopProgressBar,
     HomeMv,
-    PopularNowMv
+    PopularNowMv,
+    CloudSearchMv
   }
 })
