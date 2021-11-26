@@ -52,22 +52,24 @@ export default class Home extends Vue {
     });
   }
 
-  // created() {
-  //   this.$store.dispatch("TopProgressBar/pleaseStart");
-  //   this.getMvList().then(() => {
-  //     this.isLoading = false;
-  //     this.$store.dispatch("TopProgressBar/pleaseEnd");
-  //   });
-  // }
+  created() {
+    if (this.$store.state.HomeMv.mvList.length === 0) {
+      this.$store.dispatch("TopProgressBar/pleaseStart");
+      this.getMvList().then(() => {
+        this.isLoading = false;
+        this.$store.dispatch("TopProgressBar/pleaseEnd");
+      });
+    }
+  }
   /**
    * 获取 mv 数据
    */
-  // async getMvList() {
-  //   this.$store.dispatch("HomeMv/getMvListRequest", {
-  //     limit: this.limit,
-  //     loadMoreCount: this.loadMoreCount,
-  //   });
-  // }
+  async getMvList() {
+    return this.$store.dispatch("HomeMv/getMvListRequest", {
+      limit: this.limit,
+      loadMoreCount: this.loadMoreCount,
+    });
+  }
 
   isAllowLoadMore = true;
   loadMoreCount = 0;

@@ -155,7 +155,7 @@ export default class PopularNow extends Vue {
       this.areas = currentSeries[0].areas;
 
       for (const area of this.areas) {
-        this.$store.dispatch("PopularNowMv/getPopularNowList", {
+        await this.$store.dispatch("PopularNowMv/getPopularNowList", {
           limit: this.state.queryParams.limit,
           area,
           loadMoreCount: 0,
@@ -165,7 +165,7 @@ export default class PopularNow extends Vue {
       // 为 all 时
       this.areas = ["全部"];
       this.title = "";
-      this.$store.dispatch("PopularNowMv/getPopularNowList", {
+      await this.$store.dispatch("PopularNowMv/getPopularNowList", {
         limit: this.state.queryParams.limit,
         area: "全部",
         loadMoreCount: 0,
@@ -173,13 +173,15 @@ export default class PopularNow extends Vue {
     }
   }
 
-  // created() {
-  //   this.$store.dispatch("TopProgressBar/pleaseStart");
-  //   this.myBeforeRouteUpdate(this.$router.currentRoute.value).then(() => {
-  //     this.isLoading = false;
-  //     this.$store.dispatch("TopProgressBar/pleaseEnd");
-  //   });
-  // }
+  created() {
+    if (this.$store.state.PopularNowMv.mvList.length === 0) {
+      this.$store.dispatch("TopProgressBar/pleaseStart");
+      this.myBeforeRouteUpdate(this.$router.currentRoute.value).then(() => {
+        this.isLoading = false;
+        this.$store.dispatch("TopProgressBar/pleaseEnd");
+      });
+    }
+  }
 
   mounted() {
     vReachTheBottom(this.$refs.popularNow as any, {
