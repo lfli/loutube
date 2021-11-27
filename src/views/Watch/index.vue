@@ -328,7 +328,8 @@ export default class Watch extends Vue {
   }
 
   init(isMounted: boolean) {
-    if ( // 如果在当前页面刷新，停止执行下面代码
+    if (
+      // 如果在当前页面刷新，停止执行下面代码
       isMounted &&
       this.$store.state.WatchMv.mvUrl.length > 0 &&
       this.$store.state.WatchMv.mv.id == this.mvid
@@ -523,6 +524,8 @@ export default class Watch extends Vue {
   popularNowLimit = 10;
   popularNowLoadMoreCount = 0;
   async getPopularNowList(store?: any) {
+    store = store || this.$store;
+
     await store.dispatch("WatchMv/getPopularNowListRequestForArtistMv", {
       popularNowLimit: this.popularNowLimit,
       popularNowLoadMoreCount: this.popularNowLoadMoreCount++,
