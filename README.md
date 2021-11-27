@@ -4,7 +4,7 @@
 [http://www.lilinfeng.net/loutube](http://www.lilinfeng.net/loutube)
 
 ### 项目简介
-基于 vue3 + typescript 的个人项目，不使用任何 UI 框架，所有组件和样式均自主开发。
+基于 vue3 + typescript + SSR 的个人项目，不使用任何 UI 框架，所有组件和样式均自主开发。
 
 #### 技术栈
 - **[vue3](https://github.com/vuejs/vue):**  vue3 全家桶 
@@ -29,4 +29,12 @@ yarn serve or npm run serve
 #### 打包
 ```
 yarn build or npm run build
+```
+
+### SSR 方式运行
+```
+npm run build:ssr
+```
+```
+node ./server/server.js
 ```
