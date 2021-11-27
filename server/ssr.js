@@ -17,7 +17,19 @@ server.use(
   express.static(path.join(__dirname, '../dist/client', 'favicon.ico'))
 )
 
+const LRU = require('lru-cache')
+const microCache = new LRU({
+  max: 100,
+  maxAge: 1000 * 60 * 60
+})
+
+
 server.get('*', async (req, res) => {
+  const hit = microCache.get(req.url)
+  if (hit) {
+    return res.send(hit)
+  }
+
   const { app, router, store } = createApp()
 
   await router.push(req.url.replace('/loutube', ''))
@@ -49,6 +61,7 @@ server.get('*', async (req, res) => {
         )
       res.setHeader('Content-Type', 'text/html')
       res.send(html)
+      microCache.set(req.url, html)
     })
   }).catch(error => {
     console.error(error);
