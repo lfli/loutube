@@ -7,7 +7,6 @@ export interface ISimiMvQueryParams {
 export interface ISimiMvState {
     curTitle: string;
     queryParams: ISimiMvQueryParams;
-    mvList: IMv[];
 }
 
 export interface IMvUrlQueryParams {
@@ -17,7 +16,6 @@ export interface IMvUrlQueryParams {
 export interface IMvUrlState {
     curTitle: string;
     queryParams: IMvUrlQueryParams;
-    mvUrl: string;
 }
 
 export interface IMvDetailQueryParams {
@@ -27,7 +25,6 @@ export interface IMvDetailQueryParams {
 export interface IMvDetailState {
     curTitle: string;
     queryParams: IMvDetailQueryParams;
-    mv: IMv | null;
 }
 
 export interface IArtistDetailQueryParams {
@@ -37,7 +34,6 @@ export interface IArtistDetailQueryParams {
 export interface IArtistDetailState {
     curTitle: string;
     queryParams: IArtistDetailQueryParams;
-    artistDetail: IArtistDetail | null;
 }
 
 export interface IArtistMvQueryParams {
@@ -48,7 +44,6 @@ export interface IArtistMvQueryParams {
 export interface IArtistMvState {
     curTitle: string;
     queryParams: IArtistMvQueryParams;
-    mvList: IArtistMv[];
     hasMore: boolean;
 }
 
@@ -60,10 +55,6 @@ export interface ICommentMvQueryParams {
 export interface ICommentMvState {
     curTitle: string;
     queryParams: ICommentMvQueryParams;
-    hotComments: IComment[];
-    comments: IComment[];
-    total: number;
-    more: boolean;
 }
 
 export interface IMvLikedCountQueryParams {
@@ -73,5 +64,4 @@ export interface IMvLikedCountQueryParams {
 export interface IMvLikedCountState {
     curTitle: string;
     queryParams: IMvLikedCountQueryParams;
-    likedCount: number;
 }

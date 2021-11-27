@@ -5,11 +5,11 @@
         <div class="box-video">
           <div class="video-layer">
             <video
-              v-if="mvUrlState.mvUrl.length > 0"
+              v-if="mvUrl.length > 0"
               class="my-video"
               controls
               autoplay
-              :src="mvUrlState.mvUrl"
+              :src="mvUrl"
             >
               您的浏览器不支持 video 标签。
             </video>
@@ -20,18 +20,16 @@
         </div>
         <div class="video-info">
           <div>
-            <span class="video-title">{{ mvDetailState.mv?.name }}</span>
+            <span class="video-title">{{ mv?.name }}</span>
           </div>
           <div class="base-info-box">
             <span class="play-times"
-              >{{
-                $filters.internationalNumber(mvDetailState.mv?.playCount)
-              }}次观看 ·
-              {{ $filters.dateFormat(mvDetailState.mv?.publishTime) }}</span
+              >{{ $filters.internationalNumber(mv?.playCount) }}次观看 ·
+              {{ $filters.dateFormat(mv?.publishTime) }}</span
             >
             <div class="comment-zan-box">
               <span
-                v-if="isLikedMv(mvDetailState.mv?.id)"
+                v-if="isLikedMv(mv?.id)"
                 class="iconfont icon-zan comment-zan"
                 style="color: #3260d4"
                 :disabled="!isAllowLike"
@@ -45,7 +43,7 @@
               ></span>
 
               <span class="comment-zan-count">{{
-                $filters.internationalNumber(mvLikedCountState.likedCount)
+                $filters.internationalNumber(likedCount)
               }}</span>
               <span class="iconfont icon-zan comment-cai"></span>
               <span class="comment-zan-count"></span>
@@ -54,23 +52,17 @@
         </div>
         <div class="artist-box">
           <div class="artist-box-top">
-            <img
-              class="head"
-              :src="artistDetailState.artistDetail?.cover"
-              alt=""
-            />
+            <img class="head" :src="artistDetail?.cover" alt="" />
             <div class="top-right">
               <div class="artist-name-box">
-                <span class="artist-name">{{
-                  artistDetailState.artistDetail?.name
-                }}</span>
+                <span class="artist-name">{{ artistDetail?.name }}</span>
               </div>
               <button
-                v-if="isSubscription(artistDetailState.artistDetail?.id)"
+                v-if="isSubscription(artistDetail?.id)"
                 class="sub-button"
                 style="background-color: #ececec; color: #606060"
                 :disabled="!isAllowSubscription"
-                @click="unsubscription(artistDetailState.artistDetail?.id)"
+                @click="unsubscription(artistDetail?.id)"
               >
                 已订阅
               </button>
@@ -86,23 +78,20 @@
           </div>
           <div class="artist-box-content">
             <div>
-              <span>{{ mvDetailState.mv?.desc }}</span>
+              <span>{{ mv?.desc }}</span>
             </div>
-            <div
-              class="artist-brief-desc"
-              v-if="artistDetailState.artistDetail?.briefDesc"
-            >
-              <span>{{ artistDetailState.artistDetail?.briefDesc }}</span>
+            <div class="artist-brief-desc" v-if="artistDetail?.briefDesc">
+              <span>{{ artistDetail?.briefDesc }}</span>
             </div>
           </div>
         </div>
       </div>
       <div ref="mvList" v-show="!isSmallScreen" class="mv-list">
-        <template v-for="mv of simiMvState.mvList" :key="mv.id">
+        <template v-for="mv of simiMvList" :key="mv.id">
           <VideoShowTempTwo :mv="mv" @click="goWatch(mv)"></VideoShowTempTwo>
           <div style="height: 8px"></div>
         </template>
-        <template v-for="mv of artistMvState.mvList" :key="mv.id">
+        <template v-for="mv of artistMvList" :key="mv.id">
           <VideoShowTempTwo :mv="mv" @click="goWatch(mv)"></VideoShowTempTwo>
           <div style="height: 8px"></div>
         </template>
@@ -114,11 +103,11 @@
         </div>
       </div>
       <div v-show="isSmallScreen" class="mv-list">
-        <template v-for="mv of simiMvState.mvList" :key="mv.id">
+        <template v-for="mv of simiMvList" :key="mv.id">
           <VideoShowTempTwo :mv="mv" @click="goWatch(mv)"></VideoShowTempTwo>
           <div style="height: 8px"></div>
         </template>
-        <template v-for="mv of artistMvState.mvList" :key="mv.id">
+        <template v-for="mv of artistMvList" :key="mv.id">
           <VideoShowTempTwo :mv="mv" @click="goWatch(mv)"></VideoShowTempTwo>
           <div style="height: 8px"></div>
         </template>
@@ -131,31 +120,28 @@
         <div class="comment-count-box">
           <span
             >{{
-              commentMvState.total === 0
+              commentMv.total === 0
                 ? 0
-                : $filters.internationalNumber(commentMvState.total)
+                : $filters.internationalNumber(commentMv.total)
             }}
             条评论</span
           >
         </div>
         <template
-          v-for="hotComment of commentMvState.hotComments"
+          v-for="hotComment of commentMv.hotComments"
           :key="hotComment.commentId"
         >
           <Comment :comment="hotComment"></Comment>
           <div style="height: 16px"></div>
         </template>
         <template
-          v-for="comment of commentMvState.comments"
+          v-for="comment of commentMv.comments"
           :key="comment.commentId"
         >
           <Comment :comment="comment"></Comment>
           <div style="height: 16px"></div>
         </template>
-        <div
-          v-show="!commentListAutoLoading.isCommand || commentListIsLoading"
-          class="loading-box"
-        >
+        <div v-show="commentListIsLoading" class="loading-box">
           <RotateLoading />
         </div>
       </div>
@@ -176,17 +162,7 @@ import {
   IMvUrlState,
   ISimiMvState,
 } from "./typing";
-import {
-  getArtistDetailRequest,
-  getArtistMvRequest,
-  getCommentMvRequest,
-  getMvDetailInfoRequest,
-  getMvDetailRequest,
-  getMvUrlRequest,
-  getPopularNowListRequest,
-  getSimiMvListRequest,
-} from "@/apis/requests/mv";
-import { IArtistMv, IMv } from "@/typing";
+import { IMv } from "@/typing";
 import RotateLoading from "@/share/RotateLoading.vue";
 import Comment from "@/share/Comment.vue";
 import { mapGetters } from "vuex";
@@ -208,20 +184,30 @@ import { loadScrollEvent } from "@/share/util";
   computed: {
     ...mapGetters("Subscription", ["isSubscription"]),
     ...mapGetters("LikedMv", ["isLikedMv"]),
+    ...mapGetters("WatchMv", [
+      "simiMvList",
+      "artistMvList",
+      "likedCount",
+      "mv",
+      "artistDetail",
+      "commentMv",
+      "mvUrlErrorMsg",
+      "mvUrl",
+    ]),
   },
 })
 export default class Watch extends Vue {
   $store: any;
+  commentMv: any;
 
   mvid!: number;
   mvListAutoLoading = { isCommand: true };
   commentListAutoLoading = { isCommand: true };
-  mvUrlErrorMsg = "";
   isSmallScreen = false;
   isAllowSubscription = false;
   isAllowLike = false;
   mvListIsLoading = true;
-  commentListIsLoading = true;
+  commentListIsLoading = false;
   isUnmounted = false;
 
   simiMvState = reactive<ISimiMvState>({
@@ -229,7 +215,6 @@ export default class Watch extends Vue {
     queryParams: {
       mvid: this.mvid,
     },
-    mvList: [],
   });
 
   mvUrlState = reactive<IMvUrlState>({
@@ -237,7 +222,6 @@ export default class Watch extends Vue {
     queryParams: {
       mvid: this.mvid,
     },
-    mvUrl: "",
   });
 
   mvDetailState = reactive<IMvDetailState>({
@@ -245,7 +229,6 @@ export default class Watch extends Vue {
     queryParams: {
       mvid: this.mvid,
     },
-    mv: null,
   });
 
   artistDetailState = reactive<IArtistDetailState>({
@@ -253,7 +236,6 @@ export default class Watch extends Vue {
     queryParams: {
       id: -1,
     },
-    artistDetail: null,
   });
 
   artistMvLimit = 10;
@@ -264,8 +246,7 @@ export default class Watch extends Vue {
       id: -1,
       limit: this.artistMvLimit,
     },
-    mvList: [],
-    hasMore: false,
+    hasMore: true,
   });
 
   commentMvLimit = 10;
@@ -276,10 +257,6 @@ export default class Watch extends Vue {
       id: this.mvid,
       limit: this.commentMvLimit,
     },
-    hotComments: [],
-    comments: [],
-    total: 0,
-    more: false,
   });
 
   mvLikedCountState = reactive<IMvLikedCountState>({
@@ -287,8 +264,20 @@ export default class Watch extends Vue {
     queryParams: {
       mvid: this.mvid,
     },
-    likedCount: 0,
   });
+
+  asyncData(store: any, route: any) {
+    return Promise.all([
+      this.getMvUrl(store, route),
+      this.getMvLikedCount(store, route),
+      this.getMvDetail(store, route).then(async () => {
+        await this.getArtistDetail(store, route);
+        await this.getArtistMvList(store, route);
+        await store.dispatch("HistoryMv/addHistoryMv", store.state.WatchMv.mv);
+      }),
+      this.getCommentMvList(store, route),
+    ]).then();
+  }
 
   myBeforeRouteUpdate(to: any) {
     this.simiMvState.queryParams.mvid = to.params.mvid;
@@ -296,11 +285,11 @@ export default class Watch extends Vue {
     this.mvDetailState.queryParams.mvid = to.params.mvid;
     this.commentMvState.queryParams.id = to.params.mvid;
     this.mvLikedCountState.queryParams.mvid = to.params.mvid;
-    this.init();
+    this.init(false);
   }
 
   mounted() {
-    this.init();
+    this.init(true);
 
     // 监听窗口大小，改变 mv-list 加载更多方式
     const element = document.getElementById("watch-outer");
@@ -338,7 +327,15 @@ export default class Watch extends Vue {
     });
   }
 
-  init() {
+  init(isMounted: boolean) {
+    if ( // 如果在当前页面刷新，停止执行下面代码
+      isMounted &&
+      this.$store.state.WatchMv.mvUrl.length > 0 &&
+      this.$store.state.WatchMv.mv.id == this.mvid
+    ) {
+      return;
+    }
+
     this.$store.dispatch("TopProgressBar/pleaseStart");
     this.isAllowSubscription = false;
     this.isAllowLike = false;
@@ -363,8 +360,13 @@ export default class Watch extends Vue {
       this.getArtistMvList().then(() => {
         this.mvListIsLoading = false;
       });
-      this.$store.dispatch("HistoryMv/addHistoryMv", this.mvDetailState.mv);
+      this.$store.dispatch(
+        "HistoryMv/addHistoryMv",
+        this.$store.state.WatchMv.mv
+      );
     });
+
+    this.commentListIsLoading = true;
     this.getCommentMvList().then(() => {
       this.commentListIsLoading = false;
     });
@@ -377,80 +379,99 @@ export default class Watch extends Vue {
   }
 
   async getSimiMvList() {
-    const { mvs } = await getSimiMvListRequest(
-      this.simiMvState.queryParams.mvid
-    );
-    this.simiMvState.mvList.splice(0, this.simiMvState.mvList.length);
-    this.simiMvState.mvList.push(...mvs);
-  }
-
-  async getMvUrl() {
-    const { data } = await getMvUrlRequest(this.mvUrlState.queryParams.mvid);
-    if (data.code == 200) {
-      this.mvUrlState.mvUrl = data.url;
-    } else {
-      this.mvUrlState.mvUrl = "";
-      this.mvUrlErrorMsg = data.msg;
-    }
-  }
-
-  async getMvLikedCount() {
-    const { likedCount } = await getMvDetailInfoRequest(
-      this.mvLikedCountState.queryParams.mvid
-    );
-    this.mvLikedCountState.likedCount = likedCount;
-  }
-
-  async getMvDetail() {
-    const { data } = await getMvDetailRequest(
-      this.mvDetailState.queryParams.mvid
-    );
-    this.mvDetailState.mv = data;
-  }
-
-  async getArtistDetail() {
-    this.artistDetailState.queryParams.id =
-      this.mvDetailState.mv?.artistId || -1;
-    const { data } = await getArtistDetailRequest(
-      this.artistDetailState.queryParams.id
-    );
-    this.artistDetailState.artistDetail = data.artist;
-  }
-
-  async getArtistMvList() {
-    this.artistMvState.queryParams.id = this.mvDetailState.mv?.artistId || -1;
-    const result = await getArtistMvRequest(this.artistMvState.queryParams.id);
-    this.artistMvState.mvList.splice(0, this.artistMvState.mvList.length);
-    result.mvs = result.mvs.map((mv: IArtistMv) => {
-      mv.cover = mv.imgurl16v9;
-      return mv;
-    });
-    this.artistMvState.mvList.push(...result.mvs);
-    this.artistMvState.hasMore = result.hasMore;
-    // 如果不足 10 条，加载 PopularNow 数据凑数
-    if (this.artistMvState.mvList.length < 10) {
-      this.getPopularNowList();
-    }
-  }
-
-  async getCommentMvList() {
-    const { total, more, comments, hotComments } = await getCommentMvRequest(
-      this.commentMvState.queryParams.id,
-      this.commentMvState.queryParams.limit
-    );
-    this.commentMvState.hotComments.splice(
+    this.$store.state.WatchMv.simiMvList.splice(
       0,
-      this.commentMvState.hotComments.length
+      this.$store.state.WatchMv.simiMvList.length
     );
-    this.commentMvState.comments.splice(0, this.commentMvState.comments.length);
-    if (hotComments) {
-      this.commentMvState.hotComments.push(...hotComments);
+    this.$store.dispatch("WatchMv/getSimiMvListRequest", {
+      mvid: this.simiMvState.queryParams.mvid,
+    });
+  }
+
+  async getMvUrl(store?: any, route?: any) {
+    store = store || this.$store;
+
+    const mvid = this.mvUrlState
+      ? this.mvUrlState.queryParams.mvid
+      : route.value.params.mvid;
+
+    await store.dispatch("WatchMv/getMvUrlRequest", {
+      id: mvid,
+    });
+  }
+
+  async getMvLikedCount(store?: any, route?: any) {
+    store = store || this.$store;
+
+    const mvid = this.mvLikedCountState
+      ? this.mvLikedCountState.queryParams.mvid
+      : route.value.params.mvid;
+
+    await store.dispatch("WatchMv/getMvDetailInfoRequest", {
+      mvid,
+    });
+  }
+
+  async getMvDetail(store?: any, route?: any) {
+    store = store || this.$store;
+
+    const mvid = this.mvLikedCountState
+      ? this.mvLikedCountState.queryParams.mvid
+      : route.value.params.mvid;
+
+    await store.dispatch("WatchMv/getMvDetailRequest", {
+      mvid,
+    });
+  }
+
+  async getArtistDetail(store?: any, route?: any) {
+    store = store || this.$store;
+
+    const id = store.state.WatchMv.mv?.artistId || -1;
+    await store.dispatch("WatchMv/getArtistDetailRequest", {
+      id,
+    });
+  }
+
+  async getArtistMvList(store?: any, route?: any) {
+    store = store || this.$store;
+
+    const id = store.state.WatchMv.mv?.artistId || -1;
+
+    store.state.WatchMv.artistMvList.splice(
+      0,
+      store.state.WatchMv.artistMvList.length
+    );
+
+    await store.dispatch("WatchMv/getArtistMvRequest", { id, offset: 0 });
+
+    // 如果不足 10 条，加载 PopularNow 数据凑数
+    if (store.state.WatchMv.artistMvList.length < 10) {
+      await this.getPopularNowList(store);
     }
-    if (comments) {
-      this.commentMvState.comments.push(...comments);
-    }
-    this.commentMvState.total = total;
-    this.commentMvState.more = more;
+  }
+
+  async getCommentMvList(store?: any, route?: any) {
+    store = store || this.$store;
+
+    const hotComments = store.state.WatchMv.commentMv.hotComments;
+    const comments = store.state.WatchMv.commentMv.comments;
+    hotComments.splice(0, hotComments.length);
+    comments.splice(0, comments.length);
+
+    const mvid = this.commentMvState
+      ? this.commentMvState.queryParams.id
+      : route.value.params.mvid;
+
+    const limit = this.commentMvState
+      ? this.commentMvState.queryParams.limit
+      : 10;
+
+    await store.dispatch("WatchMv/getCommentMvRequest", {
+      id: mvid,
+      limit,
+      commentMvLoadMoreCount: 0,
+    });
   }
 
   goWatch(mv: IMv) {
@@ -486,32 +507,30 @@ export default class Watch extends Vue {
   }
 
   async loadMoreArtistMv() {
-    const result = await getArtistMvRequest(
-      this.artistMvState.queryParams.id,
-      this.artistMvState.queryParams.limit * ++this.artistMvLoadMoreCount
+    const id = this.$store.state.WatchMv.mv?.artistId || -1;
+
+    this.artistMvState.hasMore = await this.$store.dispatch(
+      "WatchMv/getArtistMvRequest",
+      {
+        id,
+        offset:
+          this.artistMvState.queryParams.limit * ++this.artistMvLoadMoreCount,
+      }
     );
-    result.mvs = result.mvs.map((mv: IArtistMv) => {
-      mv.cover = mv.imgurl16v9;
-      return mv;
-    });
-    this.artistMvState.mvList.push(...result.mvs);
-    this.artistMvState.hasMore = result.hasMore;
   }
 
   // 当 ArtistMv 没有更多时，使用 PopularNow
   popularNowLimit = 10;
   popularNowLoadMoreCount = 0;
-  async getPopularNowList() {
-    const { data } = await getPopularNowListRequest(
-      this.popularNowLimit,
-      "全部",
-      this.popularNowLimit * this.popularNowLoadMoreCount++
-    );
-    this.artistMvState.mvList.push(...data);
+  async getPopularNowList(store?: any) {
+    await store.dispatch("WatchMv/getPopularNowListRequestForArtistMv", {
+      popularNowLimit: this.popularNowLimit,
+      popularNowLoadMoreCount: this.popularNowLoadMoreCount++,
+    });
   }
 
   commentListLoading() {
-    if (this.commentMvState.more) {
+    if (this.commentMv.more) {
       this.loadMoreCommentMv();
     } else {
       console.log("commentMv 没有更多了");
@@ -519,27 +538,22 @@ export default class Watch extends Vue {
   }
 
   async loadMoreCommentMv() {
+    this.commentListIsLoading = true;
     this.commentListAutoLoading.isCommand = false;
     try {
-      const { total, more, comments, hotComments } = await getCommentMvRequest(
-        this.commentMvState.queryParams.id,
-        this.commentMvState.queryParams.limit,
-        this.commentMvState.queryParams.limit * ++this.commentMvLoadMoreCount
-      );
-      if (hotComments) {
-        this.commentMvState.hotComments.push(...hotComments);
-      }
-      if (comments) {
-        this.commentMvState.comments.push(...comments);
-      }
-      this.commentMvState.total = total;
-      this.commentMvState.more = more;
+      this.$store.dispatch("WatchMv/getCommentMvRequest", {
+        id: this.commentMvState.queryParams.id,
+        limit: this.commentMvState.queryParams.limit,
+        commentMvLoadMoreCount: ++this.commentMvLoadMoreCount,
+      });
     } catch (error) {
       if (!this.isUnmounted) {
+        this.commentListIsLoading = false;
         this.commentListAutoLoading.isCommand = true;
       }
     }
     if (!this.isUnmounted) {
+      this.commentListIsLoading = false;
       this.commentListAutoLoading.isCommand = true;
     }
   }
@@ -547,7 +561,7 @@ export default class Watch extends Vue {
   subscription() {
     this.$store.dispatch(
       "Subscription/subscriptionArtist",
-      this.artistDetailState.artistDetail
+      this.$store.state.WatchMv.artistDetail
     );
   }
 
@@ -556,11 +570,11 @@ export default class Watch extends Vue {
   }
 
   like() {
-    this.$store.dispatch("LikedMv/addLikedMv", this.mvDetailState.mv);
+    this.$store.dispatch("LikedMv/addLikedMv", this.$store.state.WatchMv.mv);
   }
 
   unlike() {
-    this.$store.dispatch("LikedMv/removeLikedMv", this.mvDetailState.mv);
+    this.$store.dispatch("LikedMv/removeLikedMv", this.$store.state.WatchMv.mv);
   }
 }
 </script>

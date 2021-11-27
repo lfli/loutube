@@ -6,6 +6,7 @@ import TopProgressBar from '../store/modules/TopProgressBar';
 import HomeMv from '../store/modules/HomeMv';
 import PopularNowMv from '../store/modules/PopularNowMv';
 import CloudSearchMv from '../store/modules/CloudSearchMv';
+import WatchMv from '../store/modules/WatchMv';
 
 export default function () {
 
@@ -17,6 +18,21 @@ export default function () {
   HomeMv.state.mvList = [];
   PopularNowMv.state.mvList = [];
   CloudSearchMv.state.mvList = [];
+  WatchMv.state = {
+    simiMvList: [],
+    artistMvList: [],
+    likedCount: 0,
+    mv: null,
+    artistDetail: null,
+    commentMv: {
+      hotComments: [],
+      comments: [],
+      total: 0,
+      more: false,
+    },
+    mvUrl: '',
+    mvUrlErrorMsg: ''
+  }
 
   const store = createStore({
     modules: {
@@ -26,7 +42,8 @@ export default function () {
       TopProgressBar,
       HomeMv,
       PopularNowMv,
-      CloudSearchMv
+      CloudSearchMv,
+      WatchMv
     }
   })
 

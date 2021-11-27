@@ -6,6 +6,7 @@ import TopProgressBar from './modules/TopProgressBar';
 import HomeMv from './modules/HomeMv';
 import PopularNowMv from './modules/PopularNowMv';
 import CloudSearchMv from './modules/CloudSearchMv';
+import WatchMv from './modules/WatchMv';
 
 export default createStore({
   modules: {
@@ -15,6 +16,7 @@ export default createStore({
     TopProgressBar,
     HomeMv,
     PopularNowMv,
-    CloudSearchMv
+    CloudSearchMv,
+    WatchMv
   }
 })
