@@ -1,4 +1,4 @@
-const BASE_URL = 'http://192.168.3.111:3000';
+const BASE_URL = 'http://47.99.122.43:3000';
 
 const TIME_OUT: number = 10 * 1000;
 
