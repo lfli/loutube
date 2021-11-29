@@ -18,7 +18,7 @@ module.exports = {
       repo : 'git@github.com:lfli/loutube.git',
       path : '/root/projects/production',
       'pre-deploy-local': '',
-      'post-deploy' : 'npm install && pm2 reload ecosystem.config.js --env production',
+      'post-deploy' : 'npm install && pm2 reload ecosystem.config.js --env production && npm run build:ssr',
       'pre-setup': ''
     }
   }
