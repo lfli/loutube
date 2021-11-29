@@ -7,7 +7,7 @@
     "build": "cross-env COMMON=1 vue-cli-service build",
     "lint": "vue-cli-service lint",
     "build:client": "vue-cli-service build --dest dist/client",
-    "build:server": "set SSR=1 && vue-cli-service build --dest dist/server",
+    "build:server": "cross-env SSR=1 vue-cli-service build --dest dist/server",
     "build:ssr": "npm run build:client && npm run build:server",
     "dev:serve": "cross-env WEBPACK_TARGET=node node ./server/server.js",
     "dev": "concurrently \"npm run serve\" \"npm run dev:serve\" "
