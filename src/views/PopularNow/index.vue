@@ -31,7 +31,7 @@ import TopMenuItem from "./TopMenuItem.vue";
 import VideoShowTempTwo from "@/share/VideoShowTempTwo.vue";
 import { reactive } from "vue";
 import { IPopularNowState } from "./typing";
-import { IPopularNowTopMenu } from "@/typing/LocalData";
+import { IPopularNowTopMenu } from "@/typing/localData";
 import RotateLoading from "@/share/RotateLoading.vue";
 import { IMv } from "@/typing";
 import { titleMixin } from "@/mixins/titleMixin";
