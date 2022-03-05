@@ -19,6 +19,8 @@ jobs:
       run: npm install
     - name: Run build task
       run: npm run build
+    - name: clear ssh
+      run: ssh-keygen -R 47.99.122.43
     - name: Deploy to Server
       uses: easingthemes/ssh-deploy@v2.1.5
       env:
