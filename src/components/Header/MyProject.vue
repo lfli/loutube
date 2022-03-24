@@ -18,7 +18,7 @@ export default class MyProject extends Vue {}
 div {
   background-color: #065fd4;
   height: 100%;
-  width: 10vw;
+  width: 140px;
   display: flex;
   justify-content: center;
   cursor: pointer; /** 鼠标变小手 */
