@@ -25,8 +25,8 @@ jobs:
           REMOTE_HOST: "47.99.122.43"
           REMOTE_USER: root
           TARGET: /node-server
-      # - name: Run Install
-      #   run: npm install
+      - name: Run Install
+        run: npm install
       - name: Run build task
         run: npm run build:ssr
 
