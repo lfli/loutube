@@ -13,10 +13,10 @@
         >
       </div>
       <div>
-        <div class="operation-box">
+        <!-- <div class="operation-box">
           <span v-if="!isOpen" @click="isOpen = true">展开</span>
           <span v-else @click="isOpen = false">收起</span>
-        </div>
+        </div> -->
         <div class="zan-box">
           <span class="iconfont icon-zan comment-zan"></span>
           <span class="zan-count">{{
