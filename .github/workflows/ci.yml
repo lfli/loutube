@@ -28,7 +28,7 @@ jobs:
       run: npm install
     - name: Run build task
       run: npm run build:ssr
-    - name: Deploy to Server
+    - name: Deploy dist to Server
       uses: easingthemes/ssh-deploy@v2.1.5
       env:
           SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
