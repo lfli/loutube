@@ -7,56 +7,55 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
-    - name: Install Node.js
-      uses: actions/setup-node@v1
-      with:
-        node-version: '12.16.2'
+      - uses: actions/checkout@v1
+      - name: Install Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: "12.16.2"
 
-    - name: Deploy package.json to Server
-      uses: easingthemes/ssh-deploy@v2.1.5
-      env:
+      - name: Deploy package.json to Server
+        uses: easingthemes/ssh-deploy@v2.1.5
+        env:
           SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
-          ARGS: '-rltgoDzvO --delete'
+          ARGS: "-rltgoDzvO --delete"
           SOURCE: package.json
-          REMOTE_HOST: '47.99.122.43'
+          REMOTE_HOST: "47.99.122.43"
           REMOTE_USER: root
           TARGET: /node-server
-    - name: Run Install
-      run: npm install
-    - name: Run build task
-      run: npm run build:ssr
+      - name: Run Install
+        run: npm install
+      - name: Run build task
+        run: npm run build:ssr
 
-    - name: Deploy node_modules to Server
-    uses: easingthemes/ssh-deploy@v2.1.5
-    env:
-        SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
-        ARGS: '-rltgoDzvO --delete'
-        SOURCE: node_modules
-        REMOTE_HOST: '47.99.122.43'
-        REMOTE_USER: root
-        TARGET: /node-server
-
-    - name: Deploy dist to Server
-      uses: easingthemes/ssh-deploy@v2.1.5
-      env:
+      - name: Deploy node_modules to Server
+        uses: easingthemes/ssh-deploy@v2.1.5
+        env:
           SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
-          ARGS: '-rltgoDzvO --delete'
+          ARGS: "-rltgoDzvO --delete"
+          SOURCE: node_modules
+          REMOTE_HOST: "47.99.122.43"
+          REMOTE_USER: root
+          TARGET: /node-server
+
+      - name: Deploy dist to Server
+        uses: easingthemes/ssh-deploy@v2.1.5
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
+          ARGS: "-rltgoDzvO --delete"
           SOURCE: dist
-          REMOTE_HOST: '47.99.122.43'
+          REMOTE_HOST: "47.99.122.43"
           REMOTE_USER: root
           TARGET: /node-server
 
-    - name: Deploy server to Server
-      uses: easingthemes/ssh-deploy@v2.1.5
-      env:
+      - name: Deploy server to Server
+        uses: easingthemes/ssh-deploy@v2.1.5
+        env:
           SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
-          ARGS: '-rltgoDzvO --delete'
+          ARGS: "-rltgoDzvO --delete"
           SOURCE: server
-          REMOTE_HOST: '47.99.122.43'
+          REMOTE_HOST: "47.99.122.43"
           REMOTE_USER: root
           TARGET: /node-server
