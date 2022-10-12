@@ -19,6 +19,11 @@
         />
       </router-view>
     </div>
+    <div class="filing-no">
+      <a href="https://beian.miit.gov.cn" target="_blank"
+        >蜀ICP备2021031582号-1</a
+      >
+    </div>
   </div>
   <transition name="sideDrawer">
     <SideDrawer :listData="sideDrawerList" @close="show = false" v-if="show" />
@@ -29,11 +34,11 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
-import Header from "@/components/Header/index.vue"; // @ is an alias to /src
-import Sidebar from "@/components/Sidebar/index.vue";
-import SideDrawer from "@/components/SideDrawer/index.vue";
-import { sideDrawerList, sideNavList } from "@/apis/data";
+import { Options, Vue } from 'vue-class-component';
+import Header from '@/components/Header/index.vue'; // @ is an alias to /src
+import Sidebar from '@/components/Sidebar/index.vue';
+import SideDrawer from '@/components/SideDrawer/index.vue';
+import { sideDrawerList, sideNavList } from '@/apis/data';
 
 @Options({
   components: {
@@ -124,7 +129,7 @@ export default class App extends Vue {
     left: 0;
   }
 }
-span[class~="iconfont"] {
+span[class~='iconfont'] {
   cursor: pointer; /** 鼠标变小手 */
 }
 .cloth {
@@ -278,7 +283,7 @@ table {
 }
 
 .clearfix:after {
-  content: ".";
+  content: '.';
   display: block;
   height: 0;
   clear: both;
@@ -286,5 +291,15 @@ table {
 }
 .clearfix {
   *zoom: 1;
+}
+
+.filing-no {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  background-color: black;
+  padding: 10px;
+  cursor: pointer;
 }
 </style>

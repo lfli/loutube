@@ -36,9 +36,6 @@
         <div class="copyright">
           <span>© 2021 李林锋 LFLI</span>
         </div>
-        <div class="filing-no">
-          <span>蜀ICP备2021031582号</span>
-        </div>
       </div>
     </div>
   </div>
@@ -133,13 +130,6 @@ span[class~="iconfont"] {
   padding: 16px 24px;
   color: #909090;
   font-size: 13px;
-  font-family: Roboto, Arial, sans-serif;
-}
-
-.box-four .filing-no {
-  padding: 16px 24px;
-  color: #909090;
-  font-size: 14px;
   font-family: Roboto, Arial, sans-serif;
 }
 </style>
